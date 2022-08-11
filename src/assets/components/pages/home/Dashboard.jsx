@@ -1,6 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { AppBarComponent } from '../../appbar/AppBarComponent'
+import { DashbordBody } from '../../DashbordBody'
 import { useNavigate } from 'react-router'
+import { Footer } from '../../Footer'
 
 export function Dashboard() {
     const navigate = useNavigate()
@@ -14,11 +16,17 @@ export function Dashboard() {
         if (!user) {
             navigate('/login')
         }
+
+        if (user.rol === 'TECNICO') {
+            navigate('/homeTecnicos') // Dashboard para rol tecnicos
+        }
     }
 
     return (
         <Fragment>
             <AppBarComponent />
+            <DashbordBody />
+            <Footer />
         </Fragment>
     )
 }

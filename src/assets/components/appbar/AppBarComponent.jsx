@@ -17,13 +17,12 @@ export function AppBarComponent() {
         navigate('/login')
     }
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
             <AppBar position="static" style={{ backgroundColor: 'white' }}>
                 <Toolbar variant="regular">
-                    <img src={require('../../logos/sm-logo-h.png')} />
                     <img
-                        src={require('../../logos/Logo-TMB.png')}
-                        style={{ width: '120px', height: '50px' }}
+                        src={require('../../logos/Logotipo-Metro_Principal_RGB_0.png')}
+                        style={{ width: 80, height: 60 }}
                     />
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
                     <Button
