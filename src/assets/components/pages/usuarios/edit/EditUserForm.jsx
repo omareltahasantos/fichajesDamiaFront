@@ -74,6 +74,7 @@ export function EditUserForm({ userId }) {
         e.preventDefault()
 
         let { data } = await axios.put(`${endpoint}user/${userId}`, {
+            id: parseInt(userId),
             name: name,
             email: email,
             hours_contract: contractHours,

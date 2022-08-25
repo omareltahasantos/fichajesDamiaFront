@@ -25,14 +25,24 @@ export function AddUserForm() {
     const [contractHours, setContractHours] = useState(null)
     const [rol, setRol] = useState('')
     const [password, setPassword] = useState('')
-    const [roles, setRoles] = useState([])
+    const [roles, setRoles] = useState([
+        {
+            id: 1,
+            rol: 'ADMIN',
+        },
+
+        {
+            id: 2,
+            rol: 'TECNICO',
+        },
+    ])
     const [showPassword, setShowPassword] = useState(false)
 
     const [checkUsers, setCheckUsers] = useState([])
 
     useEffect(() => {
         parsingDate(setDateStart)
-        getRoles()
+        //getRoles()
     }, [])
 
     function parsingDate(event) {

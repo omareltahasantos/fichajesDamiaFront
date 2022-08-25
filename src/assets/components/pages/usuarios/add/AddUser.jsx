@@ -51,7 +51,7 @@ export function AddUser() {
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
                         >
-                            Añadir campaña
+                            Añadir usuario
                         </Typography>
                     </Grid>
                     <Grid item md={3}>
