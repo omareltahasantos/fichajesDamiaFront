@@ -9,7 +9,7 @@ import { HoursTable } from '../../hours/HoursTable'
 
 export function Hours() {
     const navigate = useNavigate()
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const breadcrumb = [
         <Link
             underline="hover"

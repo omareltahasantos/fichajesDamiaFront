@@ -17,7 +17,7 @@ import { ExportData } from './ExportData'
 import { CampaignSearch } from './CampaignSearch'
 
 export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCampaigns }) {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [campaigns, setCampaigns] = useState([])
 
     useEffect(() => {

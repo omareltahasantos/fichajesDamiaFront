@@ -17,7 +17,7 @@ import { UserActions } from './UserActions'
 import { UserSearch } from './UserSearch'
 
 export function UserTable({ getCountUsers, countUsers, getCountContractedHours }) {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [users, setUsers] = useState([])
 
     useEffect(() => {

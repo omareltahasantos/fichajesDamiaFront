@@ -9,7 +9,7 @@ import axios from 'axios'
 import { AddHoursForm } from './AddHoursForm'
 
 export function AddHours() {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const { campaign_id } = useParams()
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({

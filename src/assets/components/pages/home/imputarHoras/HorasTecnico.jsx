@@ -10,7 +10,7 @@ import { DisplayHoursStartDay } from '../../../../home_tecnicos/DisplayHoursStar
 import { DisplayHoursEndDay } from '../../../../home_tecnicos/DisplayHoursEndDay'
 
 export function HorasTecnico() {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const { campaign_id } = useParams()
     const navigate = useNavigate()
     const [hours, setHours] = useState([])

@@ -24,7 +24,7 @@ export function HoursTable({
     fromDate,
     countHoursInserted,
 }) {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [hours, setHours] = useState([])
 
     useEffect(() => {

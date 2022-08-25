@@ -15,7 +15,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router'
 
 export function LoginForm() {
-    const endpoint = 'http://localhost:8000/api'
+    const endpoint = 'https://smfichajes.herokuapp.com/api'
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

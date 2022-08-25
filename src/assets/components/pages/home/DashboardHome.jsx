@@ -10,7 +10,7 @@ import axios from 'axios'
 
 export function DashboardHome() {
     const navigate = useNavigate()
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [campaigns, setCampaigns] = useState([])
     useEffect(() => {

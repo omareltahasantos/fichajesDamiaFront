@@ -6,7 +6,7 @@ import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { Footer } from '../../Footer'
 import EventNoteIcon from '@mui/icons-material/EventNote'
 export function Stats() {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const breadcrumb = [
         <Link

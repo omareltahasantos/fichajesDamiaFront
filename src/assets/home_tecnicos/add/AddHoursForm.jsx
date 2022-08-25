@@ -4,7 +4,7 @@ import { Box, Grid, Typography, Button, TextField } from '@mui/material'
 import { useNavigate } from 'react-router'
 
 export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, longitude }) {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const [name, setName] = useState(currentUser.name)
     const [campaign, setCampaign] = useState(campaignName)

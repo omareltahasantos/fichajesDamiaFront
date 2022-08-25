@@ -9,7 +9,7 @@ import { UserTable } from '../../users/UserTable'
 import { Footer } from '../../Footer'
 
 export function Users() {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const breadcrumb = [
         <Link

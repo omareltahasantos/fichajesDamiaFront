@@ -9,7 +9,7 @@ import axios from 'axios'
 import { EditWorkHourForm } from './EditWorkHourForm'
 
 export function EditWorkHour() {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const location = useLocation()
     const { campaign_id } = useParams()

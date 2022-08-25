@@ -9,7 +9,7 @@ import { Footer } from '../../Footer'
 import { HeaderPages } from '../../HeaderPages'
 
 export function Campaigns() {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const breadcrumb = [
         <Link

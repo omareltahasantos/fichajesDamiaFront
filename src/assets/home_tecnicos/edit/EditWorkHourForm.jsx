@@ -11,7 +11,7 @@ export function EditWorkHourForm({
     longitude,
     hourId,
 }) {
-    const endpoint = 'http://localhost:8000/api/'
+    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const [name, setName] = useState(currentUser.name)
     const [campaign, setCampaign] = useState(campaignName)

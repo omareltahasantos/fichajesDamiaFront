@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { useNavigate } from 'react-router'
 
 export function EditCampaignForm({ campaignId }) {
-    let endpoint = 'http://localhost:8000/api/'
+    let endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const [current_user, setCurrent_user] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [name, setName] = useState('')
