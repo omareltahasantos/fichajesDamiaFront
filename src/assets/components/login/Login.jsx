@@ -22,7 +22,7 @@ export function Login() {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            paddingBottom: 80,
+                            paddingBottom: 20,
                         }}
                     >
                         <ImageForm />

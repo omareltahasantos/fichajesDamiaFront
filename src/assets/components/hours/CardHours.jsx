@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, CircularProgress } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate, Link as LinkR } from 'react-router'
 
 const useStyles = makeStyles({
@@ -12,7 +11,7 @@ const useStyles = makeStyles({
         color: '#8BB925',
     },
 })
-export function CardCampaign({ ...props }) {
+export function CardHour({ ...props }) {
     const classes = useStyles()
     const navigate = useNavigate()
 

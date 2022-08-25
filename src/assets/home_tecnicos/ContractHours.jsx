@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Typography, CircularProgress } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import { useNavigate, Link as LinkR } from 'react-router'
 
 const useStyles = makeStyles({
@@ -12,13 +11,9 @@ const useStyles = makeStyles({
         color: '#8BB925',
     },
 })
-export function CardCampaign({ ...props }) {
+export function ContractHours({ ...props }) {
     const classes = useStyles()
     const navigate = useNavigate()
-
-    useEffect(() => {
-        console.log(props.description)
-    }, [])
 
     return (
         <>
@@ -29,7 +24,7 @@ export function CardCampaign({ ...props }) {
                     borderRadius: 10,
                     padding: 15,
                     backgroundColor: 'white',
-                    width: '560px',
+                    width: '100%',
                 }}
             >
                 <Typography variant="body1" align="left" style={{ color: 'grey' }}>

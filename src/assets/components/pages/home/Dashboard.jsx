@@ -15,6 +15,7 @@ export function Dashboard() {
 
         if (!user) {
             navigate('/login')
+            return
         }
 
         if (user.rol === 'TECNICO') {

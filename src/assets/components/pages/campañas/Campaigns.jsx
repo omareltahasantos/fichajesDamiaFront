@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
-import { Grid, Typography, Breadcrumbs, Button, Container, Link, Divider } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
+import { Grid, Typography, Container, Link, Divider } from '@mui/material'
 import { CardCampaign } from '../../campaign/CardCampaign'
 import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { CampaignsTable } from '../../campaign/CampaignsTable'
 import { Footer } from '../../Footer'
+import { HeaderPages } from '../../HeaderPages'
 
 export function Campaigns() {
     const endpoint = 'http://localhost:8000/api/'
@@ -71,41 +71,12 @@ export function Campaigns() {
         <>
             <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
-                <Grid
-                    container
-                    spacing={3}
-                    flexDirection="column"
-                    style={{ paddingBottom: '40px' }}
-                >
-                    <Grid item md={3}>
-                        <Typography
-                            variant="h4"
-                            style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
-                        >
-                            Campañas
-                        </Typography>
-                    </Grid>
-                    <Grid item md={3}>
-                        <Breadcrumbs separator="›" aria-label="breadcrumb">
-                            {breadcrumb.map((bread) => bread)}
-                        </Breadcrumbs>
-                    </Grid>
-                    <Grid item md={3}>
-                        <Button
-                            variant="contained"
-                            style={{
-                                textTransform: 'none',
-                                fontSize: '16px',
-                                backgroundColor: '#8BB925',
-                            }}
-                            onClick={() => {
-                                navigate('/campaigns/add')
-                            }}
-                        >
-                            <AddIcon /> Añadir campañas
-                        </Button>
-                    </Grid>
-                </Grid>
+                <HeaderPages
+                    title="Campañas"
+                    breadcrumb={breadcrumb}
+                    buttonName="Añadir campañas"
+                    route="/campaigns/add"
+                />
                 <Grid container spacing={0}>
                     <Grid item md={6}>
                         <CardCampaign title="Total campañas" description={countCampaigns} />
