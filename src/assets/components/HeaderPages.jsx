@@ -33,7 +33,7 @@ export function HeaderPages({ title, breadcrumb, buttonName, route }) {
                                 backgroundColor: '#8BB925',
                             }}
                             onClick={() => {
-                                navigate({ route })
+                                navigate(route)
                             }}
                         >
                             <AddIcon /> {buttonName}

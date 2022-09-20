@@ -52,7 +52,7 @@ export function DashbordBody() {
                     <Grid item md={6}>
                         <CardDashboard
                             title="Horas"
-                            description="Añade las campañas necesarias para tus proyectos"
+                            description="Visualiza el registro de horas de los técnicos"
                         />
                     </Grid>
                 </Grid>
@@ -60,13 +60,7 @@ export function DashbordBody() {
                     <Grid item md={6}>
                         <CardDashboard
                             title="Usuarios"
-                            description="Añade las campañas necesarias para tus proyectos"
-                        />
-                    </Grid>
-                    <Grid item md={6}>
-                        <CardDashboard
-                            title="Estadisticas"
-                            description="Añade las campañas necesarias para tus proyectos"
+                            description="Añade los usuarios necesarios para tus proyectos"
                         />
                     </Grid>
                 </Grid>
