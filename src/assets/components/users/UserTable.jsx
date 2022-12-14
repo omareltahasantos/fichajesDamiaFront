@@ -11,13 +11,13 @@ import {
     Grid,
 } from '@mui/material'
 import axios from 'axios'
+import endpoint from '../services/endpoint'
 import { ExportData } from '../campaign/ExportData'
 import { UserItems } from './UserItems'
 import { UserActions } from './UserActions'
 import { UserSearch } from './UserSearch'
 
 export function UserTable({ getCountUsers, countUsers, getCountContractedHours }) {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [users, setUsers] = useState([])
 
     useEffect(() => {

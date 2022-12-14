@@ -11,6 +11,7 @@ import {
     Grid,
 } from '@mui/material'
 import axios from 'axios'
+import endpoint from '../services/endpoint'
 import { ExportData } from '../campaign/ExportData'
 import { HoursTableHeader } from './HoursTableHeader'
 import { HoursItems } from './HoursItems'
@@ -24,7 +25,6 @@ export function HoursTable({
     fromDate,
     countHoursInserted,
 }) {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [hours, setHours] = useState([])
 
     useEffect(() => {

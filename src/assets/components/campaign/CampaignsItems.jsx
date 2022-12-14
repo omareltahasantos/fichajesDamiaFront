@@ -2,18 +2,18 @@ import React from 'react'
 import { TableRow, TableCell } from '@mui/material'
 
 export function CampaignsItems({ ...camp }) {
+    const { name, description, date_start, date_end } = camp
+
     const reverseString = (string) => {
-        let split = string.split('-')
-        let reverse = split.reverse()
-        let join = reverse.join('-')
-        return join
+        return string.split('-').reverse().join('-')
     }
+
     return (
         <>
-            <TableCell>{camp.name}</TableCell>
-            <TableCell>{camp.description}</TableCell>
-            <TableCell>{reverseString(camp.date_start)}</TableCell>
-            <TableCell>{reverseString(camp.date_end)}</TableCell>
+            <TableCell>{name}</TableCell>
+            <TableCell>{description}</TableCell>
+            <TableCell>{reverseString(date_start)}</TableCell>
+            <TableCell>{reverseString(date_end)}</TableCell>
         </>
     )
 }

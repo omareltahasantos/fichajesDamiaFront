@@ -6,10 +6,10 @@ import { Footer } from '../../components/Footer'
 import { useParams, useNavigate } from 'react-router'
 import { useGeolocated } from 'react-geolocated'
 import axios from 'axios'
+import endpoint from '../../components/services/endpoint'
 import { AddHoursForm } from './AddHoursForm'
 
 export function AddHours() {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const { campaign_id } = useParams()
     const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({

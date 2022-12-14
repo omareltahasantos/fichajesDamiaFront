@@ -1,5 +1,4 @@
 import React from 'react'
-import EqualizerIcon from '@mui/icons-material/Equalizer'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { Tooltip, IconButton, TableCell } from '@mui/material'

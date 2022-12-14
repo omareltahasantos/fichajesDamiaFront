@@ -7,9 +7,9 @@ import { useParams, useNavigate, useLocation } from 'react-router'
 import { useGeolocated } from 'react-geolocated'
 import axios from 'axios'
 import { EditWorkHourForm } from './EditWorkHourForm'
+import endpoint from '../../components/services/endpoint'
 
 export function EditWorkHour() {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const location = useLocation()
     const { campaign_id } = useParams()

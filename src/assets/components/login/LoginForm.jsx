@@ -12,10 +12,10 @@ import {
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
+import endpoint from '../services/endpoint'
 import { useNavigate } from 'react-router'
 
 export function LoginForm() {
-    const endpoint = 'https://smfichajes.herokuapp.com/api'
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -37,7 +37,7 @@ export function LoginForm() {
     }, [email, password])
 
     const handleLogin = async () => {
-        let { data } = await axios.get(`${endpoint}/checkuser`, {
+        let { data } = await axios.get(`${endpoint}checkuser`, {
             params: {
                 email: email,
                 password: password,

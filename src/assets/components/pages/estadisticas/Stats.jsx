@@ -5,8 +5,9 @@ import { Grid, Typography, Breadcrumbs, Container, Link, Divider, Box } from '@m
 import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { Footer } from '../../Footer'
 import EventNoteIcon from '@mui/icons-material/EventNote'
+import endpoint from '../../services/endpoint'
+
 export function Stats() {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const breadcrumb = [
         <Link

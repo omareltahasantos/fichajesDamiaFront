@@ -7,10 +7,10 @@ import { ContractHours } from '../../../home_tecnicos/ContractHours'
 import { DisplayCampaigns } from './DisplayCampaigns'
 import { Footer } from '../../Footer'
 import axios from 'axios'
+import endpoint from '../../services/endpoint'
 
 export function DashboardHome() {
     const navigate = useNavigate()
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [campaigns, setCampaigns] = useState([])
     useEffect(() => {

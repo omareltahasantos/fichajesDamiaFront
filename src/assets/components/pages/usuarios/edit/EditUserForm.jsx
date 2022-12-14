@@ -9,24 +9,24 @@ import {
     InputAdornment,
     IconButton,
     Alert,
+    Input,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
+import endpoint from '../../../services/endpoint'
 
 export function EditUserForm({ userId }) {
-    let endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
-    const [current_user, setCurrent_user] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [dateStart, setDateStart] = useState('')
     const [contractHours, setContractHours] = useState(null)
     const [rol, setRol] = useState('')
     const [roles, setRoles] = useState([])
-
-    const [checkUsers, setCheckUsers] = useState([])
+    const [password, setPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
 
     useEffect(() => {
         parsingDate(setDateStart)
@@ -58,6 +58,7 @@ export function EditUserForm({ userId }) {
         setContractHours(data.hours_contract)
         setDateStart(data.date_start)
         setRol(data.rol)
+        setPassword(data.password)
     }
 
     const getRoles = async () => {
@@ -77,6 +78,7 @@ export function EditUserForm({ userId }) {
             id: parseInt(userId),
             name: name,
             email: email,
+            password: password,
             hours_contract: contractHours,
             rol: rol,
             date_start: dateStart,
@@ -94,7 +96,7 @@ export function EditUserForm({ userId }) {
         <>
             <Box component="form" autoComplete="off" onSubmit={editUser}>
                 <Grid container spacing={4} flexDirection="row">
-                    <Grid item md={6} paddingBottom="15px">
+                    <Grid item md={4} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -118,7 +120,7 @@ export function EditUserForm({ userId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={6} paddingBottom="15px">
+                    <Grid item md={4} paddingBottom="15px">
                         <Typography paddingBottom="15px">EMAIL</Typography>
                         <TextField
                             type="email"
@@ -138,6 +140,22 @@ export function EditUserForm({ userId }) {
                                     paddingTop: '7px',
                                 },
                             }}
+                        />
+                    </Grid>
+                    <Grid item md={4} paddingBottom="15px">
+                        <Typography paddingBottom="15px">Contraseña</Typography>
+                        <Input
+                            fullWidth
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </Grid>
                 </Grid>

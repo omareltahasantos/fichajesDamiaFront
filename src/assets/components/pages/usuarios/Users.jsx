@@ -7,9 +7,9 @@ import { CardCampaign } from '../../campaign/CardCampaign'
 import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { UserTable } from '../../users/UserTable'
 import { Footer } from '../../Footer'
+import endpoint from '../../services/endpoint'
 
 export function Users() {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const breadcrumb = [
         <Link

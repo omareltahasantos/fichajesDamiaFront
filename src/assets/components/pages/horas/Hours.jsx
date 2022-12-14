@@ -6,10 +6,10 @@ import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { CardHour } from '../../hours/CardHours'
 import axios from 'axios'
 import { HoursTable } from '../../hours/HoursTable'
+import endpoint from '../../services/endpoint'
 
 export function Hours() {
     const navigate = useNavigate()
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const breadcrumb = [
         <Link
             underline="hover"

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import endpoint from '../../components/services/endpoint'
 import { Box, Grid, Typography, Button, TextField } from '@mui/material'
 import { useNavigate } from 'react-router'
 
 export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, longitude }) {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const [name, setName] = useState(currentUser.name)
     const [campaign, setCampaign] = useState(campaignName)

@@ -14,9 +14,9 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
+import endpoint from '../../../services/endpoint'
 
 export function AddUserForm() {
-    let endpoint = 'https://smfichajes.herokuapp.com/api/'
     const navigate = useNavigate()
     const [current_user, setCurrent_user] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [name, setName] = useState('')

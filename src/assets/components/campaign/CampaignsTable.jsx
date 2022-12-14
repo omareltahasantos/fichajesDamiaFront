@@ -11,13 +11,14 @@ import {
     Grid,
 } from '@mui/material'
 import axios from 'axios'
+import endpoint from '../services/endpoint'
+
 import { CampaignsItems } from './CampaignsItems'
 import { CampaignsActions } from './CampaignsActions'
 import { ExportData } from './ExportData'
 import { CampaignSearch } from './CampaignSearch'
 
 export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCampaigns }) {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const [campaigns, setCampaigns] = useState([])
 
     useEffect(() => {

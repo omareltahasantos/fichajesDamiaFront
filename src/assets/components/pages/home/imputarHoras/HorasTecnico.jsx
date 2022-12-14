@@ -8,9 +8,9 @@ import { Footer } from '../../../Footer'
 import axios from 'axios'
 import { DisplayHoursStartDay } from '../../../../home_tecnicos/DisplayHoursStartDay'
 import { DisplayHoursEndDay } from '../../../../home_tecnicos/DisplayHoursEndDay'
+import endpoint from '../../../services/endpoint'
 
 export function HorasTecnico() {
-    const endpoint = 'https://smfichajes.herokuapp.com/api/'
     const { campaign_id } = useParams()
     const navigate = useNavigate()
     const [hours, setHours] = useState([])
