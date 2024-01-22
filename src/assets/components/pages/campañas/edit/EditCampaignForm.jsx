@@ -65,7 +65,7 @@ export function EditCampaignForm({ campaignId }) {
     }
 
     const getUsers = async () => {
-        let { data } = await axios.get(`${endpoint}users`)
+        let { data } = await axios.get(`${endpoint}fetchUsers`)
 
         if (data === 0) {
             return

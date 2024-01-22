@@ -41,13 +41,9 @@ export function Campaigns() {
     }
 
     const getCountCampaign = async () => {
-        let { data } = await axios.get(`${endpoint}campaigns`)
+        let { data } = await axios.get(`${endpoint}countCampaigns`)
 
-        if (data.length === 0) {
-            setCountCampaigns(0)
-            return
-        }
-        setCountCampaigns(data.length)
+        setCountCampaigns(data)
     }
 
     const getActiveCampaigns = async () => {
@@ -86,7 +82,6 @@ export function Campaigns() {
                     </Grid>
                 </Grid>
                 <Divider style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }} />
-                {/*CREAR BUSCADOR MAS EXPORTAR*/}
 
                 <CampaignsTable
                     getCountCampaign={getCountCampaign}

@@ -9,6 +9,7 @@ import {
     Paper,
     Typography,
     Grid,
+    Box,
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
@@ -16,6 +17,7 @@ import { ExportData } from '../campaign/ExportData'
 import { UserItems } from './UserItems'
 import { UserActions } from './UserActions'
 import { UserSearch } from './UserSearch'
+import { PaginationItems } from '../PaginationItems'
 
 export function UserTable({ getCountUsers, countUsers, getCountContractedHours }) {
     const [users, setUsers] = useState([])
@@ -90,6 +92,13 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
+                <PaginationItems
+                    count={countUsers}
+                    setMethod={setUsers}
+                    endpoint={`${endpoint}paginateUsers`}
+                />
+            </Box>
         </>
     )
 }

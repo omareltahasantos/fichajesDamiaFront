@@ -35,13 +35,9 @@ export function Users() {
     }, [])
 
     const getCountUsers = async () => {
-        let { data } = await axios.get(`${endpoint}users`)
+        let { data } = await axios.get(`${endpoint}countUsers`)
 
-        if (data.length === 0) {
-            setCountUsers(0)
-            return
-        }
-        setCountUsers(data.length)
+        setCountUsers(data)
     }
 
     const getCountContractedHours = async () => {

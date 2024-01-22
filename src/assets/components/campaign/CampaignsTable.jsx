@@ -9,6 +9,7 @@ import {
     Paper,
     Typography,
     Grid,
+    Box,
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
@@ -17,6 +18,7 @@ import { CampaignsItems } from './CampaignsItems'
 import { CampaignsActions } from './CampaignsActions'
 import { ExportData } from './ExportData'
 import { CampaignSearch } from './CampaignSearch'
+import { PaginationItems } from '../PaginationItems'
 
 export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCampaigns }) {
     const [campaigns, setCampaigns] = useState([])
@@ -94,6 +96,13 @@ export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCamp
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
+                <PaginationItems
+                    count={countCampaigns}
+                    setMethod={setCampaigns}
+                    endpoint={`${endpoint}paginateCampaigns`}
+                />
+            </Box>
         </>
     )
 }

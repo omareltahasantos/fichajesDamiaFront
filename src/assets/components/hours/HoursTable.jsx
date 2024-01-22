@@ -9,6 +9,7 @@ import {
     Paper,
     Typography,
     Grid,
+    Box,
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
@@ -17,6 +18,7 @@ import { HoursTableHeader } from './HoursTableHeader'
 import { HoursItems } from './HoursItems'
 import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
+import { PaginationItems } from '../PaginationItems'
 
 export function HoursTable({
     totalHoursValidate,
@@ -81,12 +83,10 @@ export function HoursTable({
             </Typography>
             <Grid container spacing={0}>
                 <Grid item md={11}>
-                    {
-                        <HoursSearch
-                            countHoursInserted={countHoursInserted}
-                            searchHours={searchHours}
-                        />
-                    }
+                    <HoursSearch
+                        countHoursInserted={countHoursInserted}
+                        searchHours={searchHours}
+                    />
                 </Grid>
                 <ExportData Export={hours} />
             </Grid>
@@ -112,6 +112,13 @@ export function HoursTable({
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
+                <PaginationItems
+                    count={countHoursInserted}
+                    setMethod={setHours}
+                    endpoint={`${endpoint}paginateHours`}
+                />
+            </Box>
         </>
     )
 }
