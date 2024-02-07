@@ -1,5 +1,5 @@
 import React from 'react'
-import { TableCell, IconButton, Link } from '@mui/material'
+import { TableCell, Link } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 export function HoursItems({ ...hour }) {
     function handleValidate(validate) {
@@ -35,6 +35,7 @@ export function HoursItems({ ...hour }) {
             <TableCell>{hour.hours}</TableCell>
             <TableCell>{hour.type}</TableCell>
             <TableCell>{handleValidate(hour.validate)}</TableCell>
+            <TableCell>{hour.validate_by}</TableCell>
         </>
     )
 }

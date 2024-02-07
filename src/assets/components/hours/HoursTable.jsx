@@ -21,6 +21,7 @@ import { HoursSearch } from './HoursSearch'
 import { HoursValidateFilter } from './HoursValidateFilter'
 
 export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDate, fromDate }) {
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const [hours, setHours] = useState([])
     const [countHours, setCountHours] = useState(0)
 
@@ -61,6 +62,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
     const updateValidate = async (id, state) => {
         let { data } = await axios.put(`${endpoint}hour/${id}`, {
             state: state,
+            validateBy: user.name,
         })
 
         getHours()

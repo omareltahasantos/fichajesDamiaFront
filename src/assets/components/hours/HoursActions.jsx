@@ -9,7 +9,7 @@ export function HoursActions({ deleteHour, updateValidate, ...hour }) {
     const navigate = useNavigate()
     return (
         <>
-            {hour.validate === null ? (
+            {hour.validate === null || hour.validate === '' ? (
                 <TableCell>
                     <Tooltip title="Editar registro" arrow placement="top">
                         <IconButton>

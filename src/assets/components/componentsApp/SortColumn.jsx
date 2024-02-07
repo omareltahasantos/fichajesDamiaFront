@@ -24,17 +24,15 @@ export function SortColumn({ column, label, setMethod, state }) {
     }
     return (
         <>
-            <TableCell
-                onClick={() => handleSort(column)}
-                sx={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '0.75rem' }}
-            >
+            <TableCell onClick={() => handleSort(column)} sx={{ cursor: 'pointer' }}>
                 <Button
                     variant="text"
                     sx={{ mt: 0, mb: 0 }}
                     style={{
                         textTransform: 'none',
-                        fontSize: '12px',
                         color: 'black',
+                        fontWeight: 'bold',
+                        fontSize: '0.75rem',
                     }}
                 >
                     {columnToSort === column

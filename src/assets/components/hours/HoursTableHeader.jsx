@@ -60,6 +60,12 @@ export function HoursTableHeader({ hours, setHours }) {
                 state={hours}
                 setMethod={setHours}
             />
+            <SortColumn
+                column={'validate_by'}
+                label={'VALIDADO POR'}
+                state={hours}
+                setMethod={setHours}
+            />
 
             <TableCell style={{ fontWeight: 'bold', fontSize: '0.75rem' }}>ACCIONES</TableCell>
         </>
