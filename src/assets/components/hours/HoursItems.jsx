@@ -3,7 +3,7 @@ import { TableCell, Link } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 export function HoursItems({ ...hour }) {
     function handleValidate(validate) {
-        if (validate === '') return ''
+        if (validate === '' || validate === null) return ''
 
         return validate === 'Si' ? 'Aceptada' : 'Denegada'
     }

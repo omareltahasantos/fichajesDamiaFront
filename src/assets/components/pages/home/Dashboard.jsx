@@ -5,15 +5,14 @@ import { useNavigate } from 'react-router'
 import { Footer } from '../../Footer'
 
 export function Dashboard() {
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const navigate = useNavigate()
     useEffect(() => {
         checkUser()
     }, [])
 
     const checkUser = () => {
-        const user = JSON.parse(sessionStorage.getItem('user'))
-
-        if (!user) {
+        if (user === null) {
             navigate('/login')
             return
         }
