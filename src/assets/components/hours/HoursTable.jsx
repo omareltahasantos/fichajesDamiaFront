@@ -20,17 +20,13 @@ import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
 import { PaginationItems } from '../PaginationItems'
 
-export function HoursTable({
-    totalHoursValidate,
-    hoursInserted,
-    toDate,
-    fromDate,
-    countHoursInserted,
-}) {
+export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDate, fromDate }) {
     const [hours, setHours] = useState([])
+    const [countHours, setCountHours] = useState(0)
 
     useEffect(() => {
         getHours()
+        getCountHours()
     }, [])
 
     const getHours = async () => {
@@ -43,11 +39,22 @@ export function HoursTable({
 
         setHours(data)
     }
+    const getCountHours = async () => {
+        try {
+            let { data } = await axios.get(`${endpoint}countHours`)
+
+            if (data) {
+                setCountHours(data)
+            }
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
 
     const deleteHour = async (id) => {
         await axios.delete(`${endpoint}hour/${id}`)
         getHours()
-        hoursInserted(fromDate, toDate)
+        hoursInsertedCurrentMonth(fromDate, toDate)
         totalHoursValidate(fromDate, toDate)
     }
 
@@ -55,8 +62,6 @@ export function HoursTable({
         let { data } = await axios.put(`${endpoint}hour/${id}`, {
             state: state,
         })
-
-        console.log(data)
 
         getHours()
     }
@@ -83,10 +88,7 @@ export function HoursTable({
             </Typography>
             <Grid container spacing={0}>
                 <Grid item md={11}>
-                    <HoursSearch
-                        countHoursInserted={countHoursInserted}
-                        searchHours={searchHours}
-                    />
+                    <HoursSearch countHoursInserted={countHours} searchHours={searchHours} />
                 </Grid>
                 <ExportData Export={hours} />
             </Grid>
@@ -114,7 +116,7 @@ export function HoursTable({
             </TableContainer>
             <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
                 <PaginationItems
-                    count={countHoursInserted}
+                    count={countHours}
                     setMethod={setHours}
                     endpoint={`${endpoint}paginateHours`}
                 />

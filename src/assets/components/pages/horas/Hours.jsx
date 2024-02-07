@@ -24,7 +24,7 @@ export function Hours() {
         <Typography style={{ fontWeight: 'bold' }}>Horas</Typography>,
     ]
     const [hoursValidate, setHoursValidate] = useState(1)
-    const [countHoursInserted, setCountHoursInserted] = useState(1)
+    const [countHoursInsertedCurrentMonth, setCountHoursInsertedCurrentMonth] = useState(1)
     const [currentDate, setCurrentDate] = useState(new Date())
 
     const [fromDate, setFromDate] = useState('')
@@ -50,7 +50,7 @@ export function Hours() {
         let to = year + '-' + month + '-31'
 
         totalHoursValidate(from, to)
-        hoursInserted(from, to)
+        hoursInsertedCurrentMonth(from, to)
 
         setFromDate(from)
         setToDate(to)
@@ -67,7 +67,7 @@ export function Hours() {
         setHoursValidate(data)
     }
 
-    const hoursInserted = async (from, to) => {
+    const hoursInsertedCurrentMonth = async (from, to) => {
         let { data } = await axios.get(`${endpoint}insertedHours`, {
             params: {
                 from: from,
@@ -75,7 +75,7 @@ export function Hours() {
             },
         })
 
-        setCountHoursInserted(data)
+        setCountHoursInsertedCurrentMonth(data)
     }
 
     return (
@@ -93,17 +93,16 @@ export function Hours() {
                     <Grid item md={6}>
                         <CardHour
                             title="Total imputaciones - Ultimo mes"
-                            description={`${countHoursInserted}`}
+                            description={`${countHoursInsertedCurrentMonth}`}
                         />
                     </Grid>
                 </Grid>
                 <Divider style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }} />
                 <HoursTable
                     totalHoursValidate={totalHoursValidate}
-                    hoursInserted={hoursInserted}
+                    hoursInsertedCurrentMonth={hoursInsertedCurrentMonth}
                     toDate={toDate}
                     fromDate={fromDate}
-                    countHoursInserted={countHoursInserted}
                 />
             </Container>
         </>
