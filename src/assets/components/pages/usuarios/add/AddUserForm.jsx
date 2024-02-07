@@ -35,6 +35,10 @@ export function AddUserForm() {
             id: 2,
             rol: 'TECNICO',
         },
+        {
+            id: 3,
+            rol: 'COORDINADOR',
+        },
     ])
     const [showPassword, setShowPassword] = useState(false)
 

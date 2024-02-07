@@ -88,7 +88,6 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
             },
         })
 
-        console.log(data)
         if (data.length === 0) {
             setHours([])
             return

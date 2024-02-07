@@ -3,6 +3,8 @@ import { Grid, Typography, Container, Link, Box } from '@mui/material'
 import { CardDashboard } from './CardDashboard'
 
 export function DashbordBody() {
+    const user = JSON.parse(sessionStorage.getItem('user'))
+
     return (
         <>
             <Container maxWidth="md" style={{ paddingTop: 50 }}>
@@ -56,14 +58,19 @@ export function DashbordBody() {
                         />
                     </Grid>
                 </Grid>
-                <Grid container spacing={0} style={{ paddingTop: 50 }}>
-                    <Grid item md={6}>
-                        <CardDashboard
-                            title="Usuarios"
-                            description="Añade los usuarios necesarios para tus proyectos"
-                        />
+
+                {user.rol === 'ADMIN' ? (
+                    <Grid container spacing={0} style={{ paddingTop: 50 }}>
+                        <Grid item md={6}>
+                            <CardDashboard
+                                title="Usuarios"
+                                description="Añade los usuarios necesarios para tus proyectos"
+                            />
+                        </Grid>
                     </Grid>
-                </Grid>
+                ) : (
+                    ''
+                )}
             </Container>
         </>
     )
