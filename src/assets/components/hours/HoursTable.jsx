@@ -18,7 +18,7 @@ import { HoursTableHeader } from './HoursTableHeader'
 import { HoursItems } from './HoursItems'
 import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
-import { PaginationItems } from '../PaginationItems'
+import { HoursValidateFilter } from './HoursValidateFilter'
 
 export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDate, fromDate }) {
     const [hours, setHours] = useState([])
@@ -81,16 +81,40 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
         setHours(data)
     }
 
+    const searchByValidate = async (keyword) => {
+        let { data } = await axios.get(`${endpoint}searchByValidate`, {
+            params: {
+                keyword: keyword,
+            },
+        })
+
+        console.log(data)
+        if (data.length === 0) {
+            setHours([])
+            return
+        }
+
+        setHours(data)
+    }
+
     return (
         <>
-            <Typography paddingBottom={1} color="GrayText">
-                Buscar:
-            </Typography>
-            <Grid container spacing={0}>
-                <Grid item md={11}>
+            <Grid container spacing={5} justifyContent={'space-between'}>
+                <Grid item md={4}>
+                    <Typography paddingBottom={1} color="GrayText">
+                        Buscar:
+                    </Typography>
                     <HoursSearch countHoursInserted={countHours} searchHours={searchHours} />
                 </Grid>
-                <ExportData Export={hours} />
+                <Grid item md={4}>
+                    <Typography paddingBottom={1} color="GrayText">
+                        Filtrar:
+                    </Typography>
+                    <HoursValidateFilter searchByValidate={searchByValidate} />
+                </Grid>
+                <Grid item md={1}>
+                    <ExportData Export={hours} />
+                </Grid>
             </Grid>
 
             <TableContainer component={Paper} style={{ marginTop: 40 }}>
@@ -101,8 +125,8 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {hours.map((hour) => (
-                            <TableRow hover>
+                        {hours?.map((hour) => (
+                            <TableRow hover key={hour.id}>
                                 <HoursItems {...hour} />
                                 <HoursActions
                                     deleteHour={deleteHour}

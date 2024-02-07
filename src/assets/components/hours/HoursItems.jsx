@@ -23,7 +23,15 @@ export function HoursItems({ ...hour }) {
                 </Link>
             </TableCell>
             <TableCell>{hour.register_end}</TableCell>
-            <TableCell>{hour.ubication_end}</TableCell>
+            <TableCell>
+                <Link
+                    href={`https://www.google.com/maps/place/${hour.ubication_end}`}
+                    underline="none"
+                    target="_blank"
+                >
+                    <OpenInNewIcon fontSize="small" />
+                </Link>
+            </TableCell>
             <TableCell>{hour.hours}</TableCell>
             <TableCell>{hour.type}</TableCell>
             <TableCell>{handleValidate(hour.validate)}</TableCell>
