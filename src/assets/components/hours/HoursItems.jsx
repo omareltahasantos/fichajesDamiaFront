@@ -2,6 +2,12 @@ import React from 'react'
 import { TableCell, IconButton, Link } from '@mui/material'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 export function HoursItems({ ...hour }) {
+    function handleValidate(validate) {
+        if (validate === '') return ''
+
+        return validate === 'Si' ? 'Aceptada' : 'Denegada'
+    }
+
     return (
         <>
             <TableCell>{hour.user}</TableCell>
@@ -20,7 +26,7 @@ export function HoursItems({ ...hour }) {
             <TableCell>{hour.ubication_end}</TableCell>
             <TableCell>{hour.hours}</TableCell>
             <TableCell>{hour.type}</TableCell>
-            <TableCell>{hour.validate}</TableCell>
+            <TableCell>{handleValidate(hour.validate)}</TableCell>
         </>
     )
 }

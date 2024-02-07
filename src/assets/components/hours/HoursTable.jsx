@@ -97,7 +97,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <HoursTableHeader />
+                            <HoursTableHeader setHours={setHours} hours={hours} />
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -114,13 +114,15 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
+            {/*
+                 <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
                 <PaginationItems
                     count={countHours}
                     setMethod={setHours}
                     endpoint={`${endpoint}paginateHours`}
                 />
             </Box>
+            */}
         </>
     )
 }
