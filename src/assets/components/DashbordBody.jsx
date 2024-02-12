@@ -59,6 +59,19 @@ export function DashbordBody() {
                     </Grid>
                 </Grid>
 
+                {user.rol === 'COORDINADOR' ? (
+                    <Grid container spacing={0} style={{ paddingTop: 50 }}>
+                        <Grid item md={6}>
+                            <CardDashboard
+                                title="Fichar"
+                                description="Registra el turno horario dependiendo tu campaña"
+                            />
+                        </Grid>
+                    </Grid>
+                ) : (
+                    ''
+                )}
+
                 {user.rol === 'ADMIN' ? (
                     <Grid container spacing={0} style={{ paddingTop: 50 }}>
                         <Grid item md={6}>

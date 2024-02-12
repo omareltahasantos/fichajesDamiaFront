@@ -26,12 +26,15 @@ export function CardDashboard({ ...props }) {
 
     const handlePage = () => {
         let title = props.title
+        console.log(title)
         title = title.toLowerCase()
 
         if (title === 'campañas') {
             title = 'campaigns'
         }
-
+        if (title === 'fichar') {
+            title = 'homeTecnicos'
+        }
         navigate(`/${title}`)
     }
     return (
