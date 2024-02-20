@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router'
 
 export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, longitude }) {
     const navigate = useNavigate()
-    const [name, setName] = useState(currentUser.name)
-    const [campaign, setCampaign] = useState(campaignName)
+    const [name, setName] = useState('')
+    const [campaign, setCampaign] = useState('')
     const [date, setDate] = useState(new Date())
 
     useEffect(() => {
         parsingDate(setDate)
-        // navigate(`/horas/${campaignId}`)
+        setCampaign(campaignName)
+        setName(currentUser.name)
     }, [])
 
     function parsingDate(event) {

@@ -26,7 +26,9 @@ export function AddHours() {
     }, [])
 
     const currentCampaignMethod = async () => {
+        console.log('asdas')
         let { data } = await axios.get(`${endpoint}campaign/${campaign_id}`)
+        console.log(data)
 
         setCurrentCampaign(data.name)
     }

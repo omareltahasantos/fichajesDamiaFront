@@ -13,13 +13,15 @@ export function EditWorkHourForm({
     hourId,
 }) {
     const navigate = useNavigate()
-    const [name, setName] = useState(currentUser.name)
-    const [campaign, setCampaign] = useState(campaignName)
+    const [name, setName] = useState('')
+    const [campaign, setCampaign] = useState('')
     const [date, setDate] = useState(new Date())
     const [hours, setHours] = useState(0)
 
     useEffect(() => {
         parsingDate(setDate)
+        setCampaign(campaignName)
+        setName(currentUser.name)
     }, [])
 
     function parsingDate(event) {
