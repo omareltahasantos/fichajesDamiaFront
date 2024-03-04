@@ -32,7 +32,7 @@ export function SortColumn({ column, label, setMethod, state }) {
                         textTransform: 'none',
                         color: 'black',
                         fontWeight: 'bold',
-                        fontSize: '0.75rem',
+                        fontSize: '10px',
                     }}
                 >
                     {columnToSort === column
