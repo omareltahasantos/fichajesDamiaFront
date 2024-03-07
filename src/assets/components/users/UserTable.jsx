@@ -44,6 +44,16 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
         getCountContractedHours()
     }
 
+    const handleState = async (id, state) => {
+        await axios.put(`${endpoint}user/state/${id}`, {
+            state: state,
+        })
+
+        getUsers()
+        getCountUsers()
+        getCountContractedHours()
+    }
+
     const searchUser = async (keyword) => {
         let { data } = await axios.get(`${endpoint}searchUser`, {
             params: {
@@ -79,6 +89,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
                             <TableCell style={{ fontWeight: 'bold' }}>CORREO ELECTRONICO</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>CONTRATADAS(H)</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>ROL</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>Estado</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
                         </TableRow>
                     </TableHead>
@@ -86,7 +97,11 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
                         {users.map((user) => (
                             <TableRow hover>
                                 <UserItems {...user} />
-                                <UserActions deleteUser={deleteUser} {...user} />
+                                <UserActions
+                                    handleState={handleState}
+                                    deleteUser={deleteUser}
+                                    {...user}
+                                />
                             </TableRow>
                         ))}
                     </TableBody>

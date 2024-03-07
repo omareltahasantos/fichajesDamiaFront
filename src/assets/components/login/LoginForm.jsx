@@ -43,7 +43,13 @@ export function LoginForm() {
                 password: password,
             },
         })
+
+        console.log(data)
         if (data.length !== 0) {
+            if (data[0].estado === 'Baja') {
+                setDisabledButton(true)
+                return
+            }
             sessionStorage.setItem('user', JSON.stringify(data[0]))
             navigate('/')
         }

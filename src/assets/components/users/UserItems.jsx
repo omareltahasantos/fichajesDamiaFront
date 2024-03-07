@@ -8,6 +8,7 @@ export function UserItems({ ...user }) {
             <TableCell>{user.email}</TableCell>
             <TableCell>{`${user.hours_contract}`}</TableCell>
             <TableCell>{user.rol}</TableCell>
+            <TableCell>{user.estado}</TableCell>
         </>
     )
 }
