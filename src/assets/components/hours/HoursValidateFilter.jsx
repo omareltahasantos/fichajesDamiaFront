@@ -17,10 +17,15 @@ const actions = [
         label: 'Pendientes',
         value: 'Otros',
     },
+    {
+        id: 4,
+        label: 'Todos',
+        value: 'todos',
+    },
 ]
 
 export function HoursValidateFilter({ searchByValidate }) {
-    const [keyword, setKeyword] = useState('Otros')
+    const [keyword, setKeyword] = useState('todos')
 
     const handleKeyword = (keyword) => {
         setKeyword(keyword)
