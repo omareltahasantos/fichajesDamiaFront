@@ -15,7 +15,7 @@ const actions = [
     {
         id: 3,
         label: 'Pendientes',
-        value: 'Otros',
+        value: 'otros',
     },
     {
         id: 4,
@@ -24,13 +24,12 @@ const actions = [
     },
 ]
 
-export function HoursValidateFilter({ searchByValidate }) {
+export function HoursValidateFilter({ saveFilter }) {
     const [keyword, setKeyword] = useState('todos')
 
     const handleKeyword = (keyword) => {
         setKeyword(keyword)
-        let handleKeyword = keyword === 'Otros' ? '' : keyword
-        searchByValidate(handleKeyword)
+        saveFilter(keyword === 'otros' ? '' : keyword)
     }
     return (
         <>

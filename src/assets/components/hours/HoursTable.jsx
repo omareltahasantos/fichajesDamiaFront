@@ -19,27 +19,27 @@ import { HoursItems } from './HoursItems'
 import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
 import { HoursValidateFilter } from './HoursValidateFilter'
+import { CircularLoading } from '../componentsApp/CircularLoading'
+import { ExportBetweenHoursModal } from './ExportBetweenHoursModal'
 
 export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDate, fromDate }) {
     const user = JSON.parse(sessionStorage.getItem('user'))
     const [hours, setHours] = useState([])
     const [countHours, setCountHours] = useState(0)
+    const [keyword, setKeyword] = useState('')
+    const [filter, setFilter] = useState('todos')
+
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        getHours()
+        searchHours(keyword, filter)
         getCountHours()
     }, [])
 
-    const getHours = async () => {
-        let { data } = await axios.get(`${endpoint}hours`)
+    useEffect(() => {
+        searchHours(keyword, filter)
+    }, [keyword, filter])
 
-        if (data.length === 0) {
-            setHours([])
-            return
-        }
-
-        setHours(data)
-    }
     const getCountHours = async () => {
         try {
             let { data } = await axios.get(`${endpoint}countHours`)
@@ -54,7 +54,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
 
     const deleteHour = async (id) => {
         await axios.delete(`${endpoint}hour/${id}`)
-        getHours()
+        searchHours(keyword, filter)
         hoursInsertedCurrentMonth(fromDate, toDate)
         totalHoursValidate(fromDate, toDate)
     }
@@ -65,32 +65,20 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
             validateBy: user.name,
         })
 
-        getHours()
+        searchHours(keyword, filter)
     }
 
-    const searchHours = async (keyword) => {
+    const searchHours = async (keyword, filter) => {
+        setIsLoading(true)
+
         let { data } = await axios.get(`${endpoint}searchHours`, {
             params: {
                 keyword: keyword,
+                filter: filter,
             },
         })
 
-        if (data.length === 0) {
-            setHours([])
-            return
-        }
-
-        setHours(data)
-    }
-
-    const searchByValidate = async (keyword) => {
-        let { data } = await axios.get(`${endpoint}searchByValidate`, {
-            params: {
-                keyword: keyword,
-            },
-        })
-
-        console.log(data)
+        setIsLoading(false)
 
         if (data.length === 0) {
             setHours([])
@@ -107,49 +95,44 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
                     <Typography paddingBottom={1} color="GrayText">
                         Buscar:
                     </Typography>
-                    <HoursSearch countHoursInserted={countHours} searchHours={searchHours} />
+                    <HoursSearch countHoursInserted={countHours} saveKeyword={setKeyword} />
                 </Grid>
                 <Grid item md={4}>
                     <Typography paddingBottom={1} color="GrayText">
                         Filtrar:
                     </Typography>
-                    <HoursValidateFilter searchByValidate={searchByValidate} />
+                    <HoursValidateFilter saveFilter={setFilter} />
                 </Grid>
                 <Grid item md={1}>
-                    <ExportData Export={hours} />
+                    <ExportBetweenHoursModal />
                 </Grid>
             </Grid>
 
-            <TableContainer component={Paper} style={{ marginTop: 40 }}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <HoursTableHeader setHours={setHours} hours={hours} />
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {hours?.map((hour) => (
-                            <TableRow hover key={hour.id}>
-                                <HoursItems {...hour} />
-                                <HoursActions
-                                    deleteHour={deleteHour}
-                                    updateValidate={updateValidate}
-                                    {...hour}
-                                />
+            {isLoading ? (
+                <CircularLoading />
+            ) : (
+                <TableContainer component={Paper} style={{ marginTop: 40 }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <HoursTableHeader setHours={setHours} hours={hours} />
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            {/*
-                 <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
-                <PaginationItems
-                    count={countHours}
-                    setMethod={setHours}
-                    endpoint={`${endpoint}paginateHours`}
-                />
-            </Box>
-            */}
+                        </TableHead>
+                        <TableBody>
+                            {hours?.map((hour) => (
+                                <TableRow hover key={hour.id}>
+                                    <HoursItems {...hour} />
+                                    <HoursActions
+                                        deleteHour={deleteHour}
+                                        updateValidate={updateValidate}
+                                        {...hour}
+                                    />
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
         </>
     )
 }

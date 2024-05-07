@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { TextField, InputAdornment } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 
-export function HoursSearch({ countHoursInserted, searchHours, userSearch }) {
+export function HoursSearch({ countHoursInserted, saveKeyword, userSearch }) {
     const [keyword, setKeyword] = useState('')
 
     const handleKeyword = (keyword) => {
-        searchHours(keyword)
+        saveKeyword(keyword)
         setKeyword(keyword)
     }
     return (
