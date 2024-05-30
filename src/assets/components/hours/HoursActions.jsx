@@ -10,7 +10,7 @@ export function HoursActions({ deleteHour, updateValidate, ...hour }) {
     return (
         <>
             {hour.validate === null || hour.validate === '' ? (
-                <TableCell>
+                <TableCell style={{ display: 'flex' }}>
                     <Tooltip title="Editar registro" arrow placement="top">
                         <IconButton>
                             <CheckIcon

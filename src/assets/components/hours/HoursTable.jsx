@@ -61,7 +61,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
 
     const deleteHour = async (id) => {
         await axios.delete(`${endpoint}hour/${id}`)
-        searchHours(keyword, filter)
+        searchHours(keyword, filter, firstDate, secondDate)
         hoursInsertedCurrentMonth(fromDate, toDate)
         totalHoursValidate(fromDate, toDate)
     }
@@ -72,7 +72,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
             validateBy: user.name,
         })
 
-        searchHours(keyword, filter)
+        searchHours(keyword, filter, firstDate, secondDate)
     }
 
     const searchHours = async (keyword, filter, firstDate = '', secondDate = '') => {
