@@ -38,7 +38,7 @@ export function HoursValidateFilter({ saveFilter }) {
                 fullWidth
                 InputLabelProps={{
                     style: {
-                        fontSize: 20,
+                        fontSize: 15,
                     },
                 }}
                 variant="outlined"

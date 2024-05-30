@@ -4,12 +4,10 @@ import {
     TableBody,
     TableHead,
     TableRow,
-    TableCell,
     TableContainer,
     Paper,
     Typography,
     Grid,
-    Box,
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
@@ -20,7 +18,7 @@ import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
 import { HoursValidateFilter } from './HoursValidateFilter'
 import { CircularLoading } from '../componentsApp/CircularLoading'
-import { ExportBetweenHoursModal } from './ExportBetweenHoursModal'
+import { TextFieldApp } from '../componentsApp/TextFieldApp'
 
 export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDate, fromDate }) {
     const user = JSON.parse(sessionStorage.getItem('user'))
@@ -28,6 +26,8 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
     const [countHours, setCountHours] = useState(0)
     const [keyword, setKeyword] = useState('')
     const [filter, setFilter] = useState('todos')
+    const [firstDate, setFirstDate] = useState('')
+    const [secondDate, setSecondDate] = useState('')
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -37,8 +37,15 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
     }, [])
 
     useEffect(() => {
-        searchHours(keyword, filter)
-    }, [keyword, filter])
+        if (firstDate === '' && secondDate === '') {
+            searchHours(keyword, filter)
+            return
+        }
+
+        if (firstDate !== '' && secondDate !== '') {
+            searchHours(keyword, filter, firstDate, secondDate)
+        }
+    }, [keyword, filter, firstDate, secondDate])
 
     const getCountHours = async () => {
         try {
@@ -68,13 +75,15 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
         searchHours(keyword, filter)
     }
 
-    const searchHours = async (keyword, filter) => {
+    const searchHours = async (keyword, filter, firstDate = '', secondDate = '') => {
         setIsLoading(true)
 
         let { data } = await axios.get(`${endpoint}searchHours`, {
             params: {
                 keyword: keyword,
                 filter: filter,
+                firstDate,
+                secondDate,
             },
         })
 
@@ -97,17 +106,41 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
                     </Typography>
                     <HoursSearch countHoursInserted={countHours} saveKeyword={setKeyword} />
                 </Grid>
-                <Grid item md={4}>
+                <Grid item md={2}>
                     <Typography paddingBottom={1} color="GrayText">
                         Filtrar:
                     </Typography>
                     <HoursValidateFilter saveFilter={setFilter} />
                 </Grid>
-                <Grid item md={1}>
-                    <ExportBetweenHoursModal />
+                <Grid item md={2}>
+                    <Typography paddingBottom={1} color="GrayText">
+                        Fecha inicio:
+                    </Typography>
+                    <TextFieldApp
+                        type={'date'}
+                        state={firstDate}
+                        isOneState={true}
+                        method={setFirstDate}
+                        label={''}
+                    />
+                </Grid>
+                <Grid item md={2}>
+                    <Typography paddingBottom={1} color="GrayText">
+                        Fecha final:
+                    </Typography>
+                    <TextFieldApp
+                        type={'date'}
+                        state={secondDate}
+                        isOneState={true}
+                        method={setSecondDate}
+                        label={''}
+                    />
+                </Grid>
+
+                <Grid item md={2}>
+                    <ExportData Export={hours} />
                 </Grid>
             </Grid>
-
             {isLoading ? (
                 <CircularLoading />
             ) : (

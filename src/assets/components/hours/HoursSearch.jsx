@@ -15,7 +15,7 @@ export function HoursSearch({ countHoursInserted, saveKeyword, userSearch }) {
                 fullWidth
                 InputLabelProps={{
                     style: {
-                        fontSize: 20,
+                        fontSize: 15,
                     },
                 }}
                 InputProps={{
