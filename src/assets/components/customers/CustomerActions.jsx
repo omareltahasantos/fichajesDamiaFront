@@ -29,7 +29,14 @@ export function CustomerActions({ deleteCustomer, ...customer }) {
                 </Tooltip>
                 <Tooltip title={'Eliminar cliente'} arrow placement="top">
                     <IconButton onClick={() => deleteCustomer(customer.id)}>
-                        <DeleteForeverIcon color="error" />
+                        <DeleteForeverIcon
+                            style={{
+                                backgroundColor: 'red',
+                                borderRadius: 5,
+                                color: 'white',
+                                padding: 3,
+                            }}
+                        />
                     </IconButton>
                 </Tooltip>
             </TableCell>
