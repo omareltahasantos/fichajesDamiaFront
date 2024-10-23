@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Typography, Container, Link, Box } from '@mui/material'
+import { Grid, Typography, Container, Link } from '@mui/material'
 import { CardDashboard } from './CardDashboard'
 
 export function DashbordBody() {
@@ -15,7 +15,7 @@ export function DashbordBody() {
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Typography variant="h2" style={{ fontWeight: 'bold' }} align="center">
                             ¡Bienvenido a{' '}
                             <Link
@@ -38,20 +38,20 @@ export function DashbordBody() {
                     alignItems="center"
                     style={{ paddingTop: 50 }}
                 >
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Typography variant="h5" align="center" color="GrayText">
                             Elige una de estas opciones:
                         </Typography>
                     </Grid>
                 </Grid>
-                <Grid container spacing={0} style={{ paddingTop: 50 }}>
-                    <Grid item md={6}>
+                <Grid container spacing={5} style={{ paddingTop: 50 }}>
+                    <Grid item md={6} xs={12}>
                         <CardDashboard
                             title="Campañas"
                             description="Añade las campañas necesarias para tus proyectos"
                         />
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={6} xs={12}>
                         <CardDashboard
                             title="Horas"
                             description="Visualiza el registro de horas de los técnicos"
@@ -59,31 +59,39 @@ export function DashbordBody() {
                     </Grid>
                 </Grid>
 
-                {user.rol === 'COORDINADOR' ? (
-                    <Grid container spacing={0} style={{ paddingTop: 50 }}>
-                        <Grid item md={6}>
+                <Grid
+                    container
+                    spacing={5}
+                    style={{ paddingTop: 50 }}
+                    justifyContent={'center'}
+                    alignItems={'center'}
+                >
+                    {user.rol === 'COORDINADOR' && (
+                        <Grid item md={6} xs={12}>
                             <CardDashboard
                                 title="Fichar"
                                 description="Registra el turno horario dependiendo tu campaña"
                             />
                         </Grid>
-                    </Grid>
-                ) : (
-                    ''
-                )}
-
-                {user.rol === 'ADMIN' ? (
-                    <Grid container spacing={0} style={{ paddingTop: 50 }}>
-                        <Grid item md={6}>
+                    )}
+                    {user.rol === 'ADMIN' || user.rol === 'CONTROL' ? (
+                        <Grid item md={6} xs={12}>
                             <CardDashboard
                                 title="Usuarios"
                                 description="Añade los usuarios necesarios para tus proyectos"
                             />
                         </Grid>
-                    </Grid>
-                ) : (
-                    ''
-                )}
+                    ) : null}
+
+                    {user.rol === 'CONTROL' && (
+                        <Grid item md={6} xs={12}>
+                            <CardDashboard
+                                title="Clientes"
+                                description="Añade los clientes necesarios para tus proyectos"
+                            />
+                        </Grid>
+                    )}
+                </Grid>
             </Container>
         </>
     )

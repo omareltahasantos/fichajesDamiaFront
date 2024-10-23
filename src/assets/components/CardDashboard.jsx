@@ -12,6 +12,20 @@ const useStyles = makeStyles({
         color: '#8BB925',
     },
 })
+
+const containerStyle = {
+    border: '1px solid #e0e0e0',
+    borderRadius: 5,
+    padding: 20,
+    backgroundColor: 'white',
+    cursor: 'pointer',
+    transition: 'all 0.3s',
+    width: 'auto',
+    height: 'auto',
+    minWidth: '425px',
+    minHeight: '125px',
+}
+
 export function CardDashboard({ ...props }) {
     const classes = useStyles()
     const navigate = useNavigate()
@@ -41,12 +55,7 @@ export function CardDashboard({ ...props }) {
         <>
             <Box
                 component="button"
-                style={{
-                    border: '1px solid #e0e0e0',
-                    borderRadius: 5,
-                    padding: 20,
-                    backgroundColor: 'white',
-                }}
+                style={containerStyle}
                 onMouseEnter={handleOnFocus}
                 onMouseLeave={handleOnBlur}
                 onClick={handlePage}

@@ -14,6 +14,9 @@ import { StatsCampaign } from './assets/components/pages/estadisticas/statsCampa
 import { HorasTecnico } from './assets/components/pages/home/imputarHoras/HorasTecnico'
 import { AddHours } from './assets/home_tecnicos/add/AddHours'
 import { EditWorkHour } from './assets/home_tecnicos/edit/EditWorkHour'
+import { Customer } from './assets/components/pages/clientes/Customer'
+import { EditCustomer } from './assets/components/pages/clientes/edit/EditCustomer'
+import { AddCustomer } from './assets/components/pages/clientes/add/AddCustomer'
 function App() {
     return (
         <>
@@ -37,6 +40,9 @@ function App() {
                     <Route path="/usuarios/edit/:id" element={<EditUser />} />
                     <Route path="/estadisticas" element={<Stats />}></Route>
                     <Route path="/estadisticas/:id" element={<StatsCampaign />}></Route>
+                    <Route path="/clientes" element={<Customer />}></Route>
+                    <Route path="/clientes/add" element={<AddCustomer />} />
+                    <Route path="/clientes/edit/:id" element={<EditCustomer />} />
                 </Routes>
             </BrowserRouter>
         </>
