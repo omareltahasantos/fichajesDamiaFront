@@ -8,6 +8,9 @@ import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { UserTable } from '../../users/UserTable'
 import { Footer } from '../../Footer'
 import endpoint from '../../services/endpoint'
+import { DropdownApp } from '../../componentsApp/DropdownApp'
+import getCustomers from '../../services/methods'
+import { CustomerSearch } from '../../customers/CustomerSearch'
 
 export function Users() {
     const navigate = useNavigate()
@@ -25,14 +28,23 @@ export function Users() {
         <Typography style={{ fontWeight: 'bold' }}>Usuarios</Typography>,
     ]
 
-    const [user, setUser] = useState(null)
     const [countUsers, setCountUsers] = useState(null)
     const [countContractedHours, setCountContractedHours] = useState(null)
+    const [customers, setCustomers] = useState([])
+    const [customersSelected, setCustomerSelected] = useState('')
 
     useEffect(() => {
         getCountUsers()
         getCountContractedHours()
+        getCustomers().then((customers) => {
+            setCustomers(customers)
+        })
     }, [])
+
+    /**
+     *
+     * CUANDO EL USUARIO SELECCIONE NUEVO CLIENTE TODAS LAS FUNCIONES DEBEN SACARSE EN BASE AL CLIENTE SELECCIONADO....
+     */
 
     const getCountUsers = async () => {
         let { data } = await axios.get(`${endpoint}countUsers`)
@@ -54,14 +66,6 @@ export function Users() {
         <>
             <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
-                {/*
-                 <HeaderPages
-                    title="Campañas"
-                    breadcrumb={breadcrumb}
-                    buttonName="Añadir campañas"
-                    route="/campaigns/add"
-                />
-               */}
                 <Grid
                     container
                     spacing={3}
@@ -109,12 +113,25 @@ export function Users() {
                     </Grid>
                 </Grid>
                 <Divider style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }} />
+                <Grid container spacing={0} style={{ paddingBottom: '20px' }}>
+                    <Grid item md={12}>
+                        <DropdownApp
+                            title={'Seleccionar cliente:'}
+                            value={customersSelected}
+                            setValue={setCustomerSelected}
+                            optionDefault={'Buscar cliente'}
+                            options={customers}
+                        />
+                    </Grid>
+                </Grid>
 
-                <UserTable
-                    getCountUsers={getCountUsers}
-                    countUsers={countUsers}
-                    getCountContractedHours={getCountContractedHours}
-                />
+                {customersSelected !== '' && (
+                    <UserTable
+                        getCountUsers={getCountUsers}
+                        countUsers={countUsers}
+                        getCountContractedHours={getCountContractedHours}
+                    />
+                )}
             </Container>
             <Footer />
         </>
