@@ -10,12 +10,16 @@ import {
     IconButton,
     Alert,
     Input,
+    FormControlLabel,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
+import getCustomers from '../../../services/methods'
+import { uniqueId } from 'lodash'
+import { EditCheckbox } from '../../../componentsApp/EditCheckbox'
 
 export function EditUserForm({ userId }) {
     const navigate = useNavigate()
@@ -27,11 +31,17 @@ export function EditUserForm({ userId }) {
     const [roles, setRoles] = useState([])
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const [customers, setCustomers] = useState([])
+    const [checkCustomers, setCheckCustomers] = useState([])
 
     useEffect(() => {
         parsingDate(setDateStart)
         getRoles()
         InfoUserById()
+        getCustomers().then((customers) => {
+            setCustomers(customers)
+        })
+        userLinkedToCustomer()
     }, [])
 
     function parsingDate(event, date) {
@@ -71,6 +81,79 @@ export function EditUserForm({ userId }) {
         setRoles(data)
     }
 
+    const userLinkedToCustomer = async () => {
+        let { data } = await axios.get(`${endpoint}linkedUserCustomer`, {
+            params: {
+                userId: userId,
+            },
+        })
+
+        if (data.length === 0) {
+            return
+        }
+
+        setCheckCustomers(data)
+    }
+
+    const addCheckCustomer = (userId, customerId) => {
+        let object = {
+            id: uniqueId('id_'),
+            userId: userId,
+            customerId: Number(customerId),
+        }
+
+        setCheckCustomers((prevArray) => [...prevArray, object])
+    }
+
+    const deleteCheckCustomer = async (userId, customerId) => {
+        let element = checkCustomers.filter((item) => {
+            return item.customerId !== customerId
+        })
+        setCheckCustomers(element)
+
+        let itemDeleted = checkCustomers.find((item) => {
+            return item.customerId === customerId
+        })
+
+        deleteCustomerToUser(itemDeleted.id)
+    }
+
+    const checkIfExistsLinkUserToCustomer = async (userId, customerId) => {
+        let { data } = await axios.get(`${endpoint}checkIfUserLinkedToCustomer`, {
+            params: {
+                userId: userId,
+                customerId: customerId,
+            },
+        })
+
+        if (data.length === 0) {
+            await addCustomerToUser(userId, customerId)
+            return
+        }
+    }
+
+    const addCustomerToUser = async (userId, customerId) => {
+        let { data } = await axios.get(`${endpoint}linkUserCustomer`, {
+            params: {
+                userId: userId,
+                customerId: customerId,
+            },
+        })
+
+        if (!data) {
+            return
+        }
+    }
+
+    const deleteCustomerToUser = async (rulesId) => {
+        if (typeof rulesId === 'string') return
+        let { data } = await axios.delete(`${endpoint}destroyLinkUserCustomer/${rulesId}`)
+
+        if (!data) {
+            return
+        }
+    }
+
     const editUser = async (e) => {
         e.preventDefault()
 
@@ -89,6 +172,9 @@ export function EditUserForm({ userId }) {
             return
         }
 
+        checkCustomers.map(async (item) => {
+            await checkIfExistsLinkUserToCustomer(item.userId, item.customerId)
+        })
         navigate('/usuarios')
     }
 
@@ -217,6 +303,32 @@ export function EditUserForm({ userId }) {
                             ))}
                         </NativeSelect>
                     </Grid>
+                </Grid>
+                <Typography paddingTop="10px" paddingBottom="10px">
+                    CLIENTES
+                </Typography>
+                <Grid container spacing={0}>
+                    {customers.map((customer) => (
+                        <Grid item md={3}>
+                            <FormControlLabel
+                                control={
+                                    <EditCheckbox
+                                        paramsToHandlerMethod={{
+                                            first: userId,
+                                            second: customer.value,
+                                        }}
+                                        important={true}
+                                        deleteMethod={deleteCheckCustomer}
+                                        addMethod={addCheckCustomer}
+                                        check={checkCustomers.some(
+                                            (element) => element.customerId === customer.value
+                                        )}
+                                    />
+                                }
+                                label={customer.label}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
 
                 <Grid container spacing={0}>

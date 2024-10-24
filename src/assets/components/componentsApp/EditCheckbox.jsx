@@ -1,7 +1,13 @@
 import React, { useEffect } from 'react'
 import Checkbox from '@mui/material/Checkbox'
 
-export function EditCheckbox({ paramsToHandlerMethod, addMethod, deleteMethod, check }) {
+export function EditCheckbox({
+    paramsToHandlerMethod,
+    addMethod,
+    deleteMethod,
+    check,
+    important = false,
+}) {
     const [checked, setChecked] = React.useState(false)
 
     useEffect(() => {
@@ -17,7 +23,7 @@ export function EditCheckbox({ paramsToHandlerMethod, addMethod, deleteMethod, c
         }
 
         if (event.target.checked === false) {
-            deleteMethod(first)
+            deleteMethod(first, second)
         }
     }
 

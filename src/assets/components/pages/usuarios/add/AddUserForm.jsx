@@ -9,44 +9,35 @@ import {
     InputAdornment,
     IconButton,
     Alert,
+    FormControlLabel,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
+import { AddCheckbox } from '../../../componentsApp/AddCheckbox'
+import getCustomers from '../../../services/methods'
 
 export function AddUserForm() {
     const navigate = useNavigate()
-    const [current_user, setCurrent_user] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [dateStart, setDateStart] = useState('')
     const [contractHours, setContractHours] = useState(null)
     const [rol, setRol] = useState('')
     const [password, setPassword] = useState('')
-    const [roles, setRoles] = useState([
-        {
-            id: 1,
-            rol: 'ADMIN',
-        },
-
-        {
-            id: 2,
-            rol: 'TECNICO',
-        },
-        {
-            id: 3,
-            rol: 'COORDINADOR',
-        },
-    ])
+    const [roles, setRoles] = useState(null)
     const [showPassword, setShowPassword] = useState(false)
-
-    const [checkUsers, setCheckUsers] = useState([])
+    const [customers, setCustomers] = useState([])
+    const [checkCustomers, setCheckCustomers] = useState([])
 
     useEffect(() => {
         parsingDate(setDateStart)
-        //getRoles()
+        getRoles()
+        getCustomers().then((customers) => {
+            setCustomers(customers)
+        })
     }, [])
 
     function parsingDate(event) {
@@ -69,7 +60,8 @@ export function AddUserForm() {
         let { data } = await axios.get(`${endpoint}rolesUser`)
 
         if (data.length === 0) {
-            return
+            setRoles([])
+            return []
         }
 
         setRoles(data)
@@ -77,6 +69,23 @@ export function AddUserForm() {
 
     const handleShowPassword = () => {
         setShowPassword(!showPassword)
+    }
+
+    const addCheckCustomers = (customerId, label) => {
+        let object = {
+            customerId: customerId,
+            name: label,
+        }
+
+        setCheckCustomers((prevArray) => [...prevArray, object])
+    }
+
+    const deleteCheckCustomer = (customerId, label) => {
+        let element = checkCustomers.filter((item) => {
+            return item.value !== customerId
+        })
+
+        setCheckCustomers(element)
     }
 
     const addUser = async (e) => {
@@ -99,6 +108,19 @@ export function AddUserForm() {
             Alert('Los datos introducidos no són correctos')
             return
         }
+
+        let userId = data
+
+        checkCustomers.forEach(async (customer) => {
+            let json = {
+                userId: userId,
+                customerId: customer.customerId,
+            }
+
+            await axios.get(`${endpoint}linkUserCustomer`, {
+                params: json,
+            })
+        })
 
         navigate('/usuarios')
     }
@@ -207,9 +229,8 @@ export function AddUserForm() {
                             }}
                         >
                             <option>Selecciona un rol</option>
-                            {roles.map((item) => (
-                                <option value={item.rol}>{item.rol}</option>
-                            ))}
+                            {roles !== null &&
+                                roles.map((item) => <option value={item.rol}>{item.rol}</option>)}
                         </NativeSelect>
                     </Grid>
                 </Grid>
@@ -241,6 +262,28 @@ export function AddUserForm() {
                             }}
                         />
                     </Grid>
+                </Grid>
+                <Typography paddingTop="10px" paddingBottom="10px">
+                    CLIENTES
+                </Typography>
+                <Grid container spacing={0}>
+                    {customers.map((customer) => (
+                        <Grid item md={3}>
+                            <FormControlLabel
+                                control={
+                                    <AddCheckbox
+                                        addMethod={() =>
+                                            addCheckCustomers(customer.value, customer.label)
+                                        }
+                                        deleteMethod={() =>
+                                            deleteCheckCustomer(customer.value, customer.label)
+                                        }
+                                    />
+                                }
+                                label={customer.label}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
 
                 <Grid container spacing={0}>

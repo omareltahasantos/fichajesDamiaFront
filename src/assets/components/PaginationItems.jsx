@@ -4,7 +4,7 @@ import { Pagination } from '@mui/material'
 
 export function PaginationItems({ count, setMethod, endpoint, customerId = null }) {
     const [page, setPage] = useState(1)
-    const [limitItems, setLimitItems] = useState(1)
+    const [limitItems, setLimitItems] = useState(10)
     const [offsetItems, setOffsetItems] = useState(0)
 
     useEffect(() => {
