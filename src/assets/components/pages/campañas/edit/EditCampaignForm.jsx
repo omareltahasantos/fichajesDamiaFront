@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 
 export function EditCampaignForm({ campaignId }) {
     const navigate = useNavigate()
-    const [current_user, setCurrent_user] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [date_start, setDate_start] = useState('')
@@ -135,10 +134,11 @@ export function EditCampaignForm({ campaignId }) {
 
     const editCampaign = async (e) => {
         e.preventDefault()
+        const { id } = JSON.parse(sessionStorage.getItem('user'))
 
         let { data } = await axios.put(`${endpoint}campaign/${campaignId}`, {
             campaign_id: campaignId,
-            user_id: current_user.id,
+            user_id: id,
             name: name,
             description: description,
             date_start: date_start,
