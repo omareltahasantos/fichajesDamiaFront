@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { TextField, Button, Typography, Box, Grid } from '@mui/material'
 import axios from 'axios'
-import { CheckboxUsers } from './CheckboxUsers'
+import { AddCheckbox } from '../../../componentsApp/AddCheckbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
@@ -200,11 +200,9 @@ export function AddCampaignForm() {
                         <Grid item md={3}>
                             <FormControlLabel
                                 control={
-                                    <CheckboxUsers
-                                        userId={user.id}
-                                        label={user.name}
-                                        deleteCheckUser={deleteCheckUser}
-                                        addCheckUser={addCheckUser}
+                                    <AddCheckbox
+                                        deleteMethod={() => deleteCheckUser(user.id, user.name)}
+                                        addMethod={() => addCheckUser(user.id, user.name)}
                                     />
                                 }
                                 label={user.name}

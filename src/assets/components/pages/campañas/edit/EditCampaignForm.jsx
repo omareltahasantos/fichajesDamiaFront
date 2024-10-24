@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { TextField, Button, Typography, Box, Grid } from '@mui/material'
 import axios from 'axios'
-import { CheckboxUsers } from './CheckboxUsers'
 import FormControlLabel from '@mui/material/FormControlLabel'
-import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
+import { EditCheckbox } from '../../../componentsApp/EditCheckbox'
+import { uniqueId } from 'lodash'
+import { useNavigate } from 'react-router-dom'
 
 export function EditCampaignForm({ campaignId }) {
     const navigate = useNavigate()
@@ -14,8 +15,7 @@ export function EditCampaignForm({ campaignId }) {
     const [date_start, setDate_start] = useState('')
     const [date_end, setDate_end] = useState('')
     const [users, setUsers] = useState([])
-
-    const [checkUsers, setCheckUsers] = useState([])
+    const [participatingUsers, setParticipatingUsers] = useState([])
 
     useEffect(() => {
         parsingDate(setDate_start, setDate_end)
@@ -43,8 +43,8 @@ export function EditCampaignForm({ campaignId }) {
         if (data.length === 0) {
             return
         }
-        console.log(data)
-        setCheckUsers(data)
+
+        setParticipatingUsers(data)
     }
 
     function parsingDate(event, event2) {
@@ -74,27 +74,68 @@ export function EditCampaignForm({ campaignId }) {
         setUsers(data)
     }
 
-    const addCheckUser = (userId, label) => {
+    const addCheckUser = (userId, campaignId) => {
         let object = {
+            id: uniqueId('id_'),
             user_id: userId,
-            name: label,
+            campaign_id: Number(campaignId),
         }
 
-        setCheckUsers((prevArray) => [...prevArray, object])
+        setParticipatingUsers((prevArray) => [...prevArray, object])
     }
 
-    const deleteCheckUser = (userId, label) => {
-        let element = checkUsers.filter((item) => {
-            return item.userId !== userId
+    const deleteCheckUser = async (userId) => {
+        let element = participatingUsers.filter((item) => {
+            return item.user_id !== userId
+        })
+        setParticipatingUsers(element)
+
+        let itemDeleted = participatingUsers.find((item) => {
+            return item.user_id === userId
         })
 
-        setCheckUsers(element)
+        deleteUserToCampaign(itemDeleted.id)
+    }
+
+    const checkIfUserExistsInCampaign = async (userId, campaignId) => {
+        let { data } = await axios.get(`${endpoint}checkIfUserCampaignExists`, {
+            params: {
+                campaign_id: campaignId,
+                user_id: userId,
+            },
+        })
+
+        if (data.length === 0) {
+            await addUserToCampaign(userId, campaignId)
+            return
+        }
+    }
+
+    const addUserToCampaign = async (userId, campaignId) => {
+        let { data } = await axios.get(`${endpoint}campaignUser`, {
+            params: {
+                user_id: userId,
+                campaign_id: campaignId,
+            },
+        })
+
+        if (!data) {
+            return
+        }
+    }
+
+    const deleteUserToCampaign = async (userCampaignId) => {
+        if (typeof userCampaignId === 'string') return
+        let { data } = await axios.delete(`${endpoint}campaignUser/${userCampaignId}`)
+
+        if (!data) {
+            return
+        }
     }
 
     const editCampaign = async (e) => {
         e.preventDefault()
 
-        //añadir campaña
         let { data } = await axios.put(`${endpoint}campaign/${campaignId}`, {
             campaign_id: campaignId,
             user_id: current_user.id,
@@ -104,45 +145,15 @@ export function EditCampaignForm({ campaignId }) {
             date_end: date_end,
         })
 
-        //data es id de la campaña recientemente creada
-
         if (!data) {
             return
         }
-        let campaign_id = data
 
-        checkUsers.forEach((user) => {
-            checkIfUserCampaignExists(campaign_id, user.user_id)
-        })
-    }
-    const checkIfUserCampaignExists = async (campaign_id, user_id) => {
-        let { data } = await axios.get(`${endpoint}checkIfUserCampaignExists`, {
-            params: {
-                user_id: user_id,
-                campaign_id: campaign_id,
-            },
+        participatingUsers.map(async ({ user_id }) => {
+            await checkIfUserExistsInCampaign(user_id, campaignId)
         })
 
-        console.log(data)
-
-        if (data.length !== 0) {
-            return
-        }
-
-        editCampaignUsers(campaign_id, user_id)
-    }
-
-    const editCampaignUsers = async (campaign_id, user_id) => {
-        let { data } = await axios.get(`${endpoint}campaignUser`, {
-            params: {
-                campaign_id: campaign_id,
-                user_id: user_id,
-            },
-        })
-
-        if (data) {
-            navigate('/campaigns')
-        }
+        navigate('/campaigns')
     }
 
     return (
@@ -238,12 +249,16 @@ export function EditCampaignForm({ campaignId }) {
                         <Grid item md={3}>
                             <FormControlLabel
                                 control={
-                                    <CheckboxUsers
-                                        userId={user.id}
-                                        label={user.name}
-                                        deleteCheckUser={deleteCheckUser}
-                                        addCheckUser={addCheckUser}
-                                        checkUsers={checkUsers}
+                                    <EditCheckbox
+                                        paramsToHandlerMethod={{
+                                            first: user.id,
+                                            second: campaignId,
+                                        }}
+                                        deleteMethod={deleteCheckUser}
+                                        addMethod={addCheckUser}
+                                        check={participatingUsers.some(
+                                            (element) => element.user_id === user.id
+                                        )}
                                     />
                                 }
                                 label={user.name}
@@ -266,7 +281,7 @@ export function EditCampaignForm({ campaignId }) {
                                 backgroundColor: '#8bb925',
                             }}
                             fullWidth
-                            disabled={checkUsers.length === 0 ? true : false}
+                            disabled={false}
                         >
                             Guardar
                         </Button>
