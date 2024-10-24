@@ -15,7 +15,7 @@ export function DropdownApp({ title, value, setValue, optionDefault, options }) 
                 }}
                 value={value}
                 onChange={(e) => {
-                    setValue(e.target.value)
+                    setValue(isNumeric(e.target.value) ? Number(e.target.value) : e.target.value)
                 }}
             >
                 <option>{optionDefault}</option>
@@ -25,4 +25,8 @@ export function DropdownApp({ title, value, setValue, optionDefault, options }) 
             </NativeSelect>
         </>
     )
+}
+
+function isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value)
 }

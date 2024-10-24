@@ -13,9 +13,6 @@ const useStyles = makeStyles({
     },
 })
 export function CardCampaign({ ...props }) {
-    const classes = useStyles()
-    const navigate = useNavigate()
-
     return (
         <>
             <Box

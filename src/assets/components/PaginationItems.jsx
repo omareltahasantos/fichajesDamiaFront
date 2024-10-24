@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Pagination } from '@mui/material'
 
-export function PaginationItems({ count, setMethod, endpoint }) {
+export function PaginationItems({ count, setMethod, endpoint, customerId = null }) {
     const [page, setPage] = useState(1)
-    const [limitItems, setLimitItems] = useState(30)
+    const [limitItems, setLimitItems] = useState(1)
     const [offsetItems, setOffsetItems] = useState(0)
 
     useEffect(() => {
@@ -29,6 +29,7 @@ export function PaginationItems({ count, setMethod, endpoint }) {
                 params: {
                     limit: limitItems,
                     offset: offsetItems,
+                    customerId,
                 },
             })
             setMethod(data)

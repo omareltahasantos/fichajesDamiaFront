@@ -17,7 +17,7 @@ export default function getCustomers() {
 
                     const customers = data.map((customer) => ({
                         label: customer.name,
-                        value: customer.id,
+                        value: Number(customer.id),
                     }))
 
                     resolve(customers)
@@ -38,7 +38,7 @@ export default function getCustomers() {
 
                     const customers = data.map((customer) => ({
                         label: customer.name,
-                        value: customer.id,
+                        value: Number(customer.id),
                     }))
 
                     resolve(customers)

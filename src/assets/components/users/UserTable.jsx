@@ -19,15 +19,20 @@ import { UserActions } from './UserActions'
 import { UserSearch } from './UserSearch'
 import { PaginationItems } from '../PaginationItems'
 
-export function UserTable({ getCountUsers, countUsers, getCountContractedHours }) {
+export function UserTable({ getCountUsers, countUsers, getCountContractedHours, customerId }) {
     const [users, setUsers] = useState([])
 
     useEffect(() => {
-        getUsers()
-    }, [])
+        if (!customerId) return
+        getUsers(customerId)
+    }, [customerId])
 
-    const getUsers = async () => {
-        let { data } = await axios.get(`${endpoint}users`)
+    const getUsers = async (customerId) => {
+        let { data } = await axios.get(`${endpoint}users`, {
+            params: {
+                customerId: customerId,
+            },
+        })
 
         if (data.length === 0) {
             setUsers([])
@@ -39,7 +44,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
 
     const deleteUser = async (id) => {
         await axios.delete(`${endpoint}user/${id}`)
-        getUsers()
+        getUsers(customerId)
         getCountUsers()
         getCountContractedHours()
     }
@@ -49,7 +54,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
             state: state,
         })
 
-        getUsers()
+        getUsers(customerId)
         getCountUsers()
         getCountContractedHours()
     }
@@ -58,6 +63,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
         let { data } = await axios.get(`${endpoint}searchUser`, {
             params: {
                 keyword: keyword,
+                customerId,
             },
         })
 
@@ -112,6 +118,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours }
                     count={countUsers}
                     setMethod={setUsers}
                     endpoint={`${endpoint}paginateUsers`}
+                    customerId={customerId}
                 />
             </Box>
         </>

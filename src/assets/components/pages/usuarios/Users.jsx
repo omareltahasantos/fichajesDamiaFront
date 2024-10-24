@@ -10,7 +10,6 @@ import { Footer } from '../../Footer'
 import endpoint from '../../services/endpoint'
 import { DropdownApp } from '../../componentsApp/DropdownApp'
 import getCustomers from '../../services/methods'
-import { CustomerSearch } from '../../customers/CustomerSearch'
 
 export function Users() {
     const navigate = useNavigate()
@@ -31,35 +30,34 @@ export function Users() {
     const [countUsers, setCountUsers] = useState(null)
     const [countContractedHours, setCountContractedHours] = useState(null)
     const [customers, setCustomers] = useState([])
-    const [customersSelected, setCustomerSelected] = useState('')
+    const [customerSelected, setCustomerSelected] = useState(null)
 
     useEffect(() => {
-        getCountUsers()
-        getCountContractedHours()
         getCustomers().then((customers) => {
             setCustomers(customers)
         })
     }, [])
 
-    /**
-     *
-     * CUANDO EL USUARIO SELECCIONE NUEVO CLIENTE TODAS LAS FUNCIONES DEBEN SACARSE EN BASE AL CLIENTE SELECCIONADO....
-     */
+    useEffect(() => {
+        if (customerSelected === null) return
+        getCountUsers(customerSelected)
+        getCountContractedHours(customerSelected)
+    }, [customerSelected])
 
-    const getCountUsers = async () => {
-        let { data } = await axios.get(`${endpoint}countUsers`)
+    const getCountUsers = async (customerId) => {
+        let { data } = await axios.get(`${endpoint}countUsers`, {
+            params: { customerId },
+        })
 
         setCountUsers(data)
     }
 
-    const getCountContractedHours = async () => {
-        let { data } = await axios.get(`${endpoint}contractedHours`)
+    const getCountContractedHours = async (customerId) => {
+        let { data } = await axios.get(`${endpoint}contractedHours`, {
+            params: { customerId },
+        })
 
-        if (data.length === 0) {
-            setCountContractedHours(0)
-            return
-        }
-        setCountContractedHours(data[0].contracted_hours)
+        setCountContractedHours(data)
     }
 
     return (
@@ -100,37 +98,42 @@ export function Users() {
                             <AddIcon /> Añadir usuario
                         </Button>
                     </Grid>
-                </Grid>
-                <Grid container spacing={0}>
-                    <Grid item md={6}>
-                        <CardCampaign title="Total usuarios" description={countUsers} />
-                    </Grid>
-                    <Grid item md={6}>
-                        <CardCampaign
-                            title="Total horas contratadas"
-                            description={`${countContractedHours}`}
-                        />
-                    </Grid>
-                </Grid>
-                <Divider style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }} />
-                <Grid container spacing={0} style={{ paddingBottom: '20px' }}>
                     <Grid item md={12}>
                         <DropdownApp
                             title={'Seleccionar cliente:'}
-                            value={customersSelected}
+                            value={customerSelected}
                             setValue={setCustomerSelected}
                             optionDefault={'Buscar cliente'}
                             options={customers}
                         />
                     </Grid>
                 </Grid>
+                {customerSelected !== null && (
+                    <>
+                        <Grid container spacing={0}>
+                            <Grid item md={6}>
+                                <CardCampaign title="Total usuarios" description={countUsers} />
+                            </Grid>
+                            <Grid item md={6}>
+                                <CardCampaign
+                                    title="Total horas contratadas"
+                                    description={`${countContractedHours}`}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Divider
+                            style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }}
+                        />
 
-                {customersSelected !== '' && (
-                    <UserTable
-                        getCountUsers={getCountUsers}
-                        countUsers={countUsers}
-                        getCountContractedHours={getCountContractedHours}
-                    />
+                        <UserTable
+                            getCountUsers={() => getCountUsers(customerSelected)}
+                            countUsers={countUsers}
+                            getCountContractedHours={() =>
+                                getCountContractedHours(customerSelected)
+                            }
+                            customerId={customerSelected}
+                        />
+                    </>
                 )}
             </Container>
             <Footer />
