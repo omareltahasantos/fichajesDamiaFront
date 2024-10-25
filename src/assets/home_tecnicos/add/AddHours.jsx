@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Grid, Typography, IconButton } from '@mui/material'
+import { Container, Grid, Typography, IconButton, CircularProgress } from '@mui/material'
 import { AppBarComponent } from '../../components/appbar/AppBarComponent'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { Footer } from '../../components/Footer'
@@ -8,6 +8,8 @@ import { useGeolocated } from 'react-geolocated'
 import axios from 'axios'
 import endpoint from '../../components/services/endpoint'
 import { AddHoursForm } from './AddHoursForm'
+import { CircularLoading } from '../../components/componentsApp/CircularLoading'
+import { AlertApp } from '../../components/componentsApp/AlertApp'
 
 export function AddHours() {
     const navigate = useNavigate()
@@ -26,9 +28,7 @@ export function AddHours() {
     }, [])
 
     const currentCampaignMethod = async () => {
-        console.log('asdas')
         let { data } = await axios.get(`${endpoint}campaign/${campaign_id}`)
-        console.log(data)
 
         setCurrentCampaign(data.name)
     }
@@ -67,7 +67,15 @@ export function AddHours() {
                     <div>Your browser does not support Geolocation</div>
                 ) : !isGeolocationEnabled ? (
                     <div>Geolocation is not enabled</div>
-                ) : coords ? (
+                ) : !coords ? (
+                    <>
+                        <AlertApp
+                            severity={'warning'}
+                            title={'Cargando coordenadas...'}
+                            message={<CircularLoading />}
+                        />
+                    </>
+                ) : (
                     <AddHoursForm
                         latitude={coords.latitude}
                         longitude={coords.longitude}
@@ -75,8 +83,6 @@ export function AddHours() {
                         currentUser={currentUser}
                         campaignId={campaign_id}
                     />
-                ) : (
-                    ''
                 )}
             </Container>
             <Footer />

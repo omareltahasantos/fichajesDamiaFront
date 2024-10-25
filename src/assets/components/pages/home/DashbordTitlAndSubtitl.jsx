@@ -13,9 +13,6 @@ export function DashbordTitlAndSubtitl() {
                         variant="h4"
                         style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
                     >
-                        <IconButton disableRipple onClick={() => navigate('/')}>
-                            <ArrowBackIcon />
-                        </IconButton>{' '}
                         Campañas
                     </Typography>
                 </Grid>
