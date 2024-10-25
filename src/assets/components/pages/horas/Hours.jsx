@@ -7,9 +7,11 @@ import { CardHour } from '../../hours/CardHours'
 import axios from 'axios'
 import { HoursTable } from '../../hours/HoursTable'
 import endpoint from '../../services/endpoint'
+import getCustomers from '../../services/methods'
 
 export function Hours() {
     const navigate = useNavigate()
+
     const breadcrumb = [
         <Link
             underline="hover"
@@ -23,18 +25,26 @@ export function Hours() {
         </Link>,
         <Typography style={{ fontWeight: 'bold' }}>Horas</Typography>,
     ]
-    const [hoursValidate, setHoursValidate] = useState(1)
-    const [countHoursInsertedCurrentMonth, setCountHoursInsertedCurrentMonth] = useState(1)
-    const [currentDate, setCurrentDate] = useState(new Date())
+    const [hoursValidate, setHoursValidate] = useState(0)
+    const [countHoursInsertedCurrentMonth, setCountHoursInsertedCurrentMonth] = useState(0)
 
     const [fromDate, setFromDate] = useState('')
     const [toDate, setToDate] = useState('')
+    const [customers, setCustomers] = useState([])
+    const [customerSelected, setCustomerSelected] = useState(null)
 
     useEffect(() => {
-        startEndDate()
-    }, [currentDate])
+        getCustomers().then((customers) => {
+            setCustomers(customers)
+        })
+    }, [])
 
-    const startEndDate = () => {
+    useEffect(() => {
+        if (customerSelected === null) return
+        startEndDate(new Date(), customerSelected)
+    }, [customerSelected])
+
+    const startEndDate = (currentDate, customerId) => {
         let day = currentDate.getDate()
         let month = currentDate.getMonth() + 1
         let year = currentDate.getFullYear()
@@ -49,29 +59,31 @@ export function Hours() {
         let from = year + '-' + month + '-01'
         let to = year + '-' + month + '-31'
 
-        totalHoursValidate(from, to)
-        hoursInsertedCurrentMonth(from, to)
+        totalHoursValidate(from, to, customerId)
+        hoursInsertedCurrentMonth(from, to, customerId)
 
         setFromDate(from)
         setToDate(to)
     }
 
-    const totalHoursValidate = async (from, to) => {
+    const totalHoursValidate = async (from, to, customerId) => {
         let { data } = await axios.get(`${endpoint}validateHours`, {
             params: {
                 from: from,
                 to: to,
+                customerId: customerId,
             },
         })
 
         setHoursValidate(data)
     }
 
-    const hoursInsertedCurrentMonth = async (from, to) => {
+    const hoursInsertedCurrentMonth = async (from, to, customerId) => {
         let { data } = await axios.get(`${endpoint}insertedHours`, {
             params: {
                 from: from,
                 to: to,
+                customerId: customerId,
             },
         })
 
@@ -82,28 +94,45 @@ export function Hours() {
         <>
             <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
-                <HeaderPages title="Horas" breadcrumb={breadcrumb} />
-                <Grid container spacing={0}>
-                    <Grid item md={6}>
-                        <CardHour
-                            title="Total horas validadas - Ultimo mes"
-                            description={`${hoursValidate}H`}
-                        />
-                    </Grid>
-                    <Grid item md={6}>
-                        <CardHour
-                            title="Total imputaciones - Ultimo mes"
-                            description={`${countHoursInsertedCurrentMonth}`}
-                        />
-                    </Grid>
-                </Grid>
-                <Divider style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }} />
-                <HoursTable
-                    totalHoursValidate={totalHoursValidate}
-                    hoursInsertedCurrentMonth={hoursInsertedCurrentMonth}
-                    toDate={toDate}
-                    fromDate={fromDate}
+                <HeaderPages
+                    title="Horas"
+                    breadcrumb={breadcrumb}
+                    customerSelected={customerSelected}
+                    setCustomerSelected={setCustomerSelected}
+                    customers={customers}
                 />
+                {customerSelected !== null && (
+                    <>
+                        <Grid container spacing={0}>
+                            <Grid item md={6}>
+                                <CardHour
+                                    title="Total horas validadas - Ultimo mes"
+                                    description={`${hoursValidate}H`}
+                                />
+                            </Grid>
+                            <Grid item md={6}>
+                                <CardHour
+                                    title="Total imputaciones - Ultimo mes"
+                                    description={`${countHoursInsertedCurrentMonth}`}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Divider
+                            style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }}
+                        />
+                        <HoursTable
+                            totalHoursValidate={() =>
+                                totalHoursValidate(fromDate, toDate, customerSelected)
+                            }
+                            hoursInsertedCurrentMonth={() =>
+                                hoursInsertedCurrentMonth(fromDate, toDate, customerSelected)
+                            }
+                            toDate={toDate}
+                            fromDate={fromDate}
+                            customerId={customerSelected}
+                        />
+                    </>
+                )}
             </Container>
         </>
     )

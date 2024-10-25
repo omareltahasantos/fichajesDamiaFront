@@ -17,10 +17,9 @@ import { HoursItems } from './HoursItems'
 import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
 import { HoursValidateFilter } from './HoursValidateFilter'
-import { CircularLoading } from '../componentsApp/CircularLoading'
 import { TextFieldApp } from '../componentsApp/TextFieldApp'
 
-export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDate, fromDate }) {
+export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, customerId }) {
     const user = JSON.parse(sessionStorage.getItem('user'))
     const [hours, setHours] = useState([])
     const [countHours, setCountHours] = useState(0)
@@ -29,41 +28,30 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
     const [firstDate, setFirstDate] = useState('')
     const [secondDate, setSecondDate] = useState('')
 
-    const [isLoading, setIsLoading] = useState(true)
+    useEffect(() => {
+        searchHours(keyword, filter, firstDate, secondDate, customerId)
+        getCountHours(customerId)
+    }, [customerId])
 
     useEffect(() => {
-        searchHours(keyword, filter)
-        getCountHours()
-    }, [])
-
-    useEffect(() => {
-        if (firstDate === '' && secondDate === '') {
-            searchHours(keyword, filter)
-            return
-        }
-
-        if (firstDate !== '' && secondDate !== '') {
-            searchHours(keyword, filter, firstDate, secondDate)
-        }
+        searchHours(keyword, filter, firstDate, secondDate, customerId)
     }, [keyword, filter, firstDate, secondDate])
 
-    const getCountHours = async () => {
-        try {
-            let { data } = await axios.get(`${endpoint}countHours`)
+    const getCountHours = async (customerId) => {
+        let { data } = await axios.get(`${endpoint}countHours`, {
+            params: { customerId: customerId },
+        })
 
-            if (data) {
-                setCountHours(data)
-            }
-        } catch (error) {
-            console.error(error.message)
-        }
+        console.log(data)
+
+        setCountHours(data)
     }
 
     const deleteHour = async (id) => {
         await axios.delete(`${endpoint}hour/${id}`)
-        searchHours(keyword, filter, firstDate, secondDate)
-        hoursInsertedCurrentMonth(fromDate, toDate)
-        totalHoursValidate(fromDate, toDate)
+        searchHours(keyword, filter, firstDate, secondDate, customerId)
+        hoursInsertedCurrentMonth()
+        totalHoursValidate()
     }
 
     const updateValidate = async (id, state) => {
@@ -72,29 +60,33 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
             validateBy: user.name,
         })
 
-        searchHours(keyword, filter, firstDate, secondDate)
+        hoursInsertedCurrentMonth()
+        totalHoursValidate()
+        searchHours(keyword, filter, firstDate, secondDate, customerId)
     }
 
-    const searchHours = async (keyword, filter, firstDate = '', secondDate = '') => {
-        setIsLoading(true)
+    const searchHours = async (keyword, filter, firstDate, secondDate, customerId) => {
+        const json =
+            firstDate === '' || secondDate === ''
+                ? {
+                      keyword: keyword,
+                      filter: filter,
+                      customerId: customerId,
+                  }
+                : {
+                      keyword: keyword,
+                      filter: filter,
+                      firstDate: firstDate,
+                      secondDate: secondDate,
+                      customerId: customerId,
+                  }
 
         let { data } = await axios.get(`${endpoint}searchHours`, {
-            params: {
-                keyword: keyword,
-                filter: filter,
-                firstDate,
-                secondDate,
-            },
+            params: json,
         })
 
-        setIsLoading(false)
-
-        if (data.length === 0) {
-            setHours([])
-            return
-        }
-
-        setHours(data)
+        setHours(data.length === 0 ? [] : data)
+        setCountHours(data.length)
     }
 
     return (
@@ -141,31 +133,27 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, toDa
                     <ExportData Export={hours} />
                 </Grid>
             </Grid>
-            {isLoading ? (
-                <CircularLoading />
-            ) : (
-                <TableContainer component={Paper} style={{ marginTop: 40 }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <HoursTableHeader setHours={setHours} hours={hours} />
+            <TableContainer component={Paper} style={{ marginTop: 40 }}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <HoursTableHeader setHours={setHours} hours={hours} />
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {hours?.map((hour) => (
+                            <TableRow hover key={hour.id}>
+                                <HoursItems {...hour} />
+                                <HoursActions
+                                    deleteHour={deleteHour}
+                                    updateValidate={updateValidate}
+                                    {...hour}
+                                />
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {hours?.map((hour) => (
-                                <TableRow hover key={hour.id}>
-                                    <HoursItems {...hour} />
-                                    <HoursActions
-                                        deleteHour={deleteHour}
-                                        updateValidate={updateValidate}
-                                        {...hour}
-                                    />
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            )}
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </>
     )
 }
