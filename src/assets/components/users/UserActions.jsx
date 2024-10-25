@@ -6,7 +6,7 @@ import { Tooltip, IconButton, TableCell } from '@mui/material'
 import { useNavigate } from 'react-router'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 
-export function UserActions({ handleState, deleteUser, ...user }) {
+export function UserActions({ handleState, deleteUser, customerId, ...user }) {
     const navigate = useNavigate()
 
     return (
@@ -16,7 +16,7 @@ export function UserActions({ handleState, deleteUser, ...user }) {
                     <IconButton>
                         <EditIcon
                             onClick={() => {
-                                navigate(`/usuarios/edit/${user.id}`)
+                                navigate(`/usuarios/edit/${user.id}`, { state: { customerId } })
                             }}
                             style={{
                                 backgroundColor: '#3182ce',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { Grid, Typography, Breadcrumbs, Button, Container, Link, Divider } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { CardCampaign } from '../../campaign/CardCampaign'
@@ -13,6 +13,7 @@ import getCustomers from '../../services/methods'
 
 export function Users() {
     const navigate = useNavigate()
+    const location = useLocation()
     const breadcrumb = [
         <Link
             underline="hover"
@@ -37,6 +38,12 @@ export function Users() {
             setCustomers(customers)
         })
     }, [])
+
+    useEffect(() => {
+        if (location.state) {
+            setCustomerSelected(location.state.customerId)
+        }
+    }, [location.state])
 
     useEffect(() => {
         if (customerSelected === null) return

@@ -2,12 +2,13 @@ import React from 'react'
 import { AppBarComponent } from '../../../appbar/AppBarComponent'
 import { Footer } from '../../../Footer'
 import { Container, Grid, Typography, Breadcrumbs, Button, Link } from '@mui/material'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { EditUserForm } from './EditUserForm'
 export function EditUser() {
     let { id } = useParams()
 
     const navigate = useNavigate()
+    const location = useLocation()
     const breadcrumb = [
         <Link
             underline="hover"
@@ -27,7 +28,7 @@ export function EditUser() {
             key="1"
             color="inherit"
             onClick={() => {
-                navigate('/usuarios')
+                navigate('/usuarios', { state: { customerId: location.state.customerId } })
             }}
             style={{
                 cursor: 'pointer',

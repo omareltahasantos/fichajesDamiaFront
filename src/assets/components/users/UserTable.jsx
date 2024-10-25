@@ -104,6 +104,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                             <TableRow hover>
                                 <UserItems {...user} />
                                 <UserActions
+                                    customerId={customerId}
                                     handleState={handleState}
                                     deleteUser={deleteUser}
                                     {...user}
