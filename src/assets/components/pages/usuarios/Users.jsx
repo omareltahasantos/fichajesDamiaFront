@@ -90,21 +90,6 @@ export function Users() {
                             {breadcrumb.map((bread) => bread)}
                         </Breadcrumbs>
                     </Grid>
-                    <Grid item md={3}>
-                        <Button
-                            variant="contained"
-                            style={{
-                                textTransform: 'none',
-                                fontSize: '16px',
-                                backgroundColor: '#8BB925',
-                            }}
-                            onClick={() => {
-                                navigate('/usuarios/add')
-                            }}
-                        >
-                            <AddIcon /> Añadir usuario
-                        </Button>
-                    </Grid>
                     <Grid item md={12}>
                         <DropdownApp
                             title={'Seleccionar cliente:'}
@@ -114,6 +99,25 @@ export function Users() {
                             options={customers}
                         />
                     </Grid>
+                    {customerSelected !== null && (
+                        <Grid item md={3}>
+                            <Button
+                                variant="contained"
+                                style={{
+                                    textTransform: 'none',
+                                    fontSize: '16px',
+                                    backgroundColor: '#8BB925',
+                                }}
+                                onClick={() => {
+                                    navigate('/usuarios/add', {
+                                        state: { customerId: customerSelected },
+                                    })
+                                }}
+                            >
+                                <AddIcon /> Añadir usuario
+                            </Button>
+                        </Grid>
+                    )}
                 </Grid>
                 {customerSelected !== null && (
                     <>

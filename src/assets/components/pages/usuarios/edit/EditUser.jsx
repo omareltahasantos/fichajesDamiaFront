@@ -62,7 +62,7 @@ export function EditUser() {
                         </Breadcrumbs>
                     </Grid>
                 </Grid>
-                <EditUserForm userId={id} />
+                <EditUserForm userId={id} customerId={location.state.customerId} />
             </Container>
             <Footer />
         </>

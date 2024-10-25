@@ -13,22 +13,30 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
-
 import { CampaignsItems } from './CampaignsItems'
 import { CampaignsActions } from './CampaignsActions'
 import { ExportData } from './ExportData'
 import { CampaignSearch } from './CampaignSearch'
 import { PaginationItems } from '../PaginationItems'
 
-export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCampaigns }) {
+export function CampaignsTable({
+    countCampaigns,
+    getCountCampaign,
+    getActiveCampaigns,
+    customerId,
+}) {
     const [campaigns, setCampaigns] = useState([])
 
     useEffect(() => {
-        getCampaigns()
-    }, [])
+        getCampaigns(customerId)
+    }, [customerId])
 
-    const getCampaigns = async () => {
-        let { data } = await axios.get(`${endpoint}campaigns`)
+    const getCampaigns = async (customerId) => {
+        let { data } = await axios.get(`${endpoint}campaigns`, {
+            params: {
+                customerId: customerId,
+            },
+        })
 
         if (data.length === 0) {
             setCampaigns([])
@@ -40,7 +48,7 @@ export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCamp
 
     const deleteCampaign = async (id) => {
         await axios.delete(`${endpoint}campaign/${id}`)
-        getCampaigns()
+        getCampaigns(customerId)
         getCountCampaign()
         getActiveCampaigns()
     }
@@ -49,6 +57,7 @@ export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCamp
         let { data } = await axios.get(`${endpoint}searchCampaign`, {
             params: {
                 keyword: keyword,
+                customerId: customerId,
             },
         })
 
@@ -90,7 +99,11 @@ export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCamp
                         {campaigns.map((camp) => (
                             <TableRow hover>
                                 <CampaignsItems {...camp} />
-                                <CampaignsActions deleteCampaign={deleteCampaign} {...camp} />
+                                <CampaignsActions
+                                    customerId={customerId}
+                                    deleteCampaign={deleteCampaign}
+                                    {...camp}
+                                />
                             </TableRow>
                         ))}
                     </TableBody>
@@ -101,6 +114,7 @@ export function CampaignsTable({ countCampaigns, getCountCampaign, getActiveCamp
                     count={countCampaigns}
                     setMethod={setCampaigns}
                     endpoint={`${endpoint}paginateCampaigns`}
+                    customerId={customerId}
                 />
             </Box>
         </>

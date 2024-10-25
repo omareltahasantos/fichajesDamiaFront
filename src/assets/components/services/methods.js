@@ -27,7 +27,6 @@ export default function getCustomers() {
                     reject(error)
                 })
         } else {
-            console.log(rol, id)
             axios
                 .get(`${endpoint}fetchCustomersLinkedUser/${id}`)
                 .then(({ data, status }) => {

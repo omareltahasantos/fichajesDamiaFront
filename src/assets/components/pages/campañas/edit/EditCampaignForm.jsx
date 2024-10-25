@@ -6,8 +6,9 @@ import endpoint from '../../../services/endpoint'
 import { EditCheckbox } from '../../../componentsApp/EditCheckbox'
 import { uniqueId } from 'lodash'
 import { useNavigate } from 'react-router-dom'
+import { AlertApp } from '../../../componentsApp/AlertApp'
 
-export function EditCampaignForm({ campaignId }) {
+export function EditCampaignForm({ campaignId, customerId }) {
     const navigate = useNavigate()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
@@ -64,7 +65,9 @@ export function EditCampaignForm({ campaignId }) {
     }
 
     const getUsers = async () => {
-        let { data } = await axios.get(`${endpoint}fetchUsers`)
+        let { data } = await axios.get(`${endpoint}fetchUsers`, {
+            params: { customerId: customerId },
+        })
 
         if (data === 0) {
             return
@@ -143,6 +146,7 @@ export function EditCampaignForm({ campaignId }) {
             description: description,
             date_start: date_start,
             date_end: date_end,
+            customerId: customerId,
         })
 
         if (!data) {
@@ -153,7 +157,7 @@ export function EditCampaignForm({ campaignId }) {
             await checkIfUserExistsInCampaign(user_id, campaignId)
         })
 
-        navigate('/campaigns')
+        navigate('/campaigns', { state: { customerId: customerId } })
     }
 
     return (
@@ -245,26 +249,38 @@ export function EditCampaignForm({ campaignId }) {
                     USUARIOS
                 </Typography>
                 <Grid container spacing={0}>
-                    {users.map((user) => (
-                        <Grid item md={3}>
-                            <FormControlLabel
-                                control={
-                                    <EditCheckbox
-                                        paramsToHandlerMethod={{
-                                            first: user.id,
-                                            second: campaignId,
-                                        }}
-                                        deleteMethod={deleteCheckUser}
-                                        addMethod={addCheckUser}
-                                        check={participatingUsers.some(
-                                            (element) => element.user_id === user.id
-                                        )}
-                                    />
+                    {users.length === 0 ? (
+                        <Grid item md={12}>
+                            <AlertApp
+                                severity={'warning'}
+                                title={'Atención:'}
+                                message={
+                                    'No hay usuarios asoaciados al cliente, debes añadirlos desde la sección de usuarios.'
                                 }
-                                label={user.name}
                             />
                         </Grid>
-                    ))}
+                    ) : (
+                        users.map((user) => (
+                            <Grid item md={3}>
+                                <FormControlLabel
+                                    control={
+                                        <EditCheckbox
+                                            paramsToHandlerMethod={{
+                                                first: user.id,
+                                                second: campaignId,
+                                            }}
+                                            deleteMethod={deleteCheckUser}
+                                            addMethod={addCheckUser}
+                                            check={participatingUsers.some(
+                                                (element) => element.user_id === user.id
+                                            )}
+                                        />
+                                    }
+                                    label={user.name}
+                                />
+                            </Grid>
+                        ))
+                    )}
                 </Grid>
                 <Grid container spacing={0}>
                     <Grid item md={12}>

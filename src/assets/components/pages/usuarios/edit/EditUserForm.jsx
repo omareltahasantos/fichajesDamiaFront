@@ -20,8 +20,9 @@ import endpoint from '../../../services/endpoint'
 import getCustomers from '../../../services/methods'
 import { uniqueId } from 'lodash'
 import { EditCheckbox } from '../../../componentsApp/EditCheckbox'
+import { AlertApp } from '../../../componentsApp/AlertApp'
 
-export function EditUserForm({ userId }) {
+export function EditUserForm({ userId, customerId }) {
     const navigate = useNavigate()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -175,7 +176,7 @@ export function EditUserForm({ userId }) {
         checkCustomers.map(async (item) => {
             await checkIfExistsLinkUserToCustomer(item.userId, item.customerId)
         })
-        navigate('/usuarios')
+        navigate('/usuarios', { state: { customerId: customerId } })
     }
 
     return (
@@ -308,27 +309,39 @@ export function EditUserForm({ userId }) {
                     CLIENTES
                 </Typography>
                 <Grid container spacing={0}>
-                    {customers.map((customer) => (
-                        <Grid item md={3}>
-                            <FormControlLabel
-                                control={
-                                    <EditCheckbox
-                                        paramsToHandlerMethod={{
-                                            first: userId,
-                                            second: customer.value,
-                                        }}
-                                        important={true}
-                                        deleteMethod={deleteCheckCustomer}
-                                        addMethod={addCheckCustomer}
-                                        check={checkCustomers.some(
-                                            (element) => element.customerId === customer.value
-                                        )}
-                                    />
+                    {customers.length === 0 ? (
+                        <Grid item md={12}>
+                            <AlertApp
+                                severity={'warning'}
+                                title={'Atención:'}
+                                message={
+                                    'No hay clientes creados, debes contactar con informática para añadir clientes.'
                                 }
-                                label={customer.label}
                             />
                         </Grid>
-                    ))}
+                    ) : (
+                        customers.map((customer) => (
+                            <Grid item md={3}>
+                                <FormControlLabel
+                                    control={
+                                        <EditCheckbox
+                                            paramsToHandlerMethod={{
+                                                first: userId,
+                                                second: customer.value,
+                                            }}
+                                            important={true}
+                                            deleteMethod={deleteCheckCustomer}
+                                            addMethod={addCheckCustomer}
+                                            check={checkCustomers.some(
+                                                (element) => element.customerId === customer.value
+                                            )}
+                                        />
+                                    }
+                                    label={customer.label}
+                                />
+                            </Grid>
+                        ))
+                    )}
                 </Grid>
 
                 <Grid container spacing={0}>

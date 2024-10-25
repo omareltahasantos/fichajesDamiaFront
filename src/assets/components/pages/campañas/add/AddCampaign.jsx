@@ -1,11 +1,12 @@
 import React from 'react'
 import { AppBarComponent } from '../../../appbar/AppBarComponent'
 import { Footer } from '../../../Footer'
-import { Container, Grid, Typography, Breadcrumbs, Button, Link } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { Container, Grid, Typography, Breadcrumbs, Link } from '@mui/material'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AddCampaignForm } from './AddCampaignForm'
 export function AddCampaign() {
     const navigate = useNavigate()
+    const location = useLocation()
     const breadcrumb = [
         <Link
             underline="hover"
@@ -25,7 +26,7 @@ export function AddCampaign() {
             key="1"
             color="inherit"
             onClick={() => {
-                navigate('/campaigns')
+                navigate('/campaigns', { state: { customerId: location.state.customerId } })
             }}
             style={{
                 cursor: 'pointer',
@@ -59,7 +60,7 @@ export function AddCampaign() {
                         </Breadcrumbs>
                     </Grid>
                 </Grid>
-                <AddCampaignForm />
+                <AddCampaignForm customerId={location.state.customerId} />
             </Container>
             <Footer />
         </>

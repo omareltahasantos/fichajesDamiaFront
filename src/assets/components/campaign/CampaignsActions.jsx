@@ -4,7 +4,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { Tooltip, IconButton, TableCell } from '@mui/material'
 import { useNavigate } from 'react-router'
 
-export function CampaignsActions({ deleteCampaign, ...camp }) {
+export function CampaignsActions({ customerId, deleteCampaign, ...camp }) {
     const navigate = useNavigate()
     return (
         <>
@@ -13,7 +13,7 @@ export function CampaignsActions({ deleteCampaign, ...camp }) {
                     <IconButton>
                         <EditIcon
                             onClick={() => {
-                                navigate(`/campaigns/edit/${camp.id}`)
+                                navigate(`/campaigns/edit/${camp.id}`, { state: { customerId } })
                             }}
                             style={{
                                 backgroundColor: '#3182ce',

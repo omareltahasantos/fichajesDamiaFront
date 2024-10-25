@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { TextField, Button, Typography, Box, Grid } from '@mui/material'
+import { TextField, Button, Typography, Box, Grid, Alert } from '@mui/material'
 import axios from 'axios'
 import { AddCheckbox } from '../../../componentsApp/AddCheckbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
+import { AlertApp } from '../../../componentsApp/AlertApp'
 
-export function AddCampaignForm() {
+export function AddCampaignForm({ customerId }) {
     const navigate = useNavigate()
     const [current_user, setCurrent_user] = useState(JSON.parse(sessionStorage.getItem('user')))
     const [name, setName] = useState('')
@@ -19,8 +20,8 @@ export function AddCampaignForm() {
 
     useEffect(() => {
         parsingDate(setDate_start, setDate_end)
-        getUsers()
-    }, [])
+        getUsers(customerId)
+    }, [customerId])
 
     function parsingDate(event, event2) {
         let start_date = new Date()
@@ -39,8 +40,10 @@ export function AddCampaignForm() {
         event2(start_date.getFullYear() + '-' + month + '-' + day)
     }
 
-    const getUsers = async () => {
-        let { data } = await axios.get(`${endpoint}fetchUsers`)
+    const getUsers = async (customerId) => {
+        let { data } = await axios.get(`${endpoint}fetchUsers`, {
+            params: { customerId: customerId },
+        })
 
         if (data === 0) {
             return
@@ -77,6 +80,7 @@ export function AddCampaignForm() {
                 description: description,
                 date_start: date_start,
                 date_end: date_end,
+                customerId: customerId,
             },
         })
 
@@ -97,13 +101,12 @@ export function AddCampaignForm() {
                 user_id: user_id,
             },
         })
-        //data es id campaña user -- relación entre las dos tablas
 
         if (data) {
             setName('')
             setDescription('')
             setCheckUsers([])
-            navigate('/campaigns')
+            navigate('/campaigns', { state: { customerId: customerId } })
         }
     }
 
@@ -196,19 +199,31 @@ export function AddCampaignForm() {
                     USUARIOS
                 </Typography>
                 <Grid container spacing={0}>
-                    {users.map((user) => (
-                        <Grid item md={3}>
-                            <FormControlLabel
-                                control={
-                                    <AddCheckbox
-                                        deleteMethod={() => deleteCheckUser(user.id, user.name)}
-                                        addMethod={() => addCheckUser(user.id, user.name)}
-                                    />
+                    {users.length === 0 ? (
+                        <Grid item md={12}>
+                            <AlertApp
+                                severity={'warning'}
+                                title={'Atención:'}
+                                message={
+                                    'No hay usuarios asoaciados al cliente, debes añadirlos desde la sección de usuarios.'
                                 }
-                                label={user.name}
                             />
                         </Grid>
-                    ))}
+                    ) : (
+                        users.map((user) => (
+                            <Grid item md={3}>
+                                <FormControlLabel
+                                    control={
+                                        <AddCheckbox
+                                            deleteMethod={() => deleteCheckUser(user.id, user.name)}
+                                            addMethod={() => addCheckUser(user.id, user.name)}
+                                        />
+                                    }
+                                    label={user.name}
+                                />
+                            </Grid>
+                        ))
+                    )}
                 </Grid>
                 <Grid container spacing={0}>
                     <Grid item md={12}>

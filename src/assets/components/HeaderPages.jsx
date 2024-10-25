@@ -2,8 +2,17 @@ import React from 'react'
 import { Grid, Typography, Breadcrumbs, Button } from '@mui/material'
 import { useNavigate } from 'react-router'
 import AddIcon from '@mui/icons-material/Add'
+import { DropdownApp } from './componentsApp/DropdownApp'
 
-export function HeaderPages({ title, breadcrumb, buttonName, route }) {
+export function HeaderPages({
+    title,
+    breadcrumb,
+    buttonName,
+    route,
+    customerSelected,
+    setCustomerSelected,
+    customers,
+}) {
     const navigate = useNavigate()
     return (
         <>
@@ -21,7 +30,16 @@ export function HeaderPages({ title, breadcrumb, buttonName, route }) {
                         {breadcrumb.map((bread) => bread)}
                     </Breadcrumbs>
                 </Grid>
-                {!buttonName ? (
+                <Grid item md={12}>
+                    <DropdownApp
+                        title={'Seleccionar cliente:'}
+                        value={customerSelected}
+                        setValue={setCustomerSelected}
+                        optionDefault={'Buscar cliente'}
+                        options={customers}
+                    />
+                </Grid>
+                {!buttonName || customerSelected === null ? (
                     ''
                 ) : (
                     <Grid item md={3}>
@@ -33,7 +51,7 @@ export function HeaderPages({ title, breadcrumb, buttonName, route }) {
                                 backgroundColor: '#8BB925',
                             }}
                             onClick={() => {
-                                navigate(route)
+                                navigate(route, { state: { customerId: customerSelected } })
                             }}
                         >
                             <AddIcon /> {buttonName}
