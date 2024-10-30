@@ -75,7 +75,7 @@ export function CampaignsTable({
                 Buscar:
             </Typography>
             <Grid container spacing={0}>
-                <Grid item md={11}>
+                <Grid item md={11} xs={10}>
                     <CampaignSearch
                         countCampaigns={countCampaigns}
                         searchCampaign={searchCampaign}

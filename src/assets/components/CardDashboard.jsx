@@ -20,10 +20,8 @@ const containerStyle = {
     backgroundColor: 'white',
     cursor: 'pointer',
     transition: 'all 0.3s',
-    width: 'auto',
-    height: 'auto',
-    minWidth: '425px',
-    minHeight: '125px',
+    width: '100%',
+    height: '100%',
 }
 
 export function CardDashboard({ ...props }) {

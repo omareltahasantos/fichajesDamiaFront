@@ -40,13 +40,11 @@ export function HorasTecnico() {
     }
 
     const registerFinalHours = async (hour_id) => {
-        console.log(hour_id)
         navigate(`/horas/edit/imputar/${campaign_id}`, { state: { hour_id: hour_id } })
     }
 
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px', paddingRight: '0px' }}>
                 <Grid
                     container
@@ -54,7 +52,7 @@ export function HorasTecnico() {
                     flexDirection="column"
                     style={{ paddingBottom: '40px' }}
                 >
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -65,12 +63,12 @@ export function HorasTecnico() {
                             Horas
                         </Typography>
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography variant="body1" style={{ fontFamily: 'sans-serif' }}>
                             Organiza las horas trabajadas
                         </Typography>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Button
                             variant="contained"
                             style={{
@@ -87,7 +85,7 @@ export function HorasTecnico() {
                     </Grid>
                 </Grid>
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         {hours.length !== 0
                             ? hours.map((item) =>
                                   item.register_end === null ? (
@@ -104,7 +102,6 @@ export function HorasTecnico() {
                     </Grid>
                 </Grid>
             </Container>
-            <Footer />
         </>
     )
 }

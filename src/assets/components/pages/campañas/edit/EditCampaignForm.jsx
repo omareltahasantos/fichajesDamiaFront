@@ -164,7 +164,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
         <>
             <Box component="form" autoComplete="off" onSubmit={editCampaign}>
                 <Grid container spacing={0} flexDirection="column">
-                    <Grid item md={12} paddingBottom="15px">
+                    <Grid item md={12} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -189,7 +189,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
                         />
                     </Grid>
 
-                    <Grid item md={12} paddingBottom="15px">
+                    <Grid item md={12} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">DESCRIPCION</Typography>
                         <TextField
                             type="text"
@@ -217,7 +217,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
                     </Grid>
                 </Grid>
                 <Grid container spacing={5}>
-                    <Grid item md={6} paddingBottom="15px">
+                    <Grid item md={6} xs={12} paddingBottom="0px">
                         <Typography paddingBottom="15px">FECHA DE INICIO</Typography>
                         <TextField
                             type="date"
@@ -230,7 +230,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={6} paddingBottom="15px">
+                    <Grid item md={6} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">FECHA DE FINALIZACION</Typography>
                         <TextField
                             type="date"
@@ -250,7 +250,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
                 </Typography>
                 <Grid container spacing={0}>
                     {users.length === 0 ? (
-                        <Grid item md={12}>
+                        <Grid item md={12} xs={12}>
                             <AlertApp
                                 severity={'warning'}
                                 title={'Atención:'}
@@ -261,7 +261,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
                         </Grid>
                     ) : (
                         users.map((user) => (
-                            <Grid item md={3}>
+                            <Grid item md={3} xs={6}>
                                 <FormControlLabel
                                     control={
                                         <EditCheckbox
@@ -283,7 +283,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
                     )}
                 </Grid>
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Button
                             type="submit"
                             variant="contained"

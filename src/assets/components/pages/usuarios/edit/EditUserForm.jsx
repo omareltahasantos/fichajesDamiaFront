@@ -183,7 +183,7 @@ export function EditUserForm({ userId, customerId }) {
         <>
             <Box component="form" autoComplete="off" onSubmit={editUser}>
                 <Grid container spacing={4} flexDirection="row">
-                    <Grid item md={4} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -207,7 +207,7 @@ export function EditUserForm({ userId, customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={4} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">EMAIL</Typography>
                         <TextField
                             type="email"
@@ -229,7 +229,7 @@ export function EditUserForm({ userId, customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={4} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">Contraseña</Typography>
                         <Input
                             fullWidth
@@ -247,7 +247,7 @@ export function EditUserForm({ userId, customerId }) {
                     </Grid>
                 </Grid>
                 <Grid container spacing={4} paddingBottom="15px">
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography paddingBottom="15px">HORAS CONTRATADAS</Typography>
                         <TextField
                             type="number"
@@ -271,7 +271,7 @@ export function EditUserForm({ userId, customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography paddingBottom="15px">FECHA DE INICIO</Typography>
                         <TextField
                             type="date"
@@ -284,7 +284,7 @@ export function EditUserForm({ userId, customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={4} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">ROL</Typography>
                         <NativeSelect
                             required
@@ -310,7 +310,7 @@ export function EditUserForm({ userId, customerId }) {
                 </Typography>
                 <Grid container spacing={0}>
                     {customers.length === 0 ? (
-                        <Grid item md={12}>
+                        <Grid item md={12} xs={12}>
                             <AlertApp
                                 severity={'warning'}
                                 title={'Atención:'}
@@ -321,7 +321,7 @@ export function EditUserForm({ userId, customerId }) {
                         </Grid>
                     ) : (
                         customers.map((customer) => (
-                            <Grid item md={3}>
+                            <Grid item md={3} xs={6}>
                                 <FormControlLabel
                                     control={
                                         <EditCheckbox
@@ -345,7 +345,7 @@ export function EditUserForm({ userId, customerId }) {
                 </Grid>
 
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Button
                             type="submit"
                             variant="contained"
@@ -354,7 +354,7 @@ export function EditUserForm({ userId, customerId }) {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 margin: 'auto',
-                                marginTop: '50px',
+                                marginTop: '20px',
                                 borderRadius: '10px',
                                 backgroundColor: '#8bb925',
                             }}

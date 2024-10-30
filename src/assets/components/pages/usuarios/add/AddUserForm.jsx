@@ -130,7 +130,7 @@ export function AddUserForm({ customerId }) {
         <>
             <Box component="form" autoComplete="off" onSubmit={addUser}>
                 <Grid container spacing={4} flexDirection="row">
-                    <Grid item md={6} paddingBottom="15px">
+                    <Grid item md={6} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -154,7 +154,7 @@ export function AddUserForm({ customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={6} paddingBottom="15px">
+                    <Grid item md={6} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">EMAIL</Typography>
                         <TextField
                             type="email"
@@ -178,7 +178,7 @@ export function AddUserForm({ customerId }) {
                     </Grid>
                 </Grid>
                 <Grid container spacing={4} paddingBottom="15px">
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography paddingBottom="15px">HORAS CONTRATADAS</Typography>
                         <TextField
                             type="number"
@@ -202,7 +202,7 @@ export function AddUserForm({ customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography paddingBottom="15px">FECHA DE INICIO</Typography>
                         <TextField
                             type="date"
@@ -215,7 +215,7 @@ export function AddUserForm({ customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={4} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">ROL</Typography>
                         <NativeSelect
                             required
@@ -236,7 +236,7 @@ export function AddUserForm({ customerId }) {
                     </Grid>
                 </Grid>
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Typography paddingBottom="15px">CONTRASEÑA</Typography>
                         <TextField
                             required
@@ -269,7 +269,7 @@ export function AddUserForm({ customerId }) {
                 </Typography>
                 <Grid container spacing={0}>
                     {customers.length === 0 ? (
-                        <Grid item md={12}>
+                        <Grid item md={12} xs={12}>
                             <AlertApp
                                 severity={'warning'}
                                 title={'Atención:'}
@@ -280,7 +280,7 @@ export function AddUserForm({ customerId }) {
                         </Grid>
                     ) : (
                         customers.map((customer) => (
-                            <Grid item md={3}>
+                            <Grid item md={3} xs={6}>
                                 <FormControlLabel
                                     control={
                                         <AddCheckbox
@@ -300,7 +300,7 @@ export function AddUserForm({ customerId }) {
                 </Grid>
 
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Button
                             type="submit"
                             variant="contained"

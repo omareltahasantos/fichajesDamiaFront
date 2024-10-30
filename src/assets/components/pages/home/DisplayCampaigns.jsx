@@ -12,7 +12,7 @@ export function DisplayCampaigns({ handleCampaign, checkStatusDate, ...item }) {
                     borderRadius: 10,
                     padding: 15,
                     backgroundColor: 'white',
-                    width: '1150px',
+                    width: '100%',
                     marginBottom: '15px',
                     cursor: 'pointer',
                 }}

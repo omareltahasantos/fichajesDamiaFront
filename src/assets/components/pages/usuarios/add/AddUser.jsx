@@ -39,7 +39,6 @@ export function AddUser() {
     ]
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
@@ -47,7 +46,7 @@ export function AddUser() {
                     flexDirection="column"
                     style={{ paddingBottom: '40px' }}
                 >
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Typography
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -55,7 +54,7 @@ export function AddUser() {
                             Añadir usuario
                         </Typography>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Breadcrumbs separator="›" aria-label="breadcrumb">
                             {breadcrumb.map((bread) => bread)}
                         </Breadcrumbs>
@@ -63,7 +62,6 @@ export function AddUser() {
                 </Grid>
                 {<AddUserForm customerId={location.state.customerId} />}
             </Container>
-            <Footer />
         </>
     )
 }

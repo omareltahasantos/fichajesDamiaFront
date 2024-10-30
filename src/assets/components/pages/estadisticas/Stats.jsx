@@ -68,8 +68,6 @@ export function Stats() {
 
     return (
         <>
-            <AppBarComponent />
-
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
@@ -160,7 +158,6 @@ export function Stats() {
                     </Box>
                 ))}
             </Container>
-            <Footer />
         </>
     )
 }

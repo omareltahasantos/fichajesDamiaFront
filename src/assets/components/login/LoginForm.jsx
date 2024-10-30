@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-    Grid,
-    Button,
-    TextField,
-    Typography,
-    Box,
-    IconButton,
-    InputLabel,
-    InputAdornment,
-} from '@mui/material'
+import { Grid, Button, TextField, IconButton, InputAdornment } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
@@ -44,7 +35,6 @@ export function LoginForm() {
             },
         })
 
-        console.log(data)
         if (data.length !== 0) {
             if (data[0].estado === 'Baja') {
                 setDisabledButton(true)
@@ -63,10 +53,11 @@ export function LoginForm() {
 
     return (
         <>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} justifyContent={'center'}>
                 <Grid
                     item
                     md={12}
+                    xs={12}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
                     <TextField
@@ -99,6 +90,7 @@ export function LoginForm() {
                 <Grid
                     item
                     md={12}
+                    xs={12}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
                     <TextField
@@ -126,6 +118,7 @@ export function LoginForm() {
                 <Grid
                     item
                     md={12}
+                    xs={12}
                     style={{
                         display: 'flex',
                         alignItems: 'center',

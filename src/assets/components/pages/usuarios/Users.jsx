@@ -69,15 +69,14 @@ export function Users() {
 
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
                     spacing={3}
                     flexDirection="column"
-                    style={{ paddingBottom: '40px' }}
+                    style={{ paddingBottom: '20px' }}
                 >
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Typography
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -85,12 +84,12 @@ export function Users() {
                             Usuarios
                         </Typography>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Breadcrumbs separator="›" aria-label="breadcrumb">
                             {breadcrumb.map((bread) => bread)}
                         </Breadcrumbs>
                     </Grid>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <DropdownApp
                             title={'Seleccionar cliente:'}
                             value={customerSelected}
@@ -100,7 +99,7 @@ export function Users() {
                         />
                     </Grid>
                     {customerSelected !== null && (
-                        <Grid item md={3}>
+                        <Grid item md={3} xs={12}>
                             <Button
                                 variant="contained"
                                 style={{
@@ -121,11 +120,11 @@ export function Users() {
                 </Grid>
                 {customerSelected !== null && (
                     <>
-                        <Grid container spacing={0}>
-                            <Grid item md={6}>
+                        <Grid container spacing={2}>
+                            <Grid item md={6} xs={6}>
                                 <CardCampaign title="Total usuarios" description={countUsers} />
                             </Grid>
-                            <Grid item md={6}>
+                            <Grid item md={6} xs={6}>
                                 <CardCampaign
                                     title="Total horas contratadas"
                                     description={`${countContractedHours}`}
@@ -133,7 +132,7 @@ export function Users() {
                             </Grid>
                         </Grid>
                         <Divider
-                            style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }}
+                            style={{ marginTop: 20, marginBottom: 20, border: '2px solid #b9d47b' }}
                         />
 
                         <UserTable
@@ -147,7 +146,6 @@ export function Users() {
                     </>
                 )}
             </Container>
-            <Footer />
         </>
     )
 }

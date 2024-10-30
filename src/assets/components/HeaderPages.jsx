@@ -16,7 +16,7 @@ export function HeaderPages({
     const navigate = useNavigate()
     return (
         <>
-            <Grid container spacing={3} flexDirection="column" style={{ paddingBottom: '40px' }}>
+            <Grid container spacing={3} flexDirection="column" style={{ paddingBottom: '20px' }}>
                 <Grid item md={3}>
                     <Typography
                         variant="h4"

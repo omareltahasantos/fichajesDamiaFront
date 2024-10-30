@@ -34,7 +34,6 @@ export function AddHours() {
     }
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
@@ -42,7 +41,7 @@ export function AddHours() {
                     flexDirection="column"
                     style={{ paddingBottom: '40px' }}
                 >
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -56,7 +55,7 @@ export function AddHours() {
                             Añadir horas
                         </Typography>
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography variant="body1" style={{ fontFamily: 'sans-serif' }}>
                             Inicia la jornada de trabajo
                         </Typography>
@@ -85,7 +84,6 @@ export function AddHours() {
                     />
                 )}
             </Container>
-            <Footer />
         </>
     )
 }

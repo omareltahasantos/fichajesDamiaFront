@@ -40,7 +40,6 @@ export function AddCustomer() {
     ]
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
@@ -48,7 +47,7 @@ export function AddCustomer() {
                     flexDirection="column"
                     style={{ paddingBottom: '40px' }}
                 >
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Typography
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -56,7 +55,7 @@ export function AddCustomer() {
                             Añadir cliente
                         </Typography>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Breadcrumbs separator="›" aria-label="breadcrumb">
                             {breadcrumb.map((bread) => bread)}
                         </Breadcrumbs>
@@ -64,7 +63,6 @@ export function AddCustomer() {
                 </Grid>
                 {<AddCustomerForm />}
             </Container>
-            <Footer />
         </>
     )
 }

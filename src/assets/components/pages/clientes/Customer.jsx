@@ -41,15 +41,14 @@ export function Customer() {
 
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
                     spacing={3}
                     flexDirection="column"
-                    style={{ paddingBottom: '40px' }}
+                    style={{ paddingBottom: '20px' }}
                 >
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Typography
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -57,12 +56,12 @@ export function Customer() {
                             Clientes
                         </Typography>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Breadcrumbs separator="›" aria-label="breadcrumb">
                             {breadcrumb.map((bread) => bread)}
                         </Breadcrumbs>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Button
                             variant="contained"
                             style={{
@@ -79,17 +78,16 @@ export function Customer() {
                     </Grid>
                 </Grid>
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <CardCampaign title="Total clientes" description={countCustomers} />
                     </Grid>
                 </Grid>
-                <Divider style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }} />
+                <Divider style={{ marginTop: 20, marginBottom: 20, border: '2px solid #b9d47b' }} />
                 <CustomerTable
                     getCountCustomers={getCountCustomers}
                     countCustomers={countCustomers}
                 />
             </Container>
-            <Footer />
         </>
     )
 }

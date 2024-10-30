@@ -29,8 +29,6 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
     const getCustomers = async () => {
         let { data } = await axios.get(`${endpoint}customers`)
 
-        console.log(data)
-
         if (data.length === 0) {
             setCustomers([])
             return
@@ -66,7 +64,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
                 Buscar:
             </Typography>
             <Grid container spacing={0}>
-                <Grid item md={11}>
+                <Grid item md={11} xs={10}>
                     <CustomerSearch
                         countCustomers={countCustomers}
                         searchCustomers={searchCustomers}
@@ -75,7 +73,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
                 <ExportData Export={customers} />
             </Grid>
 
-            <TableContainer component={Paper} style={{ marginTop: 40 }}>
+            <TableContainer component={Paper} style={{ marginTop: 20 }}>
                 <Table>
                     <TableHead>
                         <TableRow>

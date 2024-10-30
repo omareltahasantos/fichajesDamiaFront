@@ -20,7 +20,7 @@ export function DisplayHoursStartDay({ registerFinalHours, deleteHour, ...item }
                 }}
             >
                 <Grid container spacing={0}>
-                    <Grid item md={9}>
+                    <Grid item md={9} xs={9}>
                         <Typography
                             align="left"
                             variant="body2"
@@ -34,6 +34,7 @@ export function DisplayHoursStartDay({ registerFinalHours, deleteHour, ...item }
                     <Grid
                         item
                         md={2}
+                        xs={2}
                         style={{ paddingBottom: '15px', display: 'flex', justifyContent: 'right' }}
                     >
                         <IconButton
@@ -52,7 +53,7 @@ export function DisplayHoursStartDay({ registerFinalHours, deleteHour, ...item }
                             />
                         </IconButton>
                     </Grid>
-                    <Grid item md={1} style={{ paddingBottom: '15px' }}>
+                    <Grid item md={1} xs={1} style={{ paddingBottom: '15px' }}>
                         <IconButton
                             disableRipple
                             style={{ padding: 0 }}

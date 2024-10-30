@@ -70,7 +70,6 @@ export function Campaigns() {
 
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <HeaderPages
                     title="Campañas"
@@ -84,16 +83,16 @@ export function Campaigns() {
 
                 {customerSelected !== null && (
                     <>
-                        <Grid container spacing={0}>
-                            <Grid item md={6}>
+                        <Grid container spacing={2}>
+                            <Grid item md={6} xs={6}>
                                 <CardCampaign title="Total campañas" description={countCampaigns} />
                             </Grid>
-                            <Grid item md={6}>
+                            <Grid item md={6} xs={6}>
                                 <CardCampaign title="En activo" description={campaignsActive} />
                             </Grid>
                         </Grid>
                         <Divider
-                            style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }}
+                            style={{ marginTop: 20, marginBottom: 20, border: '2px solid #b9d47b' }}
                         />
 
                         <CampaignsTable
@@ -105,7 +104,6 @@ export function Campaigns() {
                     </>
                 )}
             </Container>
-            <Footer />
         </>
     )
 }

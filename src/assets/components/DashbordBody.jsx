@@ -2,6 +2,8 @@ import React from 'react'
 import { Grid, Typography, Container, Link } from '@mui/material'
 import { CardDashboard } from './CardDashboard'
 
+const isMobile = window.innerWidth < 768
+
 export function DashbordBody() {
     const user = JSON.parse(sessionStorage.getItem('user'))
 
@@ -16,7 +18,11 @@ export function DashbordBody() {
                     alignItems="center"
                 >
                     <Grid item md={12} xs={12}>
-                        <Typography variant="h2" style={{ fontWeight: 'bold' }} align="center">
+                        <Typography
+                            variant={isMobile ? 'h4' : 'h2'}
+                            style={{ fontWeight: 'bold' }}
+                            align="center"
+                        >
                             ¡Bienvenido a{' '}
                             <Link
                                 href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjmg9eCgLr5AhVH04UKHQ4bDu0QFnoECAgQAQ&url=http%3A%2F%2Fwww.sistemasmedioambientales.com%2F&usg=AOvVaw3K9cVRuZiiZAnLoPXo5K0C"
@@ -36,10 +42,14 @@ export function DashbordBody() {
                     display="flex"
                     justifyContent="center"
                     alignItems="center"
-                    style={{ paddingTop: 50 }}
+                    style={{ paddingTop: isMobile ? 30 : 50 }}
                 >
                     <Grid item md={12} xs={12}>
-                        <Typography variant="h5" align="center" color="GrayText">
+                        <Typography
+                            variant={isMobile ? 'h6' : 'h5'}
+                            align="center"
+                            color="GrayText"
+                        >
                             Elige una de estas opciones:
                         </Typography>
                     </Grid>

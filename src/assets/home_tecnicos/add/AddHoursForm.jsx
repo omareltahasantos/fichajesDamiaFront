@@ -71,7 +71,7 @@ export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, 
         <>
             <Box component="form" autoComplete="off" onSubmit={addHours}>
                 <Grid container spacing={4} flexDirection="column">
-                    <Grid item md={12} paddingBottom="15px">
+                    <Grid item md={12} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -88,7 +88,7 @@ export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, 
                             }}
                         />
                     </Grid>
-                    <Grid item md={12} paddingBottom="15px">
+                    <Grid item md={12} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">CAMPAÑA</Typography>
                         <TextField
                             type="text"
@@ -106,7 +106,7 @@ export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, 
                         />
                     </Grid>
 
-                    <Grid item md={12} paddingBottom="15px">
+                    <Grid item md={12} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">FECHA</Typography>
                         <TextField
                             type="text"
@@ -125,7 +125,7 @@ export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, 
                 </Grid>
 
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Button
                             type="submit"
                             variant="contained"

@@ -24,7 +24,8 @@ export function CardHour({ ...props }) {
                     borderRadius: 10,
                     padding: 15,
                     backgroundColor: 'white',
-                    width: '560px',
+                    width: '100%',
+                    height: '100%',
                 }}
             >
                 <Typography variant="body1" align="left" style={{ color: 'grey' }}>

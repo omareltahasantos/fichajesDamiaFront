@@ -18,15 +18,17 @@ export function Dashboard() {
         }
 
         if (user.rol === 'TECNICO') {
-            navigate('/homeTecnicos') // Dashboard para rol tecnicos
+            navigate('/homeTecnicos')
         }
     }
 
     return (
         <Fragment>
-            <AppBarComponent />
-            <DashbordBody />
-            <Footer />
+            {user !== null && user.rol !== 'TECNICO' ? (
+                <Fragment>
+                    <DashbordBody />
+                </Fragment>
+            ) : null}
         </Fragment>
     )
 }

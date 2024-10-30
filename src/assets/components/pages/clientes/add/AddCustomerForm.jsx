@@ -43,7 +43,7 @@ export function AddCustomerForm() {
         <>
             <Box component="form" autoComplete="off" onSubmit={addUser}>
                 <Grid container spacing={4} flexDirection="row">
-                    <Grid item md={6} paddingBottom="15px">
+                    <Grid item md={6} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -69,7 +69,7 @@ export function AddCustomerForm() {
                     </Grid>
                 </Grid>
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Button
                             type="submit"
                             variant="contained"
@@ -78,7 +78,7 @@ export function AddCustomerForm() {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 margin: 'auto',
-                                marginTop: '50px',
+                                marginTop: '20px',
                                 borderRadius: '10px',
                                 backgroundColor: '#8bb925',
                             }}

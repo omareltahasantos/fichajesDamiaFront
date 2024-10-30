@@ -91,20 +91,20 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
 
     return (
         <>
-            <Grid container spacing={5} justifyContent={'space-between'}>
-                <Grid item md={4}>
+            <Grid container spacing={2} justifyContent={'space-between'}>
+                <Grid item md={4} xs={6}>
                     <Typography paddingBottom={1} color="GrayText">
                         Buscar:
                     </Typography>
                     <HoursSearch countHoursInserted={countHours} saveKeyword={setKeyword} />
                 </Grid>
-                <Grid item md={2}>
+                <Grid item md={2} xs={6}>
                     <Typography paddingBottom={1} color="GrayText">
                         Filtrar:
                     </Typography>
                     <HoursValidateFilter saveFilter={setFilter} />
                 </Grid>
-                <Grid item md={2}>
+                <Grid item md={2} xs={5}>
                     <Typography paddingBottom={1} color="GrayText">
                         Fecha inicio:
                     </Typography>
@@ -116,7 +116,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                         label={''}
                     />
                 </Grid>
-                <Grid item md={2}>
+                <Grid item md={2} xs={5}>
                     <Typography paddingBottom={1} color="GrayText">
                         Fecha final:
                     </Typography>
@@ -129,7 +129,8 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                     />
                 </Grid>
 
-                <Grid item md={2}>
+                <Grid item md={2} xs={2}>
+                    <Typography>Exportar:</Typography>
                     <ExportData Export={hours} />
                 </Grid>
             </Grid>

@@ -37,7 +37,7 @@ export function EditCustomerForm({ customerId }) {
         <>
             <Box component="form" autoComplete="off" onSubmit={editCustomer}>
                 <Grid container spacing={4} flexDirection="row">
-                    <Grid item md={4} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -64,7 +64,7 @@ export function EditCustomerForm({ customerId }) {
                 </Grid>
 
                 <Grid container spacing={0}>
-                    <Grid item md={12}>
+                    <Grid item md={12} xs={12}>
                         <Button
                             type="submit"
                             variant="contained"
@@ -73,7 +73,7 @@ export function EditCustomerForm({ customerId }) {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 margin: 'auto',
-                                marginTop: '50px',
+                                marginTop: '20px',
                                 borderRadius: '10px',
                                 backgroundColor: '#8bb925',
                             }}

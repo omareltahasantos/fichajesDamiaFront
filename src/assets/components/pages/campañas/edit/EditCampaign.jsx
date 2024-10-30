@@ -41,7 +41,6 @@ export function EditCampaign() {
     ]
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
@@ -49,7 +48,7 @@ export function EditCampaign() {
                     flexDirection="column"
                     style={{ paddingBottom: '40px' }}
                 >
-                    <Grid item md={4}>
+                    <Grid item md={4} xs={12}>
                         <Typography
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -57,7 +56,7 @@ export function EditCampaign() {
                             Actualizar campaña
                         </Typography>
                     </Grid>
-                    <Grid item md={3}>
+                    <Grid item md={3} xs={12}>
                         <Breadcrumbs separator="›" aria-label="breadcrumb">
                             {breadcrumb.map((bread) => bread)}
                         </Breadcrumbs>
@@ -65,7 +64,6 @@ export function EditCampaign() {
                 </Grid>
                 <EditCampaignForm campaignId={id} customerId={location.state.customerId} />
             </Container>
-            <Footer />
         </>
     )
 }

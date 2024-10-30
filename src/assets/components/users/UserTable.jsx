@@ -81,7 +81,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                 Buscar:
             </Typography>
             <Grid container spacing={0}>
-                <Grid item md={11}>
+                <Grid item md={11} xs={10}>
                     <UserSearch countUsers={countUsers} searchUser={searchUser} />
                 </Grid>
                 <ExportData Export={users} />

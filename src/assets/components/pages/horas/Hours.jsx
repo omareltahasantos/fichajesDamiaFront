@@ -92,7 +92,6 @@ export function Hours() {
 
     return (
         <>
-            <AppBarComponent />
             <Container style={{ paddingTop: '40px' }}>
                 <HeaderPages
                     title="Horas"
@@ -103,14 +102,14 @@ export function Hours() {
                 />
                 {customerSelected !== null && (
                     <>
-                        <Grid container spacing={0}>
-                            <Grid item md={6}>
+                        <Grid container spacing={2}>
+                            <Grid item md={6} xs={6}>
                                 <CardHour
                                     title="Total horas validadas - Ultimo mes"
                                     description={`${hoursValidate}H`}
                                 />
                             </Grid>
-                            <Grid item md={6}>
+                            <Grid item md={6} xs={6}>
                                 <CardHour
                                     title="Total imputaciones - Ultimo mes"
                                     description={`${countHoursInsertedCurrentMonth}`}
@@ -118,7 +117,7 @@ export function Hours() {
                             </Grid>
                         </Grid>
                         <Divider
-                            style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }}
+                            style={{ marginTop: 20, marginBottom: 20, border: '2px solid #b9d47b' }}
                         />
                         <HoursTable
                             totalHoursValidate={() =>

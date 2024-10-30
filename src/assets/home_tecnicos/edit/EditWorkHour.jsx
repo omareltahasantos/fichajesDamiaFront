@@ -8,6 +8,8 @@ import { useGeolocated } from 'react-geolocated'
 import axios from 'axios'
 import { EditWorkHourForm } from './EditWorkHourForm'
 import endpoint from '../../components/services/endpoint'
+import { CircularLoading } from '../../components/componentsApp/CircularLoading'
+import { AlertApp } from '../../components/componentsApp/AlertApp'
 
 export function EditWorkHour() {
     const navigate = useNavigate()
@@ -33,7 +35,7 @@ export function EditWorkHour() {
     }
     return (
         <>
-            <AppBarComponent />
+            {' '}
             <Container style={{ paddingTop: '40px' }}>
                 <Grid
                     container
@@ -52,7 +54,7 @@ export function EditWorkHour() {
                             >
                                 <ArrowBackIcon />
                             </IconButton>
-                            Añadir horas
+                            Editar horas
                         </Typography>
                     </Grid>
                     <Grid item md={4}>
@@ -66,7 +68,15 @@ export function EditWorkHour() {
                     <div>Your browser does not support Geolocation</div>
                 ) : !isGeolocationEnabled ? (
                     <div>Geolocation is not enabled</div>
-                ) : coords ? (
+                ) : !coords ? (
+                    <>
+                        <AlertApp
+                            severity={'warning'}
+                            title={'Cargando coordenadas...'}
+                            message={<CircularLoading />}
+                        />
+                    </>
+                ) : (
                     <EditWorkHourForm
                         latitude={coords.latitude}
                         longitude={coords.longitude}
@@ -75,11 +85,8 @@ export function EditWorkHour() {
                         campaignId={campaign_id}
                         hourId={location.state.hour_id}
                     />
-                ) : (
-                    ''
                 )}
             </Container>
-            <Footer />
         </>
     )
 }

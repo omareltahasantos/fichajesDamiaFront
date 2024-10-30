@@ -1,7 +1,6 @@
 import React from 'react'
-import { Container, Grid } from '@mui/material'
+import { Container, Grid, Typography } from '@mui/material'
 import { ImageForm } from './ImageForm'
-import { TitlesForm } from './TitlesForm'
 import { LoginForm } from './LoginForm'
 
 export function Login() {
@@ -14,10 +13,11 @@ export function Login() {
                 }}
                 component="form"
             >
-                <Grid container spacing={0}>
+                <Grid container spacing={0} justifyContent={'center'}>
                     <Grid
                         item
                         md={12}
+                        xs={12}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
@@ -27,7 +27,34 @@ export function Login() {
                     >
                         <ImageForm />
                     </Grid>
-                    <TitlesForm />
+                    <Grid
+                        item
+                        md={12}
+                        xs={12}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingBottom: '30px',
+                        }}
+                    >
+                        <Typography variant="h5" style={{ fontWeight: 'bold' }}>
+                            ¡Bienvenido de vuelta!
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        md={12}
+                        xs={12}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingBottom: 30,
+                        }}
+                    >
+                        <Typography variant="body1">Iniciar sesión</Typography>
+                    </Grid>
                 </Grid>
                 <LoginForm />
             </Container>
