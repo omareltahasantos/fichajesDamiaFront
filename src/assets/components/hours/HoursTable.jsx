@@ -22,6 +22,7 @@ import { TextFieldApp } from '../componentsApp/TextFieldApp'
 export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, customerId }) {
     const user = JSON.parse(sessionStorage.getItem('user'))
     const [hours, setHours] = useState([])
+    const [exportHours, setExportHours] = useState([])
     const [countHours, setCountHours] = useState(0)
     const [keyword, setKeyword] = useState('')
     const [filter, setFilter] = useState('todos')
@@ -36,6 +37,37 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
     useEffect(() => {
         searchHours(keyword, filter, firstDate, secondDate, customerId)
     }, [keyword, filter, firstDate, secondDate])
+
+    useEffect(() => {
+        parseHoursToExport(hours)
+    }, [hours])
+
+    const parseHoursToExport = (hours) => {
+        setExportHours(
+            hours.map((hour) => {
+                let startDate = hour.register_start
+                    ? hour?.register_start?.split(' ')
+                    : ['Sin iniciar', '']
+                let endDate = hour.register_end
+                    ? hour?.register_end?.split(' ')
+                    : ['Sin finalizar', '']
+                return {
+                    Técnico: hour.user,
+                    Campaña: hour.campaign,
+                    'Fichaje inicio': `${startDate[0].split('-').reverse().join('-')} ${
+                        startDate[1]
+                    }`,
+                    'Ubicación inicio': hour.ubication_start,
+                    'Fichaje final': `${endDate[0].split('-').reverse().join('-')} ${endDate[1]}`,
+                    'Ubicación final': hour.ubication_end,
+                    'Horas trabajadas': hour.hours,
+                    'Tipo de hora': hour.type,
+                    Validado: hour.validate,
+                    'Validado por': hour.validate_by,
+                }
+            })
+        )
+    }
 
     const getCountHours = async (customerId) => {
         let { data } = await axios.get(`${endpoint}countHours`, {
@@ -131,7 +163,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
 
                 <Grid item md={2} xs={2}>
                     <Typography>Exportar:</Typography>
-                    <ExportData Export={hours} />
+                    <ExportData Export={exportHours} />
                 </Grid>
             </Grid>
             <TableContainer component={Paper} style={{ marginTop: 40 }}>
