@@ -37,8 +37,10 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
         setCustomers(data)
     }
 
-    const deleteCustomer = async (id) => {
-        await axios.delete(`${endpoint}customer/${id}`)
+    const inactiveCustomer = async (id) => {
+        await axios.put(`${endpoint}updateActiveCustomer/${id}`, {
+            active: 0,
+        })
         getCustomers()
         getCountCustomers()
     }
@@ -78,6 +80,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>ESTADO</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
                         </TableRow>
                     </TableHead>
@@ -87,7 +90,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
                                 <TableRow hover>
                                     <CustomerItems {...customer} />
                                     <CustomerActions
-                                        deleteCustomer={deleteCustomer}
+                                        inactiveCustomer={inactiveCustomer}
                                         {...customer}
                                     />
                                 </TableRow>

@@ -74,8 +74,6 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
             params: { customerId: customerId },
         })
 
-        console.log(data)
-
         setCountHours(data)
     }
 
@@ -180,6 +178,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                                 <HoursActions
                                     deleteHour={deleteHour}
                                     updateValidate={updateValidate}
+                                    customerId={customerId}
                                     {...hour}
                                 />
                             </TableRow>

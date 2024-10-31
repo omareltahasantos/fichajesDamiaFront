@@ -46,8 +46,11 @@ export function CampaignsTable({
         setCampaigns(data)
     }
 
-    const deleteCampaign = async (id) => {
-        await axios.delete(`${endpoint}campaign/${id}`)
+    const inactiveCampaign = async (id) => {
+        let data = await axios.put(`${endpoint}updateActiveCampaign/${id}`, {
+            active: 0,
+        })
+
         getCampaigns(customerId)
         getCountCampaign()
         getActiveCampaigns()
@@ -92,6 +95,7 @@ export function CampaignsTable({
                             <TableCell style={{ fontWeight: 'bold' }}>DESCRIPCION</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>FECHA INICIO</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>FECHA FINAL</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>ESTADO</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
                         </TableRow>
                     </TableHead>
@@ -101,7 +105,7 @@ export function CampaignsTable({
                                 <CampaignsItems {...camp} />
                                 <CampaignsActions
                                     customerId={customerId}
-                                    deleteCampaign={deleteCampaign}
+                                    inactiveCampaign={inactiveCampaign}
                                     {...camp}
                                 />
                             </TableRow>

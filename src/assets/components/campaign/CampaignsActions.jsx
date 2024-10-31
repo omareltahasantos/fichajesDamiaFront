@@ -1,10 +1,10 @@
 import React from 'react'
 import EditIcon from '@mui/icons-material/Edit'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { Tooltip, IconButton, TableCell } from '@mui/material'
+import BorderColorIcon from '@mui/icons-material/BorderColor'
 import { useNavigate } from 'react-router'
 
-export function CampaignsActions({ customerId, deleteCampaign, ...camp }) {
+export function CampaignsActions({ customerId, inactiveCampaign, ...camp }) {
     const navigate = useNavigate()
     return (
         <>
@@ -24,10 +24,10 @@ export function CampaignsActions({ customerId, deleteCampaign, ...camp }) {
                         />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Eliminar registro" arrow placement="top">
+                <Tooltip title="Dar de baja" arrow placement="top">
                     <IconButton>
-                        <DeleteForeverIcon
-                            onClick={() => deleteCampaign(camp.id)}
+                        <BorderColorIcon
+                            onClick={() => inactiveCampaign(camp.id)}
                             style={{
                                 backgroundColor: '#e53e3e',
                                 borderRadius: 5,

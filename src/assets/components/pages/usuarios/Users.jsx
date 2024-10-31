@@ -4,9 +4,7 @@ import { useLocation, useNavigate } from 'react-router'
 import { Grid, Typography, Breadcrumbs, Button, Container, Link, Divider } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { CardCampaign } from '../../campaign/CardCampaign'
-import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { UserTable } from '../../users/UserTable'
-import { Footer } from '../../Footer'
 import endpoint from '../../services/endpoint'
 import { DropdownApp } from '../../componentsApp/DropdownApp'
 import getCustomers from '../../services/methods'
@@ -14,6 +12,7 @@ import getCustomers from '../../services/methods'
 export function Users() {
     const navigate = useNavigate()
     const location = useLocation()
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const breadcrumb = [
         <Link
             underline="hover"
@@ -35,6 +34,12 @@ export function Users() {
 
     useEffect(() => {
         getCustomers().then((customers) => {
+            if (location.pathname === '/usuarios' && user.rol === 'CONTROL') {
+                customers.push({ label: 'MOSTRAR TODOS', value: 0 })
+                setCustomers(customers)
+                return
+            }
+
             setCustomers(customers)
         })
     }, [])
@@ -52,6 +57,7 @@ export function Users() {
     }, [customerSelected])
 
     const getCountUsers = async (customerId) => {
+        console.log(customerId)
         let { data } = await axios.get(`${endpoint}countUsers`, {
             params: { customerId },
         })
@@ -89,6 +95,24 @@ export function Users() {
                             {breadcrumb.map((bread) => bread)}
                         </Breadcrumbs>
                     </Grid>
+
+                    <Grid item md={3} xs={12}>
+                        <Button
+                            variant="contained"
+                            style={{
+                                textTransform: 'none',
+                                fontSize: '16px',
+                                backgroundColor: '#8BB925',
+                            }}
+                            onClick={() => {
+                                navigate('/usuarios/add', {
+                                    state: { customerId: customerSelected },
+                                })
+                            }}
+                        >
+                            <AddIcon /> Añadir usuario
+                        </Button>
+                    </Grid>
                     <Grid item md={12} xs={12}>
                         <DropdownApp
                             title={'Seleccionar cliente:'}
@@ -98,25 +122,6 @@ export function Users() {
                             options={customers}
                         />
                     </Grid>
-                    {customerSelected !== null && (
-                        <Grid item md={3} xs={12}>
-                            <Button
-                                variant="contained"
-                                style={{
-                                    textTransform: 'none',
-                                    fontSize: '16px',
-                                    backgroundColor: '#8BB925',
-                                }}
-                                onClick={() => {
-                                    navigate('/usuarios/add', {
-                                        state: { customerId: customerSelected },
-                                    })
-                                }}
-                            >
-                                <AddIcon /> Añadir usuario
-                            </Button>
-                        </Grid>
-                    )}
                 </Grid>
                 {customerSelected !== null && (
                     <>

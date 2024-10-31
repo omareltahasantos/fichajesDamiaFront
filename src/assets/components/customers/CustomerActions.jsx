@@ -1,12 +1,10 @@
 import React from 'react'
-import EqualizerIcon from '@mui/icons-material/Equalizer'
 import EditIcon from '@mui/icons-material/Edit'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { Tooltip, IconButton, TableCell } from '@mui/material'
 import { useNavigate } from 'react-router'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 
-export function CustomerActions({ deleteCustomer, ...customer }) {
+export function CustomerActions({ inactiveCustomer, ...customer }) {
     const navigate = useNavigate()
 
     return (
@@ -27,9 +25,9 @@ export function CustomerActions({ deleteCustomer, ...customer }) {
                         />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title={'Eliminar cliente'} arrow placement="top">
-                    <IconButton onClick={() => deleteCustomer(customer.id)}>
-                        <DeleteForeverIcon
+                <Tooltip title={'Dar de baja'} arrow placement="top">
+                    <IconButton onClick={() => inactiveCustomer(customer.id)}>
+                        <BorderColorIcon
                             style={{
                                 backgroundColor: 'red',
                                 borderRadius: 5,

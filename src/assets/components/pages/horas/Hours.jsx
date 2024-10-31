@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, Typography, Container, Grid, Divider } from '@mui/material'
 import { useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
 import { HeaderPages } from '../../HeaderPages'
 import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { CardHour } from '../../hours/CardHours'
@@ -11,6 +12,7 @@ import getCustomers from '../../services/methods'
 
 export function Hours() {
     const navigate = useNavigate()
+    const location = useLocation()
 
     const breadcrumb = [
         <Link
@@ -38,6 +40,10 @@ export function Hours() {
             setCustomers(customers)
         })
     }, [])
+
+    useEffect(() => {
+        setCustomerSelected(location.state.customerId)
+    }, [location.state.customerId])
 
     useEffect(() => {
         if (customerSelected === null) return

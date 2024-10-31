@@ -2,16 +2,17 @@ import React from 'react'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import EditIcon from '@mui/icons-material/Edit'
 import { Tooltip, IconButton, TableCell } from '@mui/material'
 import { useNavigate } from 'react-router'
 
-export function HoursActions({ deleteHour, updateValidate, ...hour }) {
+export function HoursActions({ deleteHour, updateValidate, customerId, ...hour }) {
     const navigate = useNavigate()
     return (
         <>
             {hour.validate === null || hour.validate === '' ? (
                 <TableCell style={{ display: 'flex' }}>
-                    <Tooltip title="Editar registro" arrow placement="top">
+                    <Tooltip title="Aceptar fichaje" arrow placement="top">
                         <IconButton>
                             <CheckIcon
                                 fontSize="small"
@@ -27,7 +28,7 @@ export function HoursActions({ deleteHour, updateValidate, ...hour }) {
                             />
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Editar registro" arrow placement="top">
+                    <Tooltip title="Denegar fichaje" arrow placement="top">
                         <IconButton>
                             <CloseIcon
                                 fontSize="small"
@@ -60,6 +61,24 @@ export function HoursActions({ deleteHour, updateValidate, ...hour }) {
                 </TableCell>
             ) : (
                 <TableCell>
+                    <Tooltip title="Editar registro" arrow placement="top">
+                        <IconButton>
+                            <EditIcon
+                                fontSize="small"
+                                onClick={() =>
+                                    navigate(`/horas/edit/${hour.id}`, {
+                                        state: { customerId: customerId, hour: hour },
+                                    })
+                                }
+                                style={{
+                                    backgroundColor: '#8bb925',
+                                    borderRadius: 5,
+                                    color: 'white',
+                                    padding: 3,
+                                }}
+                            />
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title="Eliminar registro" arrow placement="top">
                         <IconButton>
                             <DeleteForeverIcon

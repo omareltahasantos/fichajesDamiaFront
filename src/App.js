@@ -18,6 +18,7 @@ import { Customer } from './assets/components/pages/clientes/Customer'
 import { EditCustomer } from './assets/components/pages/clientes/edit/EditCustomer'
 import { AddCustomer } from './assets/components/pages/clientes/add/AddCustomer'
 import AppContainer from './assets/components/appbar/AppContainer'
+import { EditHour } from './assets/components/pages/horas/Edit/EditHour'
 function App() {
     return (
         <>
@@ -37,6 +38,7 @@ function App() {
                         <Route path="/campaigns/add" element={<AddCampaign />} />
                         <Route path="/campaigns/edit/:id" element={<EditCampaign />} />
                         <Route path="/horas" element={<Hours />}></Route>
+                        <Route path="/horas/edit/:id" element={<EditHour />}></Route>
                         <Route path="/usuarios" element={<Users />}></Route>
                         <Route path="/usuarios/add" element={<AddUser />} />
                         <Route path="/usuarios/edit/:id" element={<EditUser />} />
