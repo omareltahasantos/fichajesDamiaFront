@@ -42,8 +42,9 @@ export function Hours() {
     }, [])
 
     useEffect(() => {
+        if (location.state === null) return
         setCustomerSelected(location.state.customerId)
-    }, [location.state.customerId])
+    }, [location?.state?.customerId])
 
     useEffect(() => {
         if (customerSelected === null) return

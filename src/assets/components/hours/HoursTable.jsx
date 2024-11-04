@@ -43,6 +43,12 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
     }, [hours])
 
     const parseHoursToExport = (hours) => {
+        let parseValidate = (validate) => {
+            if (validate === '' || validate === null) return 'No validado'
+            if (validate === 'Si') return 'Validado'
+            if (validate === 'No') return 'Rechazado'
+        }
+
         setExportHours(
             hours.map((hour) => {
                 let startDate = hour.register_start
@@ -62,7 +68,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                     'Ubicación final': hour.ubication_end,
                     'Horas trabajadas': hour.hours,
                     'Tipo de hora': hour.type,
-                    Validado: hour.validate,
+                    Validado: parseValidate(hour.validate),
                     'Validado por': hour.validate_by,
                 }
             })
