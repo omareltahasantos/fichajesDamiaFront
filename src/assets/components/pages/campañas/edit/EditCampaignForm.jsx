@@ -7,6 +7,7 @@ import { EditCheckbox } from '../../../componentsApp/EditCheckbox'
 import { uniqueId } from 'lodash'
 import { useNavigate } from 'react-router-dom'
 import { AlertApp } from '../../../componentsApp/AlertApp'
+import { TextFieldSearch } from '../../../componentsApp/TextFieldSearch'
 
 export function EditCampaignForm({ campaignId, customerId }) {
     const navigate = useNavigate()
@@ -15,6 +16,8 @@ export function EditCampaignForm({ campaignId, customerId }) {
     const [date_start, setDate_start] = useState('')
     const [date_end, setDate_end] = useState('')
     const [users, setUsers] = useState([])
+    const [usersShown, setUsersShown] = useState([])
+    const [keyword, setKeyword] = useState('')
     const [participatingUsers, setParticipatingUsers] = useState([])
 
     useEffect(() => {
@@ -23,6 +26,18 @@ export function EditCampaignForm({ campaignId, customerId }) {
         infoCampaign()
         participatingUsersByCampaign()
     }, [])
+
+    useEffect(() => {
+        if (keyword.value === 'all' || keyword === '') {
+            getUsers()
+            return
+        }
+
+        let userSelected = users.filter((user) => {
+            return user.id === keyword.value
+        })
+        setUsersShown(userSelected)
+    }, [keyword])
 
     const infoCampaign = async () => {
         let { data } = await axios.get(`${endpoint}campaign/${campaignId}`)
@@ -74,6 +89,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
         }
 
         setUsers(data)
+        setUsersShown(data)
     }
 
     const addCheckUser = (userId, campaignId) => {
@@ -249,7 +265,18 @@ export function EditCampaignForm({ campaignId, customerId }) {
                     USUARIOS
                 </Typography>
                 <Grid container spacing={0}>
-                    {users.length === 0 ? (
+                    <Grid item md={12} xs={12} paddingBottom={0}>
+                        <TextFieldSearch
+                            title={'Buscar usuario'}
+                            value={keyword}
+                            setValue={setKeyword}
+                            options={users.map((user) => {
+                                return { value: user.id, label: user.name }
+                            })}
+                            optionDefault={'Selecciona un usuario'}
+                        />
+                    </Grid>
+                    {usersShown.length === 0 ? (
                         <Grid item md={12} xs={12}>
                             <AlertApp
                                 severity={'warning'}
@@ -260,7 +287,7 @@ export function EditCampaignForm({ campaignId, customerId }) {
                             />
                         </Grid>
                     ) : (
-                        users.map((user) => (
+                        usersShown.map((user) => (
                             <Grid item md={3} xs={6}>
                                 <FormControlLabel
                                     control={

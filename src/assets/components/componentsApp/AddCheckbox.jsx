@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Checkbox from '@mui/material/Checkbox'
 
-export function AddCheckbox({ addMethod, deleteMethod }) {
+export function AddCheckbox({ addMethod, deleteMethod, itemChecked }) {
     const [checked, setChecked] = React.useState(false)
 
     const handleChange = (event) => {
@@ -14,6 +14,10 @@ export function AddCheckbox({ addMethod, deleteMethod }) {
             deleteMethod()
         }
     }
+
+    React.useEffect(() => {
+        setChecked(itemChecked)
+    }, [itemChecked])
 
     return (
         <Checkbox

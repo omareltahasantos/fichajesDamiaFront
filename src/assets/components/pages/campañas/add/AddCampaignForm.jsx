@@ -6,6 +6,8 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
 import { AlertApp } from '../../../componentsApp/AlertApp'
+import { DropdownApp } from '../../../componentsApp/DropdownApp'
+import { TextFieldSearch } from '../../../componentsApp/TextFieldSearch'
 
 export function AddCampaignForm({ customerId }) {
     const navigate = useNavigate()
@@ -15,6 +17,8 @@ export function AddCampaignForm({ customerId }) {
     const [date_start, setDate_start] = useState('')
     const [date_end, setDate_end] = useState('')
     const [users, setUsers] = useState([])
+    const [usersShown, setUsersShown] = useState([])
+    const [keyword, setKeyword] = useState('')
 
     const [checkUsers, setCheckUsers] = useState([])
 
@@ -22,6 +26,18 @@ export function AddCampaignForm({ customerId }) {
         parsingDate(setDate_start, setDate_end)
         getUsers(customerId)
     }, [customerId])
+
+    useEffect(() => {
+        if (keyword.value === 'all' || keyword === '') {
+            getUsers(customerId)
+            return
+        }
+
+        let userSelected = users.filter((user) => {
+            return user.id === keyword.value
+        })
+        setUsersShown(userSelected)
+    }, [keyword])
 
     function parsingDate(event, event2) {
         let start_date = new Date()
@@ -50,6 +66,7 @@ export function AddCampaignForm({ customerId }) {
         }
 
         setUsers(data)
+        setUsersShown(data)
     }
 
     const addCheckUser = (userId, label) => {
@@ -195,11 +212,22 @@ export function AddCampaignForm({ customerId }) {
                     </Grid>
                 </Grid>
 
-                <Typography paddingTop="10px" paddingBottom="10px">
+                <Typography paddingTop="10px" paddingBottom="20px">
                     USUARIOS
                 </Typography>
                 <Grid container spacing={0}>
-                    {users.length === 0 ? (
+                    <Grid item md={12} xs={12} paddingBottom={0}>
+                        <TextFieldSearch
+                            title={'Buscar usuario'}
+                            value={keyword}
+                            setValue={setKeyword}
+                            options={users.map((user) => {
+                                return { value: user.id, label: user.name }
+                            })}
+                            optionDefault={'Selecciona un usuario'}
+                        />
+                    </Grid>
+                    {usersShown.length === 0 ? (
                         <Grid item md={12} xs={12}>
                             <AlertApp
                                 severity={'warning'}
@@ -210,13 +238,16 @@ export function AddCampaignForm({ customerId }) {
                             />
                         </Grid>
                     ) : (
-                        users.map((user) => (
+                        usersShown.map((user) => (
                             <Grid item md={3} xs={6}>
                                 <FormControlLabel
                                     control={
                                         <AddCheckbox
                                             deleteMethod={() => deleteCheckUser(user.id, user.name)}
                                             addMethod={() => addCheckUser(user.id, user.name)}
+                                            itemChecked={checkUsers.some(
+                                                (item) => item.userId === user.id
+                                            )}
                                         />
                                     }
                                     label={user.name}
