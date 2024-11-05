@@ -18,6 +18,7 @@ import { UserItems } from './UserItems'
 import { UserActions } from './UserActions'
 import { UserSearch } from './UserSearch'
 import { PaginationItems } from '../PaginationItems'
+import { parseRol } from '../services/methods'
 
 export function UserTable({ getCountUsers, countUsers, getCountContractedHours, customerId }) {
     const [users, setUsers] = useState([])
@@ -39,7 +40,12 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
             return
         }
 
-        setUsers(data)
+        setUsers(
+            data.map((user) => ({
+                ...user,
+                rol: parseRol(user.rol),
+            }))
+        )
     }
 
     const deleteUser = async (id) => {
@@ -72,7 +78,12 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
             return
         }
 
-        setUsers(data)
+        setUsers(
+            data.map((user) => ({
+                ...user,
+                rol: parseRol(user.rol),
+            }))
+        )
     }
 
     return (
@@ -92,6 +103,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>DNI</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>CORREO ELECTRONICO</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>CONTRATADAS(H)</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>ROL</TableCell>

@@ -4,9 +4,9 @@ export function ImageForm() {
     return (
         <>
             <img
-                src={require('../../logos/Logotipo-Metro_Principal_RGB_0.png')}
+                src={require('../../logos/logo-sm-login.png')}
                 alt=""
-                style={{ width: 200, height: 200 }}
+                style={{ width: '140px', height: '100px' }}
             />
         </>
     )

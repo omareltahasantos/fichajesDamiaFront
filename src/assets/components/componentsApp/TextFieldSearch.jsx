@@ -1,7 +1,14 @@
 import React from 'react'
 import Select from 'react-select'
 
-export function TextFieldSearch({ value, setValue, options, optionDefault, title }) {
+export function TextFieldSearch({
+    value,
+    setValue,
+    options,
+    optionDefault,
+    title,
+    required = true,
+}) {
     const isMobile = window.innerWidth < 768
     const handleChange = (e) => {
         setValue(e)
@@ -35,7 +42,7 @@ export function TextFieldSearch({ value, setValue, options, optionDefault, title
                 defaultValue={optionDefault}
                 options={[{ value: 'all', label: 'Mostrar todos' }, ...options]}
                 onChange={(e) => handleChange(e)}
-                required
+                required={required}
                 placeholder={title}
                 defaultInputValue={value?.label}
                 styles={customStyles}

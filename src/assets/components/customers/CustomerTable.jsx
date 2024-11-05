@@ -80,6 +80,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
+                            <TableCell style={{ fontWeight: 'bold' }}>CÓDIGO</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>ESTADO</TableCell>
                             <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
                         </TableRow>

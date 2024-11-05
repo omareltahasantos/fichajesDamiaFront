@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { TextField, Button, Typography, Box, Grid, Alert } from '@mui/material'
+import { TextField, Button, Typography, Box, Grid } from '@mui/material'
 import axios from 'axios'
-import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
+import { SnackbarApp } from '../../../componentsApp/SnackbarApp'
 
 export function EditCustomerForm({ customerId }) {
-    const navigate = useNavigate()
     const [name, setName] = useState('')
+    const [code, setCode] = useState('')
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        text: '',
+        color: '',
+    })
 
     useEffect(() => {
         getCustomer()
@@ -16,33 +21,38 @@ export function EditCustomerForm({ customerId }) {
         let { data } = await axios.get(`${endpoint}customer/${customerId}`)
 
         setName(data.name)
+        setCode(data.code)
     }
 
     const editCustomer = async (e) => {
         e.preventDefault()
 
-        let { data } = await axios.put(`${endpoint}customer/${customerId}`, {
+        let { data, status } = await axios.put(`${endpoint}customer/${customerId}`, {
             name: name,
+            code: code,
         })
 
-        if (data.length === 0) {
-            Alert('Los datos introducidos no són correctos')
-            return
-        }
-
-        navigate('/clientes')
+        setSnackbar({
+            open: true,
+            text: status === 201 ? 'Proyecto editado correctamente' : 'Error al editar el proyecto',
+            color: status === 201 ? 'success' : 'error',
+        })
     }
 
     return (
         <>
             <Box component="form" autoComplete="off" onSubmit={editCustomer}>
+                <SnackbarApp
+                    properties={snackbar}
+                    handleClose={() => setSnackbar({ ...snackbar, open: false })}
+                />
                 <Grid container spacing={4} flexDirection="row">
                     <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
                             fullWidth
-                            placeholder="Técnico/a"
+                            placeholder="Proyecto"
                             variant="standard"
                             required
                             value={name}
@@ -51,7 +61,31 @@ export function EditCustomerForm({ customerId }) {
                             }}
                             error={name.length === 0 ? true : false}
                             helperText={
-                                name.length === 0 ? 'Por favor escribe el nombre de la campaña' : ''
+                                name.length === 0 ? 'Por favor escribe el nombre del proyecto' : ''
+                            }
+                            FormHelperTextProps={{
+                                style: {
+                                    fontSize: '14px',
+                                    paddingTop: '7px',
+                                },
+                            }}
+                        />
+                    </Grid>
+                    <Grid item md={4} xs={12} paddingBottom="15px">
+                        <Typography paddingBottom="15px">CÓDIGO</Typography>
+                        <TextField
+                            type="text"
+                            fullWidth
+                            placeholder="Código"
+                            variant="standard"
+                            required
+                            value={code}
+                            onChange={(e) => {
+                                setCode(e.target.value)
+                            }}
+                            error={code.length === 0 ? true : false}
+                            helperText={
+                                code.length === 0 && 'Por favor escribe el código del proyecto'
                             }
                             FormHelperTextProps={{
                                 style: {

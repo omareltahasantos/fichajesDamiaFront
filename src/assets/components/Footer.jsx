@@ -4,7 +4,7 @@ import { Divider, Grid, Typography } from '@mui/material'
 export function Footer() {
     return (
         <>
-            <Divider style={{ marginTop: 30 }} />
+            <Divider style={{ marginTop: 30, marginBottom: 20 }} />
             <Grid
                 container
                 spacing={0}
@@ -21,9 +21,9 @@ export function Footer() {
                     >
                         Copyright © 2022
                         <img
-                            src={require('../../assets/logos/Logotipo-Metro_Principal_RGB_0.png')}
+                            src={require('../../assets/logos/sm-logo-h.png')}
                             alt=""
-                            style={{ width: 60, height: 60 }}
+                            style={{ width: 'auto', height: 'auto' }}
                         />
                     </Typography>
                 </Grid>

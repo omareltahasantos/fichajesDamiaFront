@@ -54,7 +54,7 @@ export function EditWorkHour() {
                             >
                                 <ArrowBackIcon />
                             </IconButton>
-                            Editar horas
+                            Finalizar turno
                         </Typography>
                     </Grid>
                     <Grid item md={4}>

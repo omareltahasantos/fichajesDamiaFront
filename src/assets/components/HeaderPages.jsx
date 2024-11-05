@@ -32,10 +32,10 @@ export function HeaderPages({
                 </Grid>
                 <Grid item md={12}>
                     <DropdownApp
-                        title={'Seleccionar cliente:'}
+                        title={'Seleccionar proyecto:'}
                         value={customerSelected}
                         setValue={setCustomerSelected}
-                        optionDefault={'Buscar cliente'}
+                        optionDefault={'Buscar proyecto'}
                         options={customers}
                     />
                 </Grid>

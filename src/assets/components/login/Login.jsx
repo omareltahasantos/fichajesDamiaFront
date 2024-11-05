@@ -10,6 +10,11 @@ export function Login() {
                 maxWidth="xs"
                 sx={{
                     paddingTop: '30px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '80vh',
                 }}
                 component="form"
             >

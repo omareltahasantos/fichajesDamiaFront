@@ -1,54 +1,54 @@
-import React, { useEffect, useState } from 'react'
-import {
-    TextField,
-    Button,
-    Typography,
-    Box,
-    Grid,
-    NativeSelect,
-    InputAdornment,
-    IconButton,
-    Alert,
-} from '@mui/material'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import React, { useState } from 'react'
+import { TextField, Button, Typography, Box, Grid, Snackbar } from '@mui/material'
 import axios from 'axios'
-import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
+import { SnackbarApp } from '../../../componentsApp/SnackbarApp'
 
 export function AddCustomerForm() {
-    const navigate = useNavigate()
     const [name, setName] = useState('')
+    const [code, setCode] = useState('')
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        text: '',
+        color: '',
+    })
 
     const addUser = async (e) => {
         e.preventDefault()
 
-        let json = {
-            name: name,
-        }
-
-        let { data } = await axios.get(`${endpoint}customer`, {
-            params: json,
+        let { status } = await axios.get(`${endpoint}customer`, {
+            params: {
+                name: name,
+                code: code,
+            },
         })
 
-        if (data.length === 0) {
-            Alert('Los datos introducidos no són correctos')
-            return
+        if (status === 201) {
+            setName('')
+            setCode('')
         }
 
-        navigate('/clientes')
+        setSnackbar({
+            open: true,
+            text: status === 201 ? 'Proyecto creado correctamente' : 'Error al crear el proyecto',
+            color: status === 201 ? 'success' : 'error',
+        })
     }
 
     return (
         <>
             <Box component="form" autoComplete="off" onSubmit={addUser}>
+                <SnackbarApp
+                    properties={snackbar}
+                    handleClose={() => setSnackbar({ ...snackbar, open: false })}
+                />
                 <Grid container spacing={4} flexDirection="row">
-                    <Grid item md={6} xs={12} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
                             fullWidth
-                            placeholder="Cliente/a"
+                            placeholder="Proyecto"
                             variant="standard"
                             required
                             value={name}
@@ -57,7 +57,31 @@ export function AddCustomerForm() {
                             }}
                             error={name.length === 0 ? true : false}
                             helperText={
-                                name.length === 0 && 'Por favor escribe el nombre del cliente'
+                                name.length === 0 && 'Por favor escribe el nombre del proyecto'
+                            }
+                            FormHelperTextProps={{
+                                style: {
+                                    fontSize: '14px',
+                                    paddingTop: '7px',
+                                },
+                            }}
+                        />
+                    </Grid>
+                    <Grid item md={4} xs={12} paddingBottom="15px">
+                        <Typography paddingBottom="15px">CÓDIGO</Typography>
+                        <TextField
+                            type="text"
+                            fullWidth
+                            placeholder="Código"
+                            variant="standard"
+                            required
+                            value={code}
+                            onChange={(e) => {
+                                setCode(e.target.value)
+                            }}
+                            error={code.length === 0 ? true : false}
+                            helperText={
+                                code.length === 0 && 'Por favor escribe el código del proyecto'
                             }
                             FormHelperTextProps={{
                                 style: {

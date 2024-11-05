@@ -55,27 +55,20 @@ export function DashbordBody() {
                     </Grid>
                 </Grid>
                 <Grid container spacing={5} style={{ paddingTop: 50 }}>
+                    {user.rol === 'CONTROL' && (
+                        <Grid item md={6} xs={12}>
+                            <CardDashboard
+                                title="Proyectos"
+                                description="Añade los proyectos necesarios"
+                            />
+                        </Grid>
+                    )}
                     <Grid item md={6} xs={12}>
                         <CardDashboard
                             title="Campañas"
                             description="Añade las campañas necesarias para tus proyectos"
                         />
                     </Grid>
-                    <Grid item md={6} xs={12}>
-                        <CardDashboard
-                            title="Horas"
-                            description="Visualiza el registro de horas de los técnicos"
-                        />
-                    </Grid>
-                </Grid>
-
-                <Grid
-                    container
-                    spacing={5}
-                    style={{ paddingTop: 50 }}
-                    justifyContent={'center'}
-                    alignItems={'center'}
-                >
                     {user.rol === 'COORDINADOR' && (
                         <Grid item md={6} xs={12}>
                             <CardDashboard
@@ -88,19 +81,16 @@ export function DashbordBody() {
                         <Grid item md={6} xs={12}>
                             <CardDashboard
                                 title="Usuarios"
-                                description="Añade los usuarios necesarios para tus proyectos"
+                                description="Añade los usuarios necesarios para tus campañas"
                             />
                         </Grid>
                     ) : null}
-
-                    {user.rol === 'CONTROL' && (
-                        <Grid item md={6} xs={12}>
-                            <CardDashboard
-                                title="Clientes"
-                                description="Añade los clientes necesarios para tus proyectos"
-                            />
-                        </Grid>
-                    )}
+                    <Grid item md={6} xs={12}>
+                        <CardDashboard
+                            title="Horas"
+                            description="Visualiza el registro de horas de los técnicos"
+                        />
+                    </Grid>
                 </Grid>
             </Container>
         </>

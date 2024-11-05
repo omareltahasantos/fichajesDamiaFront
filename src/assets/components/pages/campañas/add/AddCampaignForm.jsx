@@ -225,6 +225,7 @@ export function AddCampaignForm({ customerId }) {
                                 return { value: user.id, label: user.name }
                             })}
                             optionDefault={'Selecciona un usuario'}
+                            required={false}
                         />
                     </Grid>
                     {usersShown.length === 0 ? (

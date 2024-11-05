@@ -4,6 +4,8 @@ import EventNoteIcon from '@mui/icons-material/EventNote'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import EditIcon from '@mui/icons-material/Edit'
+import { ButtonApp } from '../components/componentsApp/ButtonApp'
+import { parseDate } from '../components/services/methods'
 
 export function DisplayHoursStartDay({ registerFinalHours, deleteHour, ...item }) {
     return (
@@ -19,8 +21,8 @@ export function DisplayHoursStartDay({ registerFinalHours, deleteHour, ...item }
                     marginBottom: '15px',
                 }}
             >
-                <Grid container spacing={0}>
-                    <Grid item md={9} xs={9}>
+                <Grid container spacing={1}>
+                    <Grid item md={9} xs={5}>
                         <Typography
                             align="left"
                             variant="body2"
@@ -34,24 +36,13 @@ export function DisplayHoursStartDay({ registerFinalHours, deleteHour, ...item }
                     <Grid
                         item
                         md={2}
-                        xs={2}
+                        xs={6}
                         style={{ paddingBottom: '15px', display: 'flex', justifyContent: 'right' }}
                     >
-                        <IconButton
-                            disableRipple
-                            style={{ padding: 0 }}
-                            onClick={() => registerFinalHours(item.id)}
-                        >
-                            <EditIcon
-                                fontSize="small"
-                                style={{
-                                    color: 'white',
-                                    backgroundColor: '#8bb925',
-                                    padding: '3px',
-                                    borderRadius: '8px',
-                                }}
-                            />
-                        </IconButton>
+                        <ButtonApp
+                            text={'Finalizar turno'}
+                            method={() => registerFinalHours(item.id)}
+                        />
                     </Grid>
                     <Grid item md={1} xs={1} style={{ paddingBottom: '15px' }}>
                         <IconButton
@@ -82,7 +73,7 @@ export function DisplayHoursStartDay({ registerFinalHours, deleteHour, ...item }
                         }}
                     />
                     <Typography align="left" variant="body1" fontWeight="bold">
-                        {`${item.register_start}`}
+                        {parseDate(item.register_start)}
                         <Typography align="left" variant="body2">
                             {item.name}
                         </Typography>

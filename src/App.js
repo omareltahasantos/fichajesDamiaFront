@@ -44,9 +44,9 @@ function App() {
                         <Route path="/usuarios/edit/:id" element={<EditUser />} />
                         <Route path="/estadisticas" element={<Stats />}></Route>
                         <Route path="/estadisticas/:id" element={<StatsCampaign />}></Route>
-                        <Route path="/clientes" element={<Customer />}></Route>
-                        <Route path="/clientes/add" element={<AddCustomer />} />
-                        <Route path="/clientes/edit/:id" element={<EditCustomer />} />
+                        <Route path="/proyectos" element={<Customer />}></Route>
+                        <Route path="/proyectos/add" element={<AddCustomer />} />
+                        <Route path="/proyectos/edit/:id" element={<EditCustomer />} />
                     </Routes>
                 </AppContainer>
             </BrowserRouter>

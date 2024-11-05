@@ -14,7 +14,7 @@ export function CustomerActions({ inactiveCustomer, ...customer }) {
                     <IconButton>
                         <EditIcon
                             onClick={() => {
-                                navigate(`/clientes/edit/${customer.id}`)
+                                navigate(`/proyectos/edit/${customer.id}`)
                             }}
                             style={{
                                 backgroundColor: '#3182ce',

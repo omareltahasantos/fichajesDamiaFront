@@ -52,7 +52,7 @@ export function AddHours() {
                             >
                                 <ArrowBackIcon />
                             </IconButton>
-                            Añadir horas
+                            Iniciar turno
                         </Typography>
                     </Grid>
                     <Grid item md={4} xs={12}>

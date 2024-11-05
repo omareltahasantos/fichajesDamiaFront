@@ -24,8 +24,9 @@ export function AddUserForm({ customerId }) {
     const navigate = useNavigate()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [dni, setDni] = useState('')
     const [dateStart, setDateStart] = useState('')
-    const [contractHours, setContractHours] = useState(null)
+    const [contractHours, setContractHours] = useState(0)
     const [rol, setRol] = useState('')
     const [password, setPassword] = useState('')
     const [roles, setRoles] = useState(null)
@@ -40,6 +41,10 @@ export function AddUserForm({ customerId }) {
             setCustomers(customers)
         })
     }, [])
+
+    useEffect(() => {
+        setPassword(dni.length > 0 ? `sm_${dni.substring(0, 4)}` : '')
+    }, [dni])
 
     function parsingDate(event) {
         let start_date = new Date()
@@ -65,7 +70,20 @@ export function AddUserForm({ customerId }) {
             return []
         }
 
-        setRoles(data)
+        setRoles(
+            data.map((item) => {
+                if (item.rol === 'COORDINADOR')
+                    return {
+                        value: item.rol,
+                        label: item.rol,
+                    }
+
+                return {
+                    value: item.rol,
+                    label: item.rol === 'ADMIN' ? 'JP' : 'USUARIO',
+                }
+            })
+        )
     }
 
     const handleShowPassword = () => {
@@ -94,6 +112,7 @@ export function AddUserForm({ customerId }) {
 
         let json = {
             name: name,
+            dni: dni,
             email: email,
             password: password,
             hours_contract: contractHours,
@@ -101,7 +120,7 @@ export function AddUserForm({ customerId }) {
             date_start: dateStart,
         }
 
-        let { data } = await axios.get(`${endpoint}user`, {
+        let { data, status } = await axios.get(`${endpoint}user`, {
             params: json,
         })
 
@@ -130,7 +149,7 @@ export function AddUserForm({ customerId }) {
         <>
             <Box component="form" autoComplete="off" onSubmit={addUser}>
                 <Grid container spacing={4} flexDirection="row">
-                    <Grid item md={6} xs={12} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
                         <TextField
                             type="text"
@@ -144,7 +163,7 @@ export function AddUserForm({ customerId }) {
                             }}
                             error={name.length === 0 ? true : false}
                             helperText={
-                                name.length === 0 ? 'Por favor escribe el nombre de la campaña' : ''
+                                name.length === 0 ? 'Por favor escribe el nombre del técnico/a' : ''
                             }
                             FormHelperTextProps={{
                                 style: {
@@ -154,7 +173,35 @@ export function AddUserForm({ customerId }) {
                             }}
                         />
                     </Grid>
-                    <Grid item md={6} xs={12} paddingBottom="15px">
+                    <Grid item md={4} xs={12} paddingBottom="15px">
+                        <Typography paddingBottom="15px">DNI</Typography>
+                        <TextField
+                            type="text"
+                            fullWidth
+                            placeholder="12345678A"
+                            variant="standard"
+                            required
+                            value={dni}
+                            onChange={(e) => {
+                                setDni(e.target.value)
+                            }}
+                            error={dni.length === 0 || /^\w{9}$/.test(dni) === false ? true : false}
+                            helperText={
+                                dni.length === 0
+                                    ? 'Por favor escribe el dni del técnico/a'
+                                    : /^\w{9}$/.test(dni) === false
+                                    ? 'Por favor escribe un dni válido'
+                                    : ''
+                            }
+                            FormHelperTextProps={{
+                                style: {
+                                    fontSize: '14px',
+                                    paddingTop: '7px',
+                                },
+                            }}
+                        />
+                    </Grid>
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">EMAIL</Typography>
                         <TextField
                             type="email"
@@ -231,7 +278,9 @@ export function AddUserForm({ customerId }) {
                         >
                             <option>Selecciona un rol</option>
                             {roles !== null &&
-                                roles.map((item) => <option value={item.rol}>{item.rol}</option>)}
+                                roles.map((item) => (
+                                    <option value={item.value}>{item.label}</option>
+                                ))}
                         </NativeSelect>
                     </Grid>
                 </Grid>
@@ -245,14 +294,12 @@ export function AddUserForm({ customerId }) {
                             placeholder="contraseñasegura1234"
                             variant="standard"
                             value={password}
-                            onChange={(e) => {
-                                setPassword(e.target.value)
-                            }}
                             error={password.length === 0 ? true : false}
                             helperText={
                                 password.length === 0 ? 'Por favor escribe una contraseña' : ''
                             }
                             InputProps={{
+                                readOnly: true,
                                 endAdornment: (
                                     <InputAdornment position="start">
                                         <IconButton onClick={handleShowPassword}>
@@ -265,7 +312,7 @@ export function AddUserForm({ customerId }) {
                     </Grid>
                 </Grid>
                 <Typography paddingTop="10px" paddingBottom="10px">
-                    CLIENTES
+                    PROYECTOS
                 </Typography>
                 <Grid container spacing={0}>
                     {customers.length === 0 ? (
@@ -274,7 +321,7 @@ export function AddUserForm({ customerId }) {
                                 severity={'warning'}
                                 title={'Atención:'}
                                 message={
-                                    'No hay clientes creados, debes contactar con informática para añadir clientes.'
+                                    'No hay proyectos creados, debes contactar con informática para añadir proyectos.'
                                 }
                             />
                         </Grid>

@@ -17,8 +17,8 @@ export function AppBarComponent() {
             <AppBar position="static" style={{ backgroundColor: 'white' }}>
                 <Toolbar variant="regular">
                     <img
-                        src={require('../../logos/Logotipo-Metro_Principal_RGB_0.png')}
-                        style={{ width: 80, height: 60 }}
+                        src={require('../../logos/logo-sm-login.png')}
+                        style={{ width: 60, height: 40, marginTop: 10, marginBottom: 10 }}
                     />
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}></Typography>
                     <Button

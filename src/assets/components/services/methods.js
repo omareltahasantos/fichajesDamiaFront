@@ -49,3 +49,46 @@ export default function getCustomers() {
         }
     })
 }
+
+export function parseRol(rol) {
+    switch (rol) {
+        case 'ADMIN':
+            return 'JP'
+        case 'COORDINADOR':
+            return 'COORDINADOR'
+        case 'TECNICO':
+            return 'USUARIO'
+        default:
+    }
+}
+
+export function parseDate(dateInput) {
+    console.log('dateInput:', dateInput)
+    // Asegurarse de que la entrada es un objeto Date válido
+    const date = new Date(dateInput)
+    console.log(date)
+
+    // Verificar si la fecha es válida
+    if (isNaN(date)) {
+        throw new Error('Fecha inválida')
+    }
+
+    // Obtener día, mes y año
+    const day = String(date.getDate()).padStart(2, '0') // DD
+    const month = String(date.getMonth() + 1).padStart(2, '0') // MM (los meses en JS comienzan desde 0)
+    const year = date.getFullYear() // AAAA
+
+    // Obtener la hora, minutos y segundos si existen
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    const seconds = String(date.getSeconds()).padStart(2, '0')
+
+    // Si la fecha tiene hora, añadirla al final
+    const formattedDate = `${day}-${month}-${year}`
+    const formattedTime = `${hours}:${minutes}:${seconds}`
+
+    // Si tiene tiempo, devolver la fecha con la hora, si no, solo la fecha
+    return formattedTime === '01:00:00' || formattedTime === '02:00:00'
+        ? formattedDate
+        : `${formattedDate} ${formattedTime}`
+}

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { Container, Grid, Divider, Box, Typography } from '@mui/material'
 import { DashbordTitlAndSubtitl } from './DashbordTitlAndSubtitl'
 import { ContractHours } from '../../../home_tecnicos/ContractHours'
 import { DisplayCampaigns } from './DisplayCampaigns'
-import { Footer } from '../../Footer'
 import axios from 'axios'
 import endpoint from '../../services/endpoint'
-import AppContainer from '../../appbar/AppContainer'
 
 export function DashboardHome() {
     const navigate = useNavigate()

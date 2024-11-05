@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router'
 import { Grid, Typography, Breadcrumbs, Button, Container, Link, Divider } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import endpoint from '../../services/endpoint'
-import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { CardCampaign } from '../../campaign/CardCampaign'
-import { Footer } from '../../Footer'
 import { CustomerTable } from '../../customers/CustomerTable'
 
 export function Customer() {
@@ -23,7 +21,7 @@ export function Customer() {
             Home
         </Link>,
         <Typography key={2} style={{ fontWeight: 'bold' }}>
-            Clientes
+            Proyectos
         </Typography>,
     ]
 
@@ -53,7 +51,7 @@ export function Customer() {
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
                         >
-                            Clientes
+                            Proyectos
                         </Typography>
                     </Grid>
                     <Grid item md={3} xs={12}>
@@ -70,16 +68,16 @@ export function Customer() {
                                 backgroundColor: '#8BB925',
                             }}
                             onClick={() => {
-                                navigate('/clientes/add')
+                                navigate('/proyectos/add')
                             }}
                         >
-                            <AddIcon /> Añadir clientes
+                            <AddIcon /> Añadir proyectos
                         </Button>
                     </Grid>
                 </Grid>
                 <Grid container spacing={0}>
                     <Grid item md={12} xs={12}>
-                        <CardCampaign title="Total clientes" description={countCustomers} />
+                        <CardCampaign title="Total proyectos" description={countCustomers} />
                     </Grid>
                 </Grid>
                 <Divider style={{ marginTop: 20, marginBottom: 20, border: '2px solid #b9d47b' }} />

@@ -5,13 +5,20 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
 import { useNavigate } from 'react-router'
+import { SnackbarApp } from '../componentsApp/SnackbarApp'
+import { showSnackbar } from '../services/snackbarMethods'
 
 export function LoginForm() {
     const navigate = useNavigate()
-    const [email, setEmail] = useState('')
+    const [dni, setDni] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [disabledButton, setDisabledButton] = useState(true)
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        text: '',
+        color: '',
+    })
 
     useEffect(() => {
         let user = JSON.parse(sessionStorage.getItem('user'))
@@ -22,29 +29,38 @@ export function LoginForm() {
     }, [])
 
     useEffect(() => {
-        if (email !== '' && password !== '') {
+        if (dni !== '' && password !== '') {
             setDisabledButton(false)
+            return
         }
-    }, [email, password])
+        showSnackbar(setSnackbar, 'Rellene todos los campos', 'warning')
+        setDisabledButton(true)
+    }, [dni, password])
 
     const handleLogin = async () => {
-        let { data } = await axios.get(`${endpoint}checkuser`, {
-            params: {
-                email: email,
-                password: password,
-            },
-        })
+        try {
+            let { data } = await axios.get(`${endpoint}checkuser`, {
+                params: {
+                    dni: dni,
+                    password: password,
+                },
+            })
 
-        if (data.length !== 0) {
-            if (data[0].estado === 'Baja') {
-                setDisabledButton(true)
+            if (data.length === 0) {
+                showSnackbar(setSnackbar, 'Usuario no encontrado', 'error')
                 return
             }
-            sessionStorage.setItem('user', JSON.stringify(data[0]))
-            navigate('/')
-        }
 
-        return
+            if (data.estado === 'Baja') {
+                showSnackbar(setSnackbar, 'Usuario dado de baja', 'error')
+                return
+            }
+
+            sessionStorage.setItem('user', JSON.stringify(data))
+            navigate('/')
+        } catch (e) {
+            showSnackbar(setSnackbar, 'Error al iniciar sesión', 'error')
+        }
     }
 
     const handleShowPassword = () => {
@@ -53,6 +69,10 @@ export function LoginForm() {
 
     return (
         <>
+            <SnackbarApp
+                properties={snackbar}
+                handleClose={() => setSnackbar({ ...snackbar, open: false })}
+            />
             <Grid container spacing={3} justifyContent={'center'}>
                 <Grid
                     item
@@ -61,29 +81,15 @@ export function LoginForm() {
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
                     <TextField
-                        helperText={
-                            email !== ''
-                                ? email.includes('@') === true
-                                    ? ''
-                                    : 'El email debe llevar @'
-                                : ''
-                        }
-                        error={
-                            email !== ''
-                                ? email.includes('@') === true
-                                    ? ''
-                                    : 'El email debe llevar @'
-                                : ''
-                        }
                         required
                         fullWidth
-                        type="email"
-                        label="EMAIL"
-                        placeholder="someone@example.com"
+                        type="text"
+                        label="DNI"
+                        placeholder="12345678A"
                         variant="standard"
-                        value={email}
+                        value={dni}
                         onChange={(e) => {
-                            setEmail(e.target.value)
+                            setDni(e.target.value)
                         }}
                     />
                 </Grid>

@@ -1,8 +1,6 @@
 import React from 'react'
-import { Footer } from '../../../Footer'
 import { Container, Grid, Typography, Breadcrumbs, Link } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { AppBarComponent } from '../../../appbar/AppBarComponent'
 import { EditCustomerForm } from './EditCustomerForm'
 export function EditCustomer() {
     let { id } = useParams()
@@ -27,13 +25,13 @@ export function EditCustomer() {
             key={2}
             color="inherit"
             onClick={() => {
-                navigate('/clientes')
+                navigate('/proyectos')
             }}
             style={{
                 cursor: 'pointer',
             }}
         >
-            Clientes
+            Proyectos
         </Link>,
         <Typography key={3} style={{ fontWeight: 'bold' }}>
             Actualizar
@@ -53,7 +51,7 @@ export function EditCustomer() {
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
                         >
-                            Actualizar cliente
+                            Actualizar proyecto
                         </Typography>
                     </Grid>
                     <Grid item md={3} xs={12}>

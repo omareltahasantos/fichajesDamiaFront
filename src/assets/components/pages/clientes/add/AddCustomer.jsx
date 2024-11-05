@@ -26,13 +26,13 @@ export function AddCustomer() {
             key={2}
             color="inherit"
             onClick={() => {
-                navigate('/clientes')
+                navigate('/proyectos')
             }}
             style={{
                 cursor: 'pointer',
             }}
         >
-            Clientes
+            Proyectos
         </Link>,
         <Typography key={3} style={{ fontWeight: 'bold' }}>
             Añadir
@@ -52,7 +52,7 @@ export function AddCustomer() {
                             variant="h4"
                             style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
                         >
-                            Añadir cliente
+                            Añadir proyecto
                         </Typography>
                     </Grid>
                     <Grid item md={3} xs={12}>

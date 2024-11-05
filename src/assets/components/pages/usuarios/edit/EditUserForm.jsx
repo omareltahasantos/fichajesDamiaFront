@@ -26,6 +26,7 @@ export function EditUserForm({ userId, customerId }) {
     const navigate = useNavigate()
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [dni, setDni] = useState('')
     const [dateStart, setDateStart] = useState('')
     const [contractHours, setContractHours] = useState(null)
     const [rol, setRol] = useState('')
@@ -44,6 +45,10 @@ export function EditUserForm({ userId, customerId }) {
         })
         userLinkedToCustomer()
     }, [])
+
+    useEffect(() => {
+        setPassword(dni.length > 0 ? `sm_${dni.substring(0, 4)}` : '')
+    }, [dni])
 
     function parsingDate(event, date) {
         let start_date = new Date()
@@ -70,6 +75,7 @@ export function EditUserForm({ userId, customerId }) {
         setDateStart(data.date_start)
         setRol(data.rol)
         setPassword(data.password)
+        setDni(data.dni)
     }
 
     const getRoles = async () => {
@@ -79,7 +85,20 @@ export function EditUserForm({ userId, customerId }) {
             return
         }
 
-        setRoles(data)
+        setRoles(
+            data.map((item) => {
+                if (item.rol === 'COORDINADOR')
+                    return {
+                        value: item.rol,
+                        label: item.rol,
+                    }
+
+                return {
+                    value: item.rol,
+                    label: item.rol === 'ADMIN' ? 'JP' : 'USUARIO',
+                }
+            })
+        )
     }
 
     const userLinkedToCustomer = async () => {
@@ -162,6 +181,7 @@ export function EditUserForm({ userId, customerId }) {
             id: parseInt(userId),
             name: name,
             email: email,
+            dni: dni,
             password: password,
             hours_contract: contractHours,
             rol: rol,
@@ -208,6 +228,34 @@ export function EditUserForm({ userId, customerId }) {
                         />
                     </Grid>
                     <Grid item md={4} xs={12} paddingBottom="15px">
+                        <Typography paddingBottom="15px">DNI</Typography>
+                        <TextField
+                            type="text"
+                            fullWidth
+                            placeholder="12345678A"
+                            variant="standard"
+                            required
+                            value={dni}
+                            onChange={(e) => {
+                                setDni(e.target.value)
+                            }}
+                            error={dni.length === 0 || /^\w{9}$/.test(dni) === false ? true : false}
+                            helperText={
+                                dni.length === 0
+                                    ? 'Por favor escribe el dni del técnico/a'
+                                    : /^\w{9}$/.test(dni) === false
+                                    ? 'Por favor escribe un dni válido'
+                                    : ''
+                            }
+                            FormHelperTextProps={{
+                                style: {
+                                    fontSize: '14px',
+                                    paddingTop: '7px',
+                                },
+                            }}
+                        />
+                    </Grid>
+                    <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">EMAIL</Typography>
                         <TextField
                             type="email"
@@ -227,22 +275,6 @@ export function EditUserForm({ userId, customerId }) {
                                     paddingTop: '7px',
                                 },
                             }}
-                        />
-                    </Grid>
-                    <Grid item md={4} xs={12} paddingBottom="15px">
-                        <Typography paddingBottom="15px">Contraseña</Typography>
-                        <Input
-                            fullWidth
-                            type={showPassword ? 'text' : 'password'}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={() => setShowPassword(!showPassword)}>
-                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </Grid>
                 </Grid>
@@ -300,13 +332,38 @@ export function EditUserForm({ userId, customerId }) {
                         >
                             <option>Selecciona un rol</option>
                             {roles.map((item) => (
-                                <option value={item.rol}>{item.rol}</option>
+                                <option value={item.value}>{item.label}</option>
                             ))}
                         </NativeSelect>
                     </Grid>
+                    <Grid item md={12} xs={12} paddingBottom="15px">
+                        <Typography paddingBottom="15px">Contraseña</Typography>
+                        <TextField
+                            required
+                            fullWidth
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="contraseñasegura1234"
+                            variant="standard"
+                            value={password}
+                            error={password.length === 0 ? true : false}
+                            helperText={
+                                password.length === 0 ? 'Por favor escribe una contraseña' : ''
+                            }
+                            InputProps={{
+                                readOnly: true,
+                                endAdornment: (
+                                    <InputAdornment position="start">
+                                        <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Grid>
                 </Grid>
                 <Typography paddingTop="10px" paddingBottom="10px">
-                    CLIENTES
+                    PROYECTOS
                 </Typography>
                 <Grid container spacing={0}>
                     {customers.length === 0 ? (
@@ -315,7 +372,7 @@ export function EditUserForm({ userId, customerId }) {
                                 severity={'warning'}
                                 title={'Atención:'}
                                 message={
-                                    'No hay clientes creados, debes contactar con informática para añadir clientes.'
+                                    'No hay proyectos creados, debes contactar con informática para añadir proyectos.'
                                 }
                             />
                         </Grid>

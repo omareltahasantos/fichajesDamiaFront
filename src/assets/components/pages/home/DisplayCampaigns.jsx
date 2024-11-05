@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Divider, Typography } from '@mui/material'
 import EventNoteIcon from '@mui/icons-material/EventNote'
+import { parseDate } from '../../services/methods'
 
 export function DisplayCampaigns({ handleCampaign, checkStatusDate, ...item }) {
     return (
@@ -61,7 +62,7 @@ export function DisplayCampaigns({ handleCampaign, checkStatusDate, ...item }) {
                 <Box style={{ display: 'flex' }}>
                     <Typography align="left" variant="body2" paddingTop="20px" display="flex">
                         <EventNoteIcon style={{ paddingRight: '5px' }} />
-                        {`${item.date_start} - ${item.date_end}`}
+                        {`${parseDate(item.date_start)} - ${parseDate(item.date_end)}`}
                     </Typography>
                 </Box>
             </Box>
