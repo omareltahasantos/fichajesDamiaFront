@@ -50,6 +50,24 @@ export function EditUserForm({ userId, customerId }) {
         setPassword(dni.length > 0 ? `sm_${dni.substring(0, 4)}` : '')
     }, [dni])
 
+    useEffect(() => {
+        const SM_CUSTOMER_ID = 8
+
+        let isIncluded = checkCustomers.some((item) => item.customerId === SM_CUSTOMER_ID)
+
+        if (isIncluded) {
+            checkCustomers.forEach((item) => {
+                if (item.customerId === SM_CUSTOMER_ID) {
+                    return
+                }
+                deleteCheckCustomer(item.userId, item.customerId)
+            })
+            setCheckCustomers(checkCustomers.filter((item) => item.customerId === SM_CUSTOMER_ID))
+
+            return
+        }
+    }, [checkCustomers])
+
     function parsingDate(event, date) {
         let start_date = new Date()
         let day = start_date.getDate()
@@ -416,7 +434,13 @@ export function EditUserForm({ userId, customerId }) {
                                 backgroundColor: '#8bb925',
                             }}
                             fullWidth
-                            disabled={rol === '' || rol === 'Selecciona un rol' ? true : false}
+                            disabled={
+                                rol === '' ||
+                                rol === 'Selecciona un rol' ||
+                                checkCustomers.length === 0
+                                    ? true
+                                    : false
+                            }
                         >
                             Guardar
                         </Button>
