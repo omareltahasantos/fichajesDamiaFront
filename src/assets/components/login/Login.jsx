@@ -2,8 +2,16 @@ import React from 'react'
 import { Container, Grid, Typography } from '@mui/material'
 import { ImageForm } from './ImageForm'
 import { LoginForm } from './LoginForm'
+import { useLocation } from 'react-router-dom'
 
 export function Login() {
+    const location = useLocation()
+
+    // Use URLSearchParams to parse the query string
+    const queryParams = new URLSearchParams(location.search)
+    const dni = queryParams.get('dni')
+    const password = queryParams.get('password')
+
     return (
         <>
             <Container
@@ -14,7 +22,7 @@ export function Login() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: '80vh',
+                    height: '60vh',
                 }}
                 component="form"
             >
@@ -61,7 +69,7 @@ export function Login() {
                         <Typography variant="body1">Iniciar sesión</Typography>
                     </Grid>
                 </Grid>
-                <LoginForm />
+                <LoginForm paramsToLog={{ dni, password }} />
             </Container>
         </>
     )

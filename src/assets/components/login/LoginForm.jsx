@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router'
 import { SnackbarApp } from '../componentsApp/SnackbarApp'
 import { showSnackbar } from '../services/snackbarMethods'
 
-export function LoginForm() {
+export function LoginForm({ paramsToLog }) {
     const navigate = useNavigate()
-    const [dni, setDni] = useState('')
+    const [dni, setDni] = useState()
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [disabledButton, setDisabledButton] = useState(true)
@@ -27,6 +27,11 @@ export function LoginForm() {
             navigate('/')
         }
     }, [])
+
+    useEffect(() => {
+        setDni(paramsToLog.dni)
+        setPassword(paramsToLog.password)
+    }, [paramsToLog])
 
     useEffect(() => {
         if (dni !== '' && password !== '') {
