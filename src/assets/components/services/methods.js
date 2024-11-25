@@ -92,3 +92,20 @@ export function parseDate(dateInput) {
         ? formattedDate
         : `${formattedDate} ${formattedTime}`
 }
+
+export function orderCustomers(customers) {
+    let sm = customers.find((customer) => customer.label === 'sm')
+    let rest = customers.filter((customer) => customer.label !== 'sm')
+
+    rest.sort((a, b) => {
+        if (a.label < b.label) {
+            return -1
+        }
+        if (a.label > b.label) {
+            return 1
+        }
+        return 0
+    })
+
+    return [sm, ...rest]
+}

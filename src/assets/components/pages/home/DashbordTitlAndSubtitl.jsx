@@ -22,7 +22,7 @@ export function DashbordTitlAndSubtitl() {
     ]
     return (
         <>
-            <Grid container spacing={2} flexDirection="column" style={{ paddingBottom: '40px' }}>
+            <Grid container spacing={2} flexDirection="column" style={{ paddingBottom: '10px' }}>
                 <Grid item md={3}>
                     <Typography
                         variant="h4"

@@ -17,7 +17,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
 import { AddCheckbox } from '../../../componentsApp/AddCheckbox'
-import getCustomers from '../../../services/methods'
+import getCustomers, { orderCustomers } from '../../../services/methods'
 import { AlertApp } from '../../../componentsApp/AlertApp'
 
 export function AddUserForm({ customerId }) {
@@ -38,7 +38,7 @@ export function AddUserForm({ customerId }) {
         parsingDate(setDateStart)
         getRoles()
         getCustomers().then((customers) => {
-            setCustomers(customers)
+            setCustomers(orderCustomers(customers))
         })
     }, [])
 
@@ -311,10 +311,17 @@ export function AddUserForm({ customerId }) {
                         />
                     </Grid>
                 </Grid>
-                <Typography paddingTop="10px" paddingBottom="10px">
+                <Typography paddingTop="10px" paddingBottom="10px" fontWeight={'bold'}>
                     PROYECTOS
                 </Typography>
                 <Grid container spacing={0}>
+                    <Grid item md={12} xs={12} paddingBottom={2} paddingTop={1}>
+                        <Alert severity="info">
+                            <Typography variant="body1">
+                                El proyecto SM no es acumulativo con otros proyectos
+                            </Typography>
+                        </Alert>
+                    </Grid>
                     {customers.length === 0 ? (
                         <Grid item md={12} xs={12}>
                             <AlertApp
