@@ -59,14 +59,13 @@ export function parseRol(rol) {
         case 'TECNICO':
             return 'USUARIO'
         default:
+            return 'CONTROL'
     }
 }
 
 export function parseDate(dateInput) {
-    console.log('dateInput:', dateInput)
     // Asegurarse de que la entrada es un objeto Date válido
     const date = new Date(dateInput)
-    console.log(date)
 
     // Verificar si la fecha es válida
     if (isNaN(date)) {

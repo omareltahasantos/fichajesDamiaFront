@@ -57,7 +57,6 @@ export function Users() {
     }, [customerSelected])
 
     const getCountUsers = async (customerId) => {
-        console.log(customerId)
         let { data } = await axios.get(`${endpoint}countUsers`, {
             params: { customerId },
         })

@@ -51,7 +51,7 @@ export function EditUserForm({ userId, customerId }) {
     }, [dni])
 
     useEffect(() => {
-        const SM_CUSTOMER_ID = 8
+        const SM_CUSTOMER_ID = 2
 
         let isIncluded = checkCustomers.some((item) => item.customerId === SM_CUSTOMER_ID)
 

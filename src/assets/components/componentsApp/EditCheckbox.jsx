@@ -16,7 +16,6 @@ export function EditCheckbox({
 
     const handleChange = (event) => {
         const { first, second } = paramsToHandlerMethod
-        console.log(paramsToHandlerMethod)
         setChecked(event.target.checked)
         if (event.target.checked === true) {
             addMethod(first, second)

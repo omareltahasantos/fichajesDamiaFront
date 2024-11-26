@@ -22,11 +22,19 @@ import { parseRol } from '../services/methods'
 
 export function UserTable({ getCountUsers, countUsers, getCountContractedHours, customerId }) {
     const [users, setUsers] = useState([])
+    const currentUser = JSON.parse(sessionStorage.getItem('user'))
 
     useEffect(() => {
         if (!customerId) return
         getUsers(customerId)
     }, [customerId])
+
+    useEffect(() => {
+        if (currentUser.rol === 'ADMIN') {
+            setUsers(users.filter((user) => user.rol !== 'CONTROL'))
+            return
+        }
+    }, [users])
 
     const getUsers = async (customerId) => {
         let { data } = await axios.get(`${endpoint}users`, {

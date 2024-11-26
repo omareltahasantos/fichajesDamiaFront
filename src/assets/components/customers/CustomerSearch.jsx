@@ -6,7 +6,6 @@ export function CustomerSearch({ countCustomers, searchCustomers }) {
     const [keyword, setKeyword] = useState('')
 
     const handleKeyword = (keyword) => {
-        console.log(keyword)
         searchCustomers(keyword)
         setKeyword(keyword)
     }
