@@ -25,7 +25,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
     const currentUser = JSON.parse(sessionStorage.getItem('user'))
 
     useEffect(() => {
-        if (!customerId) return
+        if (customerId === undefined) return
         getUsers(customerId)
     }, [customerId])
 
@@ -37,11 +37,14 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
     }, [users])
 
     const getUsers = async (customerId) => {
+        console.log(customerId)
         let { data } = await axios.get(`${endpoint}users`, {
             params: {
                 customerId: customerId,
             },
         })
+
+        console.log(data)
 
         if (data.length === 0) {
             setUsers([])
