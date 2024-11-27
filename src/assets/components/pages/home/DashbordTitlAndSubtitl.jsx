@@ -23,7 +23,8 @@ export function DashbordTitlAndSubtitl() {
     return (
         <>
             <Grid container spacing={2} flexDirection="column" style={{ paddingBottom: '10px' }}>
-                <Grid item md={3}>
+                {/**
+                 *     <Grid item md={3}>
                     <Typography
                         variant="h4"
                         style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
@@ -31,6 +32,7 @@ export function DashbordTitlAndSubtitl() {
                         Campañas
                     </Typography>
                 </Grid>
+                 */}
                 {user.rol !== 'TECNICO' && (
                     <Grid item md={9}>
                         <Breadcrumbs separator="›" aria-label="breadcrumb">

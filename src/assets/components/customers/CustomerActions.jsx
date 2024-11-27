@@ -10,7 +10,7 @@ export function CustomerActions({ inactiveCustomer, ...customer }) {
     return (
         <>
             <TableCell>
-                <Tooltip title="Editar cliente" arrow placement="top">
+                <Tooltip title="Editar proyecto" arrow placement="top">
                     <IconButton>
                         <EditIcon
                             onClick={() => {

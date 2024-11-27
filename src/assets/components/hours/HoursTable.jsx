@@ -66,7 +66,8 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                     'Ubicación inicio': hour.ubication_start,
                     'Fichaje final': `${endDate[0].split('-').reverse().join('-')} ${endDate[1]}`,
                     'Ubicación final': hour.ubication_end,
-                    'Horas trabajadas': hour.hours,
+                    'Horas imputadas': hour.hours,
+                    'Horas trabajadas': hour.worked_hours,
                     'Tipo de hora': hour.type,
                     Validado: parseValidate(hour.validate),
                     'Validado por': hour.validate_by,
@@ -121,8 +122,46 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
             params: json,
         })
 
-        setHours(data.length === 0 ? [] : data)
-        setCountHours(data.length)
+        if (data.length === 0) {
+            setHours([])
+            return
+        }
+
+        let hours = []
+
+        data.forEach((hour) => {
+            let startDate = hour.register_start.split(' ')
+            let endDate = hour.register_end
+            let worked_hours = 0
+
+            console.log(startDate)
+            console.log(endDate)
+
+            if (endDate === null) {
+                worked_hours = 'Sin finalizar'
+                hours.push({
+                    ...hour,
+                    worked_hours: worked_hours,
+                })
+                return
+            }
+
+            endDate = endDate.split(' ')
+
+            worked_hours =
+                new Date(endDate[0] + ' ' + endDate[1]) -
+                new Date(startDate[0] + ' ' + startDate[1])
+
+            worked_hours = worked_hours / 1000 / 60 / 60
+
+            hours.push({
+                ...hour,
+                worked_hours: worked_hours % 1 !== 0 ? worked_hours.toFixed(2) : worked_hours,
+            })
+        })
+
+        setHours(hours)
+        setCountHours(hours.length)
     }
 
     return (

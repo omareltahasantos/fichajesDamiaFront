@@ -8,18 +8,29 @@ export function DisplayHoursEndDay({ deleteHour, ...item }) {
     const { register_start, register_end, validate, hours, name } = item
 
     const titleCards = (register_end, validate) => {
-        let text = ''
         if (register_end === null) {
-            text = 'INICIO JORNADA'
-        } else if (validate === null) {
-            text = 'SIN VALIDAR'
-        } else if (validate === 'Si') {
-            text = 'VALIDADO'
-        } else {
-            text = 'INVALIDADO'
+            return 'INICIO JORNADA'
         }
 
-        return text
+        switch (validate) {
+            case 'Si':
+                return 'VALIDADO'
+            case 'No':
+                return 'INVALIDADO'
+            case null:
+                return 'SIN VALIDAR'
+        }
+    }
+
+    const handleColorCard = (validate) => {
+        switch (validate) {
+            case 'VALIDADO':
+                return '#8bb925'
+            case 'INVALIDADO':
+                return 'red'
+            case 'SIN VALIDAR':
+                return '#805ad5'
+        }
     }
 
     return (
@@ -27,7 +38,7 @@ export function DisplayHoursEndDay({ deleteHour, ...item }) {
             <Box
                 component={'button'}
                 style={{
-                    border: '1px solid #e0e0e0',
+                    border: `1px solid ${handleColorCard(titleCards(register_end, validate))}`,
                     borderRadius: 10,
                     padding: 15,
                     backgroundColor: 'white',
@@ -41,11 +52,7 @@ export function DisplayHoursEndDay({ deleteHour, ...item }) {
                             align="left"
                             variant="body2"
                             style={{
-                                color:
-                                    titleCards(register_end, validate) === 'SIN VALIDAR' ||
-                                    'INVALIDADO'
-                                        ? '#805ad5'
-                                        : '#8bb925',
+                                color: handleColorCard(titleCards(register_end, validate)),
                             }}
                         >
                             {titleCards(register_end, validate)}

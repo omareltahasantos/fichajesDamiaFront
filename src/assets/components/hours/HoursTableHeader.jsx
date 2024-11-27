@@ -31,7 +31,18 @@ export function HoursTableHeader({ hours, setHours }) {
                 state={hours}
                 setMethod={setHours}
             />
-            <SortColumn column={'hours'} label={'HORAS'} state={hours} setMethod={setHours} />
+            <SortColumn
+                column={'hours'}
+                label={'HORAS IMPUTADAS'}
+                state={hours}
+                setMethod={setHours}
+            />
+            <SortColumn
+                column={'worked_hours'}
+                label={'HORAS TRABAJADAS'}
+                state={hours}
+                setMethod={setHours}
+            />
             <SortColumn column={'type'} label={'TIPO'} state={hours} setMethod={setHours} />
             <SortColumn
                 column={'validate'}

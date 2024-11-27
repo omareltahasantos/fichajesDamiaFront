@@ -44,7 +44,7 @@ export function DashboardHome() {
     return (
         <Container style={{ paddingTop: '40px' }}>
             <DashbordTitlAndSubtitl />
-            <Divider style={{ marginTop: 50, marginBottom: 30, border: '2px solid #b9d47b' }} />
+            <Divider style={{ marginTop: 20, marginBottom: 30, border: '2px solid #b9d47b' }} />
             {campaigns.length > 0 ? (
                 campaigns.map((item) => (
                     <DisplayCampaigns

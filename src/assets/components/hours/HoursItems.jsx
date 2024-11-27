@@ -33,6 +33,7 @@ export function HoursItems({ ...hour }) {
                 </Link>
             </TableCell>
             <TableCell>{hour.hours}</TableCell>
+            <TableCell>{hour.worked_hours}</TableCell>
             <TableCell>{hour.type}</TableCell>
             <TableCell>{handleValidate(hour.validate)}</TableCell>
             <TableCell>{hour.validate_by}</TableCell>
