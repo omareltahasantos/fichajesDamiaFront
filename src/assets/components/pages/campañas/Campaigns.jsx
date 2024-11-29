@@ -14,6 +14,7 @@ import { format } from 'date-fns'
 export function Campaigns() {
     const navigate = useNavigate()
     const location = useLocation()
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const breadcrumb = [
         <Link
             underline="hover"
@@ -52,7 +53,9 @@ export function Campaigns() {
     }, [customerSelected])
 
     const getCountCampaign = async (customerId) => {
-        let { data } = await axios.get(`${endpoint}countCampaigns`, { params: { customerId } })
+        let { data } = await axios.get(`${endpoint}countCampaigns`, {
+            params: { customerId, rol: user.rol },
+        })
 
         setCountCampaigns(data)
     }

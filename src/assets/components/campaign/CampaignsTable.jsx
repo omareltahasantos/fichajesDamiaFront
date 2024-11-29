@@ -26,6 +26,7 @@ export function CampaignsTable({
     customerId,
 }) {
     const [campaigns, setCampaigns] = useState([])
+    const user = JSON.parse(sessionStorage.getItem('user'))
 
     useEffect(() => {
         getCampaigns(customerId)
@@ -35,6 +36,7 @@ export function CampaignsTable({
         let { data } = await axios.get(`${endpoint}campaigns`, {
             params: {
                 customerId: customerId,
+                rol: user.rol,
             },
         })
 
@@ -61,6 +63,7 @@ export function CampaignsTable({
             params: {
                 keyword: keyword,
                 customerId: customerId,
+                rol: user.rol,
             },
         })
 
