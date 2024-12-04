@@ -28,7 +28,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
 
     useEffect(() => {
         if (customerId === undefined) return
-        getUsers(customerId)
+        //getUsers(customerId)
     }, [customerId])
 
     useEffect(() => {
