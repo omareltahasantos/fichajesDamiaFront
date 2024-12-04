@@ -28,15 +28,15 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
 
     useEffect(() => {
         if (customerId === undefined) return
-        //getUsers(customerId)
+        getUsers(customerId)
     }, [customerId])
 
     useEffect(() => {
-        if (currentUser.rol === 'ADMIN') {
-            setUsers(users.filter((user) => user.rol !== 'CONTROL'))
-            return
+        if (currentUser?.rol === 'ADMIN') {
+            // Filtrar usuarios solo si es necesario
+            setUsers((prevUsers) => prevUsers.filter((user) => user.rol !== 'CONTROL'))
         }
-    }, [users])
+    }, [currentUser, users]) // Dependencias: currentUser y users
 
     const getUsers = async (customerId) => {
         setIsLoading(true)
