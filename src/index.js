@@ -1,11 +1,10 @@
 import React from 'react'
-import ReactDOM from 'react-dom' // Not 'react-dom/client' in React 17
+import ReactDOM from 'react-dom/client'
 import App from './App'
 
-// This is how you render the app in React 17
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
     <React.StrictMode>
         <App />
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
 )
