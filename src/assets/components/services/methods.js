@@ -35,7 +35,7 @@ export default function getCustomers() {
                         return
                     }
 
-                    const customers = data.map((customer) => ({
+                    let customers = data.map((customer) => ({
                         label: customer.name,
                         value: Number(customer.id),
                     }))
@@ -105,6 +105,10 @@ export function orderCustomers(customers) {
         }
         return 0
     })
+
+    if (!sm) {
+        return rest
+    }
 
     return [sm, ...rest]
 }

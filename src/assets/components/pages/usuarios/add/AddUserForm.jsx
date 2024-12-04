@@ -43,6 +43,26 @@ export function AddUserForm({ customerId }) {
     }, [])
 
     useEffect(() => {
+        const SM_CUSTOMER_ID = 2
+
+        let isIncluded = checkCustomers.some((item) => item.customerId === SM_CUSTOMER_ID)
+
+        console.log('isIncluded', isIncluded)
+
+        if (isIncluded) {
+            checkCustomers.forEach((item) => {
+                if (item.customerId === SM_CUSTOMER_ID) {
+                    return
+                }
+                deleteCheckCustomer(item.userId, item.customerId)
+            })
+            setCheckCustomers(checkCustomers.filter((item) => item.customerId === SM_CUSTOMER_ID))
+
+            return
+        }
+    }, [checkCustomers])
+
+    useEffect(() => {
         setPassword(dni.length > 0 ? `sm_${dni.substring(0, 4)}` : '')
     }, [dni])
 

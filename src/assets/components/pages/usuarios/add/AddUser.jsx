@@ -60,7 +60,7 @@ export function AddUser() {
                         </Breadcrumbs>
                     </Grid>
                 </Grid>
-                {<AddUserForm customerId={location.state.customerId} />}
+                <AddUserForm customerId={location.state.customerId} />
             </Container>
         </>
     )
