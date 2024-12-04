@@ -10,7 +10,6 @@ import {
     Typography,
     Grid,
     Box,
-    CircularProgress,
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
@@ -20,6 +19,7 @@ import { UserActions } from './UserActions'
 import { UserSearch } from './UserSearch'
 import { PaginationItems } from '../PaginationItems'
 import { parseRol } from '../services/methods'
+import { CircularLoading } from '../componentsApp/CircularLoading'
 
 export function UserTable({ getCountUsers, countUsers, getCountContractedHours, customerId }) {
     const [users, setUsers] = useState([])
@@ -113,7 +113,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
             </Grid>
 
             {isloading ? (
-                <CircularProgress style={{ marginTop: 5, color: '#8BB925' }} />
+                <CircularLoading />
             ) : (
                 <TableContainer component={Paper} style={{ marginTop: 40 }}>
                     <Table>

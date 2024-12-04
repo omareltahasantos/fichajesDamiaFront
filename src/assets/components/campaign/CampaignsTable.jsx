@@ -18,6 +18,7 @@ import { CampaignsActions } from './CampaignsActions'
 import { ExportData } from './ExportData'
 import { CampaignSearch } from './CampaignSearch'
 import { PaginationItems } from '../PaginationItems'
+import { CircularLoading } from '../componentsApp/CircularLoading'
 
 export function CampaignsTable({
     countCampaigns,
@@ -27,12 +28,14 @@ export function CampaignsTable({
 }) {
     const [campaigns, setCampaigns] = useState([])
     const user = JSON.parse(sessionStorage.getItem('user'))
+    const [isloading, setIsLoading] = useState(true)
 
     useEffect(() => {
         getCampaigns(customerId)
     }, [customerId])
 
     const getCampaigns = async (customerId) => {
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}campaigns`, {
             params: {
                 customerId: customerId,
@@ -46,6 +49,7 @@ export function CampaignsTable({
         }
 
         setCampaigns(data)
+        setIsLoading(false)
     }
 
     const inactiveCampaign = async (id) => {
@@ -59,6 +63,7 @@ export function CampaignsTable({
     }
 
     const searchCampaign = async (keyword) => {
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}searchCampaign`, {
             params: {
                 keyword: keyword,
@@ -73,6 +78,7 @@ export function CampaignsTable({
         }
 
         setCampaigns(data)
+        setIsLoading(false)
     }
 
     return (
@@ -90,38 +96,44 @@ export function CampaignsTable({
                 <ExportData Export={campaigns} />
             </Grid>
 
-            <TableContainer component={Paper} style={{ marginTop: 40 }}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>DESCRIPCION</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>FECHA INICIO</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>FECHA FINAL</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>ESTADO</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {campaigns.map((camp) => (
-                            <TableRow hover>
-                                <CampaignsItems {...camp} />
-                                <CampaignsActions
-                                    customerId={customerId}
-                                    inactiveCampaign={inactiveCampaign}
-                                    {...camp}
-                                />
+            {isloading ? (
+                <CircularLoading />
+            ) : (
+                <TableContainer component={Paper} style={{ marginTop: 40 }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>DESCRIPCION</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>FECHA INICIO</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>FECHA FINAL</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>ESTADO</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {campaigns.map((camp) => (
+                                <TableRow hover>
+                                    <CampaignsItems {...camp} />
+                                    <CampaignsActions
+                                        customerId={customerId}
+                                        inactiveCampaign={inactiveCampaign}
+                                        {...camp}
+                                    />
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
+
             <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
                 <PaginationItems
                     count={countCampaigns}
                     setMethod={setCampaigns}
                     endpoint={`${endpoint}paginateCampaigns`}
                     customerId={customerId}
+                    setLoading={setIsLoading}
                 />
             </Box>
         </>

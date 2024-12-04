@@ -16,17 +16,19 @@ import endpoint from '../services/endpoint'
 import { ExportData } from '../campaign/ExportData'
 import { PaginationItems } from '../PaginationItems'
 import { CustomerItems } from './CustomerItems'
-import { CustomerActions } from './CustomerActions'
 import { CustomerSearch } from './CustomerSearch'
+import { CircularLoading } from '../componentsApp/CircularLoading'
 
 export function CustomerTable({ getCountCustomers, countCustomers }) {
     const [customers, setCustomers] = useState([])
+    const [isloading, setIsLoading] = useState(true)
 
     useEffect(() => {
         getCustomers()
     }, [])
 
     const getCustomers = async () => {
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}customers`)
 
         if (data.length === 0) {
@@ -35,6 +37,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
         }
 
         setCustomers(data)
+        setIsLoading(false)
     }
 
     const inactiveCustomer = async (id) => {
@@ -46,6 +49,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
     }
 
     const searchCustomers = async (keyword) => {
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}searchCustomers`, {
             params: {
                 keyword: keyword,
@@ -58,6 +62,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
         }
 
         setCustomers(data)
+        setIsLoading(false)
     }
 
     return (
@@ -75,35 +80,33 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
                 <ExportData Export={customers} />
             </Grid>
 
-            <TableContainer component={Paper} style={{ marginTop: 20 }}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>CÓDIGO</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>ESTADO</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {customers.length > 0 &&
-                            customers?.map((customer) => (
-                                <TableRow hover>
-                                    <CustomerItems {...customer} />
-                                    <CustomerActions
-                                        inactiveCustomer={inactiveCustomer}
-                                        {...customer}
-                                    />
-                                </TableRow>
-                            ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            {isloading ? (
+                <CircularLoading />
+            ) : (
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Nombre</TableCell>
+                                <TableCell>Correo</TableCell>
+                                <TableCell>Acciones</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <CustomerItems
+                                customers={customers}
+                                inactiveCustomer={inactiveCustomer}
+                            />
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
             <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
                 <PaginationItems
                     count={countCustomers}
                     setMethod={setCustomers}
                     endpoint={`${endpoint}customer/paginate`}
+                    setLoading={setIsLoading}
                 />
             </Box>
         </>

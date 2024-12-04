@@ -18,6 +18,7 @@ import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
 import { HoursValidateFilter } from './HoursValidateFilter'
 import { TextFieldApp } from '../componentsApp/TextFieldApp'
+import { CircularLoading } from '../componentsApp/CircularLoading'
 
 export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, customerId }) {
     const user = JSON.parse(sessionStorage.getItem('user'))
@@ -28,6 +29,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
     const [filter, setFilter] = useState('todos')
     const [firstDate, setFirstDate] = useState('')
     const [secondDate, setSecondDate] = useState('')
+    const [isloading, setIsLoading] = useState(true)
 
     useEffect(() => {
         searchHours(keyword, filter, firstDate, secondDate, customerId)
@@ -77,11 +79,13 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
     }
 
     const getCountHours = async (customerId) => {
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}countHours`, {
             params: { customerId: customerId },
         })
 
         setCountHours(data)
+        setIsLoading(false)
     }
 
     const deleteHour = async (id) => {
@@ -117,7 +121,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                       secondDate: secondDate,
                       customerId: customerId,
                   }
-
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}searchHours`, {
             params: json,
         })
@@ -162,6 +166,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
 
         setHours(hours)
         setCountHours(hours.length)
+        setIsLoading(false)
     }
 
     return (
@@ -209,28 +214,32 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                     <ExportData Export={exportHours} />
                 </Grid>
             </Grid>
-            <TableContainer component={Paper} style={{ marginTop: 40 }}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <HoursTableHeader setHours={setHours} hours={hours} />
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {hours?.map((hour) => (
-                            <TableRow hover key={hour.id}>
-                                <HoursItems {...hour} />
-                                <HoursActions
-                                    deleteHour={deleteHour}
-                                    updateValidate={updateValidate}
-                                    customerId={customerId}
-                                    {...hour}
-                                />
+            {isloading ? (
+                <CircularLoading />
+            ) : (
+                <TableContainer component={Paper} style={{ marginTop: 40 }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <HoursTableHeader setHours={setHours} hours={hours} />
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {hours?.map((hour) => (
+                                <TableRow hover key={hour.id}>
+                                    <HoursItems {...hour} />
+                                    <HoursActions
+                                        deleteHour={deleteHour}
+                                        updateValidate={updateValidate}
+                                        customerId={customerId}
+                                        {...hour}
+                                    />
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
         </>
     )
 }
