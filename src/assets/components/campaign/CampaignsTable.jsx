@@ -112,16 +112,17 @@ export function CampaignsTable({
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {campaigns.map((camp) => (
-                                <TableRow hover>
-                                    <CampaignsItems {...camp} />
-                                    <CampaignsActions
-                                        customerId={customerId}
-                                        inactiveCampaign={inactiveCampaign}
-                                        {...camp}
-                                    />
-                                </TableRow>
-                            ))}
+                            {campaigns.length > 0 &&
+                                campaigns.map((camp) => (
+                                    <TableRow hover>
+                                        <CampaignsItems {...camp} />
+                                        <CampaignsActions
+                                            customerId={customerId}
+                                            inactiveCampaign={inactiveCampaign}
+                                            {...camp}
+                                        />
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>

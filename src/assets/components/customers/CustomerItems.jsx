@@ -1,5 +1,5 @@
 import React from 'react'
-import { TableRow, TableCell } from '@mui/material'
+import { TableCell } from '@mui/material'
 
 export function CustomerItems({ ...customer }) {
     const { name, code, active } = customer

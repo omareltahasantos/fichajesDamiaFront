@@ -18,6 +18,7 @@ import { PaginationItems } from '../PaginationItems'
 import { CustomerItems } from './CustomerItems'
 import { CustomerSearch } from './CustomerSearch'
 import { CircularLoading } from '../componentsApp/CircularLoading'
+import { CustomerActions } from './CustomerActions'
 
 export function CustomerTable({ getCountCustomers, countCustomers }) {
     const [customers, setCustomers] = useState([])
@@ -30,6 +31,7 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
     const getCustomers = async () => {
         setIsLoading(true)
         let { data } = await axios.get(`${endpoint}customers`)
+        console.log(data)
 
         if (data.length === 0) {
             setCustomers([])
@@ -83,20 +85,29 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
             {isloading ? (
                 <CircularLoading />
             ) : (
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} style={{ marginTop: 40 }}>
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Nombre</TableCell>
-                                <TableCell>Correo</TableCell>
-                                <TableCell>Acciones</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>CÓDIGO</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>ESTADO</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <CustomerItems
-                                customers={customers}
-                                inactiveCustomer={inactiveCustomer}
-                            />
+                            {customers.length > 0 &&
+                                customers.map((customer) => (
+                                    <>
+                                        <TableRow key={customer.id}>
+                                            <CustomerItems {...customer} />
+                                            <CustomerActions
+                                                {...customer}
+                                                inactiveCustomer={inactiveCustomer}
+                                            />
+                                        </TableRow>
+                                    </>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>

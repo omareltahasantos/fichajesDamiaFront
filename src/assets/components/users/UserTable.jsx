@@ -131,17 +131,18 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {users.map((user) => (
-                                <TableRow hover>
-                                    <UserItems {...user} />
-                                    <UserActions
-                                        customerId={customerId}
-                                        handleState={handleState}
-                                        deleteUser={deleteUser}
-                                        {...user}
-                                    />
-                                </TableRow>
-                            ))}
+                            {users.length > 0 &&
+                                users.map((user) => (
+                                    <TableRow hover>
+                                        <UserItems {...user} />
+                                        <UserActions
+                                            customerId={customerId}
+                                            handleState={handleState}
+                                            deleteUser={deleteUser}
+                                            {...user}
+                                        />
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>

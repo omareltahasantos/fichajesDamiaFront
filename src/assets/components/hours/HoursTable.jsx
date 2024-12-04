@@ -225,17 +225,18 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {hours?.map((hour) => (
-                                <TableRow hover key={hour.id}>
-                                    <HoursItems {...hour} />
-                                    <HoursActions
-                                        deleteHour={deleteHour}
-                                        updateValidate={updateValidate}
-                                        customerId={customerId}
-                                        {...hour}
-                                    />
-                                </TableRow>
-                            ))}
+                            {hours.length > 0 &&
+                                hours?.map((hour) => (
+                                    <TableRow hover key={hour.id}>
+                                        <HoursItems {...hour} />
+                                        <HoursActions
+                                            deleteHour={deleteHour}
+                                            updateValidate={updateValidate}
+                                            customerId={customerId}
+                                            {...hour}
+                                        />
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
