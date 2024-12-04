@@ -46,6 +46,8 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
             },
         })
 
+        console.log(data)
+
         if (data.length === 0) {
             setUsers([])
             return
@@ -85,6 +87,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                 customerId,
             },
         })
+        console.log(data)
 
         if (data.length === 0) {
             setUsers([])
