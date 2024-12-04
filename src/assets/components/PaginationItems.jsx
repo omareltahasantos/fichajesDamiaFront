@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Pagination } from '@mui/material'
 
-export function PaginationItems({ count, setMethod, endpoint, customerId = null }) {
+export function PaginationItems({ count, setMethod, endpoint, customerId = null, setLoading }) {
     const [page, setPage] = useState(1)
     const [limitItems, setLimitItems] = useState(10)
     const [offsetItems, setOffsetItems] = useState(0)
@@ -25,6 +25,7 @@ export function PaginationItems({ count, setMethod, endpoint, customerId = null 
     }
 
     const fetchPaginate = async () => {
+        setLoading(true)
         try {
             let { data } = await axios.get(endpoint, {
                 params: {
@@ -35,6 +36,7 @@ export function PaginationItems({ count, setMethod, endpoint, customerId = null 
                 },
             })
             setMethod(data)
+            setLoading(false)
         } catch (error) {
             console.log(error.message)
         }

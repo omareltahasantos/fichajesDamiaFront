@@ -10,6 +10,7 @@ import {
     Typography,
     Grid,
     Box,
+    CircularProgress,
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
@@ -23,6 +24,7 @@ import { parseRol } from '../services/methods'
 export function UserTable({ getCountUsers, countUsers, getCountContractedHours, customerId }) {
     const [users, setUsers] = useState([])
     const currentUser = JSON.parse(sessionStorage.getItem('user'))
+    const [isloading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (customerId === undefined) return
@@ -37,7 +39,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
     }, [users])
 
     const getUsers = async (customerId) => {
-        console.log(customerId)
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}users`, {
             params: {
                 customerId: customerId,
@@ -55,6 +57,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                 rol: parseRol(user.rol),
             }))
         )
+        setIsLoading(false)
     }
 
     const deleteUser = async (id) => {
@@ -75,6 +78,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
     }
 
     const searchUser = async (keyword) => {
+        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}searchUser`, {
             params: {
                 keyword: keyword,
@@ -93,6 +97,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                 rol: parseRol(user.rol),
             }))
         )
+        setIsLoading(false)
     }
 
     return (
@@ -107,40 +112,47 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
                 <ExportData Export={users} />
             </Grid>
 
-            <TableContainer component={Paper} style={{ marginTop: 40 }}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>DNI</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>CORREO ELECTRONICO</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>CONTRATADAS(H)</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>ROL</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>Estado</TableCell>
-                            <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users.map((user) => (
-                            <TableRow hover>
-                                <UserItems {...user} />
-                                <UserActions
-                                    customerId={customerId}
-                                    handleState={handleState}
-                                    deleteUser={deleteUser}
-                                    {...user}
-                                />
+            {isloading ? (
+                <CircularProgress style={{ marginTop: 5, color: '#8BB925' }} />
+            ) : (
+                <TableContainer component={Paper} style={{ marginTop: 40 }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={{ fontWeight: 'bold' }}>NOMBRE</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>DNI</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>
+                                    CORREO ELECTRONICO
+                                </TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>CONTRATADAS(H)</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>ROL</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>Estado</TableCell>
+                                <TableCell style={{ fontWeight: 'bold' }}>ACCIONES</TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableHead>
+                        <TableBody>
+                            {users.map((user) => (
+                                <TableRow hover>
+                                    <UserItems {...user} />
+                                    <UserActions
+                                        customerId={customerId}
+                                        handleState={handleState}
+                                        deleteUser={deleteUser}
+                                        {...user}
+                                    />
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
             <Box sx={{ paddingTop: 5, justifyContent: 'center', display: 'flex' }}>
                 <PaginationItems
                     count={countUsers}
                     setMethod={setUsers}
                     endpoint={`${endpoint}paginateUsers`}
                     customerId={customerId}
+                    setLoading={setIsLoading}
                 />
             </Box>
         </>
