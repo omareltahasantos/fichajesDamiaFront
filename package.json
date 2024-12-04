@@ -48,6 +48,5 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "proxy": "https://fichajes-damia-front-5x5w6b09a-omareltahasantos-projects.vercel.app"
+    }
 }
