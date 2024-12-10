@@ -19,6 +19,8 @@ export function DisplayHoursEndDay({ deleteHour, ...item }) {
                 return 'INVALIDADO'
             case null:
                 return 'SIN VALIDAR'
+            case '':
+                return 'SIN VALIDAR'
         }
     }
 
