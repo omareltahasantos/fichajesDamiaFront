@@ -25,7 +25,7 @@ const actions = [
 ]
 
 export function HoursValidateFilter({ saveFilter }) {
-    const [keyword, setKeyword] = useState('todos')
+    const [keyword, setKeyword] = useState('otros')
 
     const handleKeyword = (keyword) => {
         setKeyword(keyword)

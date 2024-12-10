@@ -26,7 +26,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
     const [exportHours, setExportHours] = useState([])
     const [countHours, setCountHours] = useState(0)
     const [keyword, setKeyword] = useState('')
-    const [filter, setFilter] = useState('todos')
+    const [filter, setFilter] = useState('')
     const [firstDate, setFirstDate] = useState('')
     const [secondDate, setSecondDate] = useState('')
     const [isloading, setIsLoading] = useState(true)
