@@ -8,6 +8,7 @@ import {
     Paper,
     Typography,
     Grid,
+    TablePagination,
 } from '@mui/material'
 import axios from 'axios'
 import endpoint from '../services/endpoint'
@@ -18,7 +19,6 @@ import { HoursActions } from './HoursActions'
 import { HoursSearch } from './HoursSearch'
 import { HoursValidateFilter } from './HoursValidateFilter'
 import { TextFieldApp } from '../componentsApp/TextFieldApp'
-import { CircularLoading } from '../componentsApp/CircularLoading'
 
 export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, customerId }) {
     const user = JSON.parse(sessionStorage.getItem('user'))
@@ -29,20 +29,29 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
     const [filter, setFilter] = useState('')
     const [firstDate, setFirstDate] = useState('')
     const [secondDate, setSecondDate] = useState('')
-    const [isloading, setIsLoading] = useState(true)
+    const [page, setPage] = React.useState(0)
+    const [rowsPerPage, setRowsPerPage] = React.useState(50)
+    const [offset, setOffset] = useState(0)
 
     useEffect(() => {
         searchHours(keyword, filter, firstDate, secondDate, customerId)
-        getCountHours(customerId)
+        getCountHours(keyword, filter, firstDate, secondDate, customerId)
     }, [customerId])
 
     useEffect(() => {
+        setOffset(0)
+        setPage(0)
         searchHours(keyword, filter, firstDate, secondDate, customerId)
+        getCountHours(keyword, filter, firstDate, secondDate, customerId)
     }, [keyword, filter, firstDate, secondDate])
 
     useEffect(() => {
         parseHoursToExport(hours)
     }, [hours])
+
+    useEffect(() => {
+        searchHours(keyword, filter, firstDate, secondDate, customerId)
+    }, [rowsPerPage, offset])
 
     const parseHoursToExport = (hours) => {
         let parseValidate = (validate) => {
@@ -78,19 +87,10 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
         )
     }
 
-    const getCountHours = async (customerId) => {
-        setIsLoading(true)
-        let { data } = await axios.get(`${endpoint}countHours`, {
-            params: { customerId: customerId },
-        })
-
-        setCountHours(data)
-        setIsLoading(false)
-    }
-
     const deleteHour = async (id) => {
         await axios.delete(`${endpoint}hour/${id}`)
         searchHours(keyword, filter, firstDate, secondDate, customerId)
+        getCountHours(keyword, filter, firstDate, secondDate, customerId)
         hoursInsertedCurrentMonth()
         totalHoursValidate()
     }
@@ -104,6 +104,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
         hoursInsertedCurrentMonth()
         totalHoursValidate()
         searchHours(keyword, filter, firstDate, secondDate, customerId)
+        getCountHours(keyword, filter, firstDate, secondDate, customerId)
     }
 
     const searchHours = async (keyword, filter, firstDate, secondDate, customerId) => {
@@ -121,9 +122,8 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                       secondDate: secondDate,
                       customerId: customerId,
                   }
-        setIsLoading(true)
         let { data } = await axios.get(`${endpoint}searchHours`, {
-            params: json,
+            params: { ...json, offset: offset, limit: rowsPerPage },
         })
 
         if (data.length === 0) {
@@ -137,9 +137,6 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
             let startDate = hour.register_start.split(' ')
             let endDate = hour.register_end
             let worked_hours = 0
-
-            console.log(startDate)
-            console.log(endDate)
 
             if (endDate === null) {
                 worked_hours = 'Sin finalizar'
@@ -165,8 +162,38 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
         })
 
         setHours(hours)
-        setCountHours(hours.length)
-        setIsLoading(false)
+    }
+
+    const getCountHours = async (keyword, filter, firstDate, secondDate, customerId) => {
+        const json =
+            firstDate === '' || secondDate === ''
+                ? {
+                      keyword: keyword,
+                      filter: filter,
+                      customerId: customerId,
+                  }
+                : {
+                      keyword: keyword,
+                      filter: filter,
+                      firstDate: firstDate,
+                      secondDate: secondDate,
+                      customerId: customerId,
+                  }
+        let { data } = await axios.get(`${endpoint}countHours`, {
+            params: json,
+        })
+        setCountHours(data)
+    }
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage)
+        setOffset(newPage * rowsPerPage)
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10))
+        setPage(0)
+        setOffset(0)
     }
 
     return (
@@ -214,9 +241,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                     <ExportData Export={exportHours} />
                 </Grid>
             </Grid>
-            {isloading ? (
-                <CircularLoading />
-            ) : (
+            <>
                 <TableContainer component={Paper} style={{ marginTop: 40 }}>
                     <Table>
                         <TableHead>
@@ -240,7 +265,18 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                         </TableBody>
                     </Table>
                 </TableContainer>
-            )}
+                <div style={{ position: 'sticky', zIndex: 2000 }}>
+                    <TablePagination
+                        component="div"
+                        count={countHours}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        labelRowsPerPage="Filas por página"
+                    />
+                </div>
+            </>
         </>
     )
 }
