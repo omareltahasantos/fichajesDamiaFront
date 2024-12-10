@@ -42,7 +42,7 @@ export function DashboardHome() {
     }
 
     return (
-        <Container style={{ paddingTop: '40px' }}>
+        <Container maxWidth="xl" style={{ paddingTop: '40px' }}>
             <DashbordTitlAndSubtitl />
             <Divider style={{ marginTop: 20, marginBottom: 30, border: '2px solid #b9d47b' }} />
             {campaigns.length > 0 ? (

@@ -99,7 +99,7 @@ export function Hours() {
 
     return (
         <>
-            <Container style={{ paddingTop: '40px' }}>
+            <Container maxWidth="xl" style={{ paddingTop: '40px' }}>
                 <HeaderPages
                     title="Horas"
                     breadcrumb={breadcrumb}

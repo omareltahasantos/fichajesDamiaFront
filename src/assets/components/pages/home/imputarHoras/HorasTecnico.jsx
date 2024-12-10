@@ -51,7 +51,10 @@ export function HorasTecnico() {
 
     return (
         <>
-            <Container style={{ paddingTop: '40px', paddingRight: '0px', paddingLeft: 0 }}>
+            <Container
+                maxWidth="xl"
+                style={{ paddingTop: '40px', paddingRight: '0px', paddingLeft: 0 }}
+            >
                 <Grid
                     container
                     spacing={3}

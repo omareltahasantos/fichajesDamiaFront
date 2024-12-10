@@ -9,7 +9,7 @@ export function DashbordBody() {
 
     return (
         <>
-            <Container maxWidth="md" style={{ paddingTop: 50 }}>
+            <Container maxWidth="xl" style={{ paddingTop: 50 }}>
                 <Grid
                     container
                     spacing={0}

@@ -41,7 +41,7 @@ export function EditCampaign() {
     ]
     return (
         <>
-            <Container style={{ paddingTop: '40px' }}>
+            <Container maxWidth="xl" style={{ paddingTop: '40px' }}>
                 <Grid
                     container
                     spacing={3}

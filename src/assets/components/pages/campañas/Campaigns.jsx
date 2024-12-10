@@ -73,7 +73,7 @@ export function Campaigns() {
 
     return (
         <>
-            <Container style={{ paddingTop: '40px' }}>
+            <Container maxWidth="xl" style={{ paddingTop: '40px' }}>
                 <HeaderPages
                     title="Campañas"
                     breadcrumb={breadcrumb}
