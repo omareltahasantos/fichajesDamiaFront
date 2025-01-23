@@ -34,7 +34,10 @@ export function Users() {
 
     useEffect(() => {
         getCustomers().then((customers) => {
-            if (location.pathname === '/usuarios' && user.rol === 'CONTROL') {
+            if (
+                location.pathname === '/usuarios' &&
+                (user.rol === 'CONTROL' || user.rol === 'ADMIN')
+            ) {
                 customers.push({ label: 'MOSTRAR TODOS', value: 0 })
                 setCustomers(customers)
                 return

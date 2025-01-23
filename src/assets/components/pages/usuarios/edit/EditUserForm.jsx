@@ -50,24 +50,6 @@ export function EditUserForm({ userId, customerId }) {
         setPassword(dni.length > 0 ? `sm_${dni.substring(0, 4)}` : '')
     }, [dni])
 
-    useEffect(() => {
-        const SM_CUSTOMER_ID = 2
-
-        let isIncluded = checkCustomers.some((item) => item.customerId === SM_CUSTOMER_ID)
-
-        if (isIncluded) {
-            checkCustomers.forEach((item) => {
-                if (item.customerId === SM_CUSTOMER_ID) {
-                    return
-                }
-                deleteCheckCustomer(item.userId, item.customerId)
-            })
-            setCheckCustomers(checkCustomers.filter((item) => item.customerId === SM_CUSTOMER_ID))
-
-            return
-        }
-    }, [checkCustomers])
-
     function parsingDate(event, date) {
         let start_date = new Date()
         let day = start_date.getDate()
@@ -384,13 +366,6 @@ export function EditUserForm({ userId, customerId }) {
                     PROYECTOS
                 </Typography>
                 <Grid container spacing={0}>
-                    <Grid item md={12} xs={12} paddingBottom={2} paddingTop={1}>
-                        <Alert severity="info">
-                            <Typography variant="body1">
-                                El proyecto SM no es acumulativo con otros proyectos
-                            </Typography>
-                        </Alert>
-                    </Grid>
                     {customers.length === 0 ? (
                         <Grid item md={12} xs={12}>
                             <AlertApp
