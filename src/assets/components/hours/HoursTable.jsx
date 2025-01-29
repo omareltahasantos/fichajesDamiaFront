@@ -46,12 +46,73 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
     }, [keyword, filter, firstDate, secondDate])
 
     useEffect(() => {
-        parseHoursToExport(hours)
-    }, [hours])
-
-    useEffect(() => {
         searchHours(keyword, filter, firstDate, secondDate, customerId)
     }, [rowsPerPage, offset])
+
+    const searchHours = async (keyword, filter, firstDate, secondDate, customerId) => {
+        const json =
+            firstDate === '' || secondDate === ''
+                ? {
+                      keyword: keyword,
+                      filter: filter,
+                      customerId: customerId,
+                  }
+                : {
+                      keyword: keyword,
+                      filter: filter,
+                      firstDate: firstDate,
+                      secondDate: secondDate,
+                      customerId: customerId,
+                  }
+        let { data } = await axios.get(`${endpoint}searchHours`, {
+            params: { ...json, offset: offset, limit: rowsPerPage },
+        })
+
+        if (data.length === 0) {
+            setHours([])
+            return
+        }
+
+        const hours = await handleHours(data.hours)
+        const exportHours = await handleHours(data.exportTotal)
+
+        setHours(hours)
+        parseHoursToExport(exportHours)
+    }
+
+    const handleHours = async (hoursArray) => {
+        let hours = []
+
+        hoursArray.forEach((hour) => {
+            let startDate = hour.register_start.split(' ')
+            let endDate = hour.register_end
+            let worked_hours = 0
+
+            if (endDate === null) {
+                worked_hours = 'Sin finalizar'
+                hours.push({
+                    ...hour,
+                    worked_hours: worked_hours,
+                })
+                return
+            }
+
+            endDate = endDate.split(' ')
+
+            worked_hours =
+                new Date(endDate[0] + ' ' + endDate[1]) -
+                new Date(startDate[0] + ' ' + startDate[1])
+
+            worked_hours = worked_hours / 1000 / 60 / 60
+
+            hours.push({
+                ...hour,
+                worked_hours: worked_hours % 1 !== 0 ? worked_hours.toFixed(2) : worked_hours,
+            })
+        })
+
+        return hours
+    }
 
     const parseHoursToExport = (hours) => {
         let parseValidate = (validate) => {
@@ -105,63 +166,6 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
         totalHoursValidate()
         searchHours(keyword, filter, firstDate, secondDate, customerId)
         getCountHours(keyword, filter, firstDate, secondDate, customerId)
-    }
-
-    const searchHours = async (keyword, filter, firstDate, secondDate, customerId) => {
-        const json =
-            firstDate === '' || secondDate === ''
-                ? {
-                      keyword: keyword,
-                      filter: filter,
-                      customerId: customerId,
-                  }
-                : {
-                      keyword: keyword,
-                      filter: filter,
-                      firstDate: firstDate,
-                      secondDate: secondDate,
-                      customerId: customerId,
-                  }
-        let { data } = await axios.get(`${endpoint}searchHours`, {
-            params: { ...json, offset: offset, limit: rowsPerPage },
-        })
-
-        if (data.length === 0) {
-            setHours([])
-            return
-        }
-
-        let hours = []
-
-        data.forEach((hour) => {
-            let startDate = hour.register_start.split(' ')
-            let endDate = hour.register_end
-            let worked_hours = 0
-
-            if (endDate === null) {
-                worked_hours = 'Sin finalizar'
-                hours.push({
-                    ...hour,
-                    worked_hours: worked_hours,
-                })
-                return
-            }
-
-            endDate = endDate.split(' ')
-
-            worked_hours =
-                new Date(endDate[0] + ' ' + endDate[1]) -
-                new Date(startDate[0] + ' ' + startDate[1])
-
-            worked_hours = worked_hours / 1000 / 60 / 60
-
-            hours.push({
-                ...hour,
-                worked_hours: worked_hours % 1 !== 0 ? worked_hours.toFixed(2) : worked_hours,
-            })
-        })
-
-        setHours(hours)
     }
 
     const getCountHours = async (keyword, filter, firstDate, secondDate, customerId) => {
