@@ -37,6 +37,13 @@ export function HorasTecnico() {
             return
         }
 
+        let lastHour = data.find((hour) => hour.register_end === null)
+
+        if (lastHour) {
+            data = data.filter((hour) => hour.register_end !== null)
+            data.unshift(lastHour)
+        }
+
         setHours(data)
     }
 

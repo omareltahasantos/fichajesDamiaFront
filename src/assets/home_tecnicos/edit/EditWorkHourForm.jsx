@@ -54,11 +54,14 @@ export function EditWorkHourForm({
 
     const editHours = async (e) => {
         e.preventDefault()
+
+        let parseHours = hours.replace(/\./g, '').replace(',', '.')
+
         let hours_obj = {
             hour_id: hourId,
             register_end: date,
             ubication_end: `${latitude}, ${longitude}`,
-            hours: hours,
+            hours: parseFloat(parseHours),
         }
 
         let { data } = axios.get(`${endpoint}updateWork`, {

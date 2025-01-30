@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Grid, Typography, IconButton } from '@mui/material'
-import { AppBarComponent } from '../../components/appbar/AppBarComponent'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Footer } from '../../components/Footer'
 import { useParams, useNavigate, useLocation } from 'react-router'
 import { useGeolocated } from 'react-geolocated'
 import axios from 'axios'
@@ -56,6 +54,16 @@ export function EditWorkHour() {
                             </IconButton>
                             Finalizar turno
                         </Typography>
+                    </Grid>
+                    <Grid item md={12} xs={12}>
+                        <hr style={{ border: '1px solid #8BB925', width: '100%' }} />
+                        <AlertApp
+                            title={'Información importante al imputar horas'}
+                            message={
+                                'Las horas no enteras se deben imputar como 0,25 - 0,50 - 0,75. De lo contrario, se invalidarán.'
+                            }
+                            severity={'info'}
+                        />
                     </Grid>
                     <Grid item md={4}>
                         <Typography variant="body1" style={{ fontFamily: 'sans-serif' }}>
