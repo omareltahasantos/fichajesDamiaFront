@@ -15,7 +15,12 @@ export function HorasTecnico() {
 
     useEffect(() => {
         hoursByCampaign()
-    }, [campaign_id])
+        const interval = setInterval(() => {
+            hoursByCampaign()
+        }, 500)
+
+        return () => clearInterval(interval)
+    }, [])
 
     const hoursByCampaign = async () => {
         let { data } = await axios.get(`${endpoint}hoursByCampaign`, {
