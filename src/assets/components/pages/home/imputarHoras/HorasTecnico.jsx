@@ -12,17 +12,10 @@ export function HorasTecnico() {
     const { campaign_id } = useParams()
     const navigate = useNavigate()
     const [hours, setHours] = useState([])
-    const [unable, setUnable] = useState(true)
 
     useEffect(() => {
         hoursByCampaign()
-    }, [])
-
-    // useEffect(() => {
-    //     let findSomeHoursNotFinished = hours.some((hour) => hour.register_end === null)
-
-    //     setUnable(findSomeHoursNotFinished)
-    // }, [hours])
+    }, [campaign_id])
 
     const hoursByCampaign = async () => {
         let { data } = await axios.get(`${endpoint}hoursByCampaign`, {
