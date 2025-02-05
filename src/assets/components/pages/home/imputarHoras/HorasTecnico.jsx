@@ -18,11 +18,11 @@ export function HorasTecnico() {
         hoursByCampaign()
     }, [])
 
-    useEffect(() => {
-        let findSomeHoursNotFinished = hours.some((hour) => hour.register_end === null)
+    // useEffect(() => {
+    //     let findSomeHoursNotFinished = hours.some((hour) => hour.register_end === null)
 
-        setUnable(findSomeHoursNotFinished)
-    }, [hours])
+    //     setUnable(findSomeHoursNotFinished)
+    // }, [hours])
 
     const hoursByCampaign = async () => {
         let { data } = await axios.get(`${endpoint}hoursByCampaign`, {
@@ -95,7 +95,7 @@ export function HorasTecnico() {
                             onClick={() => {
                                 navigate(`/horas/imputar/${campaign_id}`)
                             }}
-                            disabled={unable}
+                            disabled={hours.some((hour) => hour.register_end === null)}
                         >
                             <AddIcon /> Iniciar jornada
                         </Button>
