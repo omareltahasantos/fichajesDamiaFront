@@ -26,17 +26,38 @@ export function EditCustomerForm({ customerId }) {
 
     const editCustomer = async (e) => {
         e.preventDefault()
+        try {
+            const response = await axios.put(`${endpoint}customer/${customerId}`, {
+                name: name,
+                code: code,
+            })
 
-        let { data, status } = await axios.put(`${endpoint}customer/${customerId}`, {
-            name: name,
-            code: code,
-        })
-
-        setSnackbar({
-            open: true,
-            text: status === 201 ? 'Proyecto editado correctamente' : 'Error al editar el proyecto',
-            color: status === 201 ? 'success' : 'error',
-        })
+            setSnackbar({
+                ...snackbar,
+                open: true,
+                text: 'Proyecto actualizado correctamente',
+                color: 'success',
+            })
+        } catch (error) {
+            if (error.response) {
+                const { status, data } = error.response
+                if (status === 400) {
+                    setSnackbar({
+                        ...snackbar,
+                        open: true,
+                        text: 'Ya existe un registro con el mismo código de proyecto',
+                        color: 'error',
+                    })
+                } else if (status === 500) {
+                    setSnackbar({
+                        ...snackbar,
+                        open: true,
+                        text: 'Error al actualizar el proyecto',
+                        color: 'error',
+                    })
+                }
+            }
+        }
     }
 
     return (

@@ -16,23 +16,43 @@ export function AddCustomerForm() {
     const addUser = async (e) => {
         e.preventDefault()
 
-        let { status } = await axios.get(`${endpoint}customer`, {
-            params: {
-                name: name,
-                code: code,
-            },
-        })
+        try {
+            const response = await axios.get(`${endpoint}customer`, {
+                params: {
+                    name: name,
+                    code: code,
+                },
+            })
 
-        if (status === 201) {
-            setName('')
             setCode('')
-        }
+            setName('')
 
-        setSnackbar({
-            open: true,
-            text: status === 201 ? 'Proyecto creado correctamente' : 'Error al crear el proyecto',
-            color: status === 201 ? 'success' : 'error',
-        })
+            setSnackbar({
+                ...snackbar,
+                open: true,
+                text: 'Proyecto creado correctamente',
+                color: 'success',
+            })
+        } catch (error) {
+            if (error.response) {
+                const { status, data } = error.response
+                if (status === 400) {
+                    setSnackbar({
+                        ...snackbar,
+                        open: true,
+                        text: 'Ya existe un registro con el mismo código de proyecto',
+                        color: 'error',
+                    })
+                } else if (status === 500) {
+                    setSnackbar({
+                        ...snackbar,
+                        open: true,
+                        text: 'Error al crear el proyecto',
+                        color: 'error',
+                    })
+                }
+            }
+        }
     }
 
     return (
