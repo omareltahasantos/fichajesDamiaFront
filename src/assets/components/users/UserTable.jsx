@@ -48,6 +48,7 @@ export function UserTable({ getCountUsers, countUsers, getCountContractedHours, 
 
         if (data.length === 0) {
             setUsers([])
+            setIsLoading(false)
             return
         }
 

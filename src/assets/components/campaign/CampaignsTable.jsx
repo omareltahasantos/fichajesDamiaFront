@@ -45,6 +45,7 @@ export function CampaignsTable({
 
         if (data.length === 0) {
             setCampaigns([])
+            setIsLoading(false)
             return
         }
 
