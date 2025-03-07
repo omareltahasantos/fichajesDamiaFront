@@ -15,11 +15,6 @@ export function HorasTecnico() {
 
     useEffect(() => {
         hoursByCampaign()
-        const interval = setInterval(() => {
-            hoursByCampaign()
-        }, 500)
-
-        return () => clearInterval(interval)
     }, [])
 
     const hoursByCampaign = async () => {
