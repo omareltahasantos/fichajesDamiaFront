@@ -3,25 +3,38 @@ import axios from 'axios'
 import { Box, Grid, Typography, Button, TextField } from '@mui/material'
 import { useNavigate } from 'react-router'
 import endpoint from '../../components/services/endpoint'
+import { DropdownApp } from '../../components/componentsApp/DropdownApp'
 
-export function EditWorkHourForm({
-    campaignName,
-    currentUser,
-    campaignId,
-    latitude,
-    longitude,
-    hourId,
-}) {
+const typeHours = [
+    {
+        value: 'normales',
+        label: 'Normales',
+    },
+    {
+        value: 'nocturnas',
+        label: 'Nocturnas',
+    },
+    {
+        value: 'festivas',
+        label: 'Festivas',
+    },
+    {
+        value: 'horas extras',
+        label: 'Horas extras',
+    },
+]
+
+export function EditWorkHourForm({ campaignId, latitude, longitude, hourId }) {
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const navigate = useNavigate()
     const [name, setName] = useState('')
-    const [campaign, setCampaign] = useState('')
     const [date, setDate] = useState(new Date())
-    const [hours, setHours] = useState(0)
+    const [hours, setHours] = useState(null)
+    const [type, setType] = useState('')
 
     useEffect(() => {
         parsingDate(setDate)
-        setCampaign(campaignName)
-        setName(currentUser.name)
+        setName(user.name)
     }, [])
 
     function parsingDate(event) {
@@ -62,6 +75,7 @@ export function EditWorkHourForm({
             register_end: date,
             ubication_end: `${latitude}, ${longitude}`,
             hours: Number(parseHours),
+            type_hours: type,
         }
 
         let { data } = axios.get(`${endpoint}updateWork`, {
@@ -95,23 +109,6 @@ export function EditWorkHourForm({
                             }}
                         />
                     </Grid>
-                    <Grid item md={12} xs={12} paddingBottom="15px">
-                        <Typography paddingBottom="15px">CAMPAÑA</Typography>
-                        <TextField
-                            type="text"
-                            fullWidth
-                            placeholder="Campaña"
-                            variant="standard"
-                            required
-                            value={campaign}
-                            onChange={(e) => {
-                                setCampaign(e.target.value)
-                            }}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
 
                     <Grid item md={12} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">FECHA</Typography>
@@ -134,7 +131,7 @@ export function EditWorkHourForm({
                         <TextField
                             type="text"
                             fullWidth
-                            placeholder="horas realizadas"
+                            placeholder="Introduce las horas realizadas"
                             variant="standard"
                             required
                             value={hours}
@@ -146,10 +143,19 @@ export function EditWorkHourForm({
                             }}
                         />
                     </Grid>
+                    <Grid item md={12} xs={12} paddingBottom="15px">
+                        <DropdownApp
+                            title={'TIPO DE HORAS'}
+                            value={type}
+                            setValue={setType}
+                            options={typeHours}
+                            placeholder={'Selecciona el tipo de horas'}
+                        />
+                    </Grid>
                 </Grid>
 
-                <Grid container spacing={0}>
-                    <Grid item md={12} xs={12}>
+                <Grid container spacing={0} justifyContent={'center'}>
+                    <Grid item md={3} xs={6}>
                         <Button
                             type="submit"
                             variant="contained"

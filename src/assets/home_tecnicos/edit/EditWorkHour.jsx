@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Container, Grid, Typography, IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useParams, useNavigate, useLocation } from 'react-router'
 import { useGeolocated } from 'react-geolocated'
-import axios from 'axios'
 import { EditWorkHourForm } from './EditWorkHourForm'
-import endpoint from '../../components/services/endpoint'
 import { CircularLoading } from '../../components/componentsApp/CircularLoading'
 import { AlertApp } from '../../components/componentsApp/AlertApp'
 
@@ -19,18 +17,7 @@ export function EditWorkHour() {
         },
         userDecisionTimeout: 5000,
     })
-    const [currentCampaign, setCurrentCampaign] = useState('')
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')))
 
-    useEffect(() => {
-        currentCampaignMethod()
-    }, [])
-
-    const currentCampaignMethod = async () => {
-        let { data } = await axios.get(`${endpoint}campaign/${campaign_id}`)
-
-        setCurrentCampaign(data.name)
-    }
     return (
         <>
             {' '}
@@ -88,8 +75,6 @@ export function EditWorkHour() {
                     <EditWorkHourForm
                         latitude={coords.latitude}
                         longitude={coords.longitude}
-                        campaignName={currentCampaign}
-                        currentUser={currentUser}
                         campaignId={campaign_id}
                         hourId={location.state.hour_id}
                     />

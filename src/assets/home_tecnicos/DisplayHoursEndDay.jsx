@@ -5,7 +5,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import { parseDate } from '../components/services/methods'
 
 export function DisplayHoursEndDay({ deleteHour, ...item }) {
-    const { register_start, register_end, validate, hours, name } = item
+    const { register_start, register_end, validate, hours, name, type } = item
 
     const titleCards = (register_end, validate) => {
         if (register_end === null) {
@@ -75,7 +75,7 @@ export function DisplayHoursEndDay({ deleteHour, ...item }) {
                         }}
                     />
                     <Typography align="left" variant="body1" fontWeight="bold">
-                        {`${hours} horas`}
+                        {`${hours} horas - ${type}`}
                         <Typography align="left" variant="body2">
                             {name}
                         </Typography>

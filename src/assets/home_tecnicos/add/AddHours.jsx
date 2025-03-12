@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Container, Grid, Typography, IconButton, CircularProgress } from '@mui/material'
-import { AppBarComponent } from '../../components/appbar/AppBarComponent'
+import React from 'react'
+import { Container, Grid, Typography, IconButton } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { Footer } from '../../components/Footer'
 import { useParams, useNavigate } from 'react-router'
 import { useGeolocated } from 'react-geolocated'
-import axios from 'axios'
-import endpoint from '../../components/services/endpoint'
 import { AddHoursForm } from './AddHoursForm'
 import { CircularLoading } from '../../components/componentsApp/CircularLoading'
 import { AlertApp } from '../../components/componentsApp/AlertApp'
@@ -20,18 +16,7 @@ export function AddHours() {
         },
         userDecisionTimeout: 5000,
     })
-    const [currentCampaign, setCurrentCampaign] = useState('')
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')))
 
-    useEffect(() => {
-        currentCampaignMethod()
-    }, [])
-
-    const currentCampaignMethod = async () => {
-        let { data } = await axios.get(`${endpoint}campaign/${campaign_id}`)
-
-        setCurrentCampaign(data.name)
-    }
     return (
         <>
             <Container maxWidth="xl" style={{ paddingTop: '40px' }}>
@@ -78,8 +63,6 @@ export function AddHours() {
                     <AddHoursForm
                         latitude={coords.latitude}
                         longitude={coords.longitude}
-                        campaignName={currentCampaign}
-                        currentUser={currentUser}
                         campaignId={campaign_id}
                     />
                 )}

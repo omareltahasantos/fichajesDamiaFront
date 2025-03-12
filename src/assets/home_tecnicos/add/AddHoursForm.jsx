@@ -4,16 +4,15 @@ import endpoint from '../../components/services/endpoint'
 import { Box, Grid, Typography, Button, TextField } from '@mui/material'
 import { useNavigate } from 'react-router'
 
-export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, longitude }) {
+export function AddHoursForm({ campaignId, latitude, longitude }) {
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const navigate = useNavigate()
     const [name, setName] = useState('')
-    const [campaign, setCampaign] = useState('')
     const [date, setDate] = useState(new Date())
 
     useEffect(() => {
         parsingDate(setDate)
-        setCampaign(campaignName)
-        setName(currentUser.name)
+        setName(user.name)
     }, [])
 
     function parsingDate(event) {
@@ -46,7 +45,7 @@ export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, 
 
     const addHours = async () => {
         let hours = {
-            user_id: currentUser.id,
+            user_id: user.id,
             campaign_id: campaignId,
             register_start: date,
             register_end: null,
@@ -88,24 +87,6 @@ export function AddHoursForm({ campaignName, currentUser, campaignId, latitude, 
                             }}
                         />
                     </Grid>
-                    <Grid item md={12} xs={12} paddingBottom="15px">
-                        <Typography paddingBottom="15px">CAMPAÑA</Typography>
-                        <TextField
-                            type="text"
-                            fullWidth
-                            placeholder="Campaña"
-                            variant="standard"
-                            required
-                            value={campaign}
-                            onChange={(e) => {
-                                setCampaign(e.target.value)
-                            }}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
-
                     <Grid item md={12} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">FECHA</Typography>
                         <TextField

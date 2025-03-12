@@ -37,6 +37,8 @@ export function HorasTecnico() {
             data.unshift(lastHour)
         }
 
+        console.log(hours)
+
         setHours(data)
     }
 

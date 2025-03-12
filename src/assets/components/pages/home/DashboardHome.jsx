@@ -9,7 +9,7 @@ import endpoint from '../../services/endpoint'
 
 export function DashboardHome() {
     const navigate = useNavigate()
-    const [currentUser, setCurrentUser] = useState(JSON.parse(sessionStorage.getItem('user')))
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const [campaigns, setCampaigns] = useState([])
 
     useEffect(() => {
@@ -30,7 +30,7 @@ export function DashboardHome() {
     const campaignsCurrentUser = async () => {
         try {
             const { data } = await axios.get(`${endpoint}campaigns_current_user`, {
-                params: { user_id: currentUser.id },
+                params: { user_id: user.id },
             })
 
             if (data.length > 0) {
