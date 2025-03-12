@@ -31,7 +31,6 @@ export function CustomerTable({ getCountCustomers, countCustomers }) {
     const getCustomers = async () => {
         setIsLoading(true)
         let { data } = await axios.get(`${endpoint}customers`)
-        console.log(data)
 
         if (data.length === 0) {
             setCustomers([])
