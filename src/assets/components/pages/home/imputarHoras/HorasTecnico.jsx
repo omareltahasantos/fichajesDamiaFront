@@ -21,38 +21,36 @@ export function HorasTecnico() {
     }, [])
 
     const hoursByCampaign = async () => {
-        try {
-            setIsLoading(true)
-            await axios
-                .get(`${endpoint}hoursByCampaign`, {
-                    params: {
-                        campaign_id: campaign_id,
-                        user_id: user.id,
-                    },
-                })
-                .then((response) => {
-                    if (response.data.length === 0) {
-                        setHours([])
-                        setIsLoading(false)
-                        return
-                    }
-
-                    let hoursArray = response.data
-
-                    let lastHour = response.data.find((hour) => hour.register_end === null)
-
-                    if (lastHour) {
-                        hoursArray = response.data.filter((hour) => hour.register_end !== null)
-                        hoursArray.unshift(lastHour)
-                    }
-                    setHours([...hoursArray])
-                })
-                .finally(() => {
+        setIsLoading(true)
+        await axios
+            .get(`${endpoint}hoursByCampaign`, {
+                params: {
+                    campaign_id: campaign_id,
+                    user_id: user.id,
+                },
+            })
+            .then((response) => {
+                console.log('Respuesta de la API', response.data)
+                if (response.data.length === 0) {
+                    setHours([])
                     setIsLoading(false)
-                })
-        } catch (error) {
-            console.log(error)
-        }
+                    return
+                }
+
+                let hoursArray = response.data
+
+                let lastHour = response.data.find((hour) => hour.register_end === null)
+
+                if (lastHour) {
+                    hoursArray = response.data.filter((hour) => hour.register_end !== null)
+                    hoursArray.unshift(lastHour)
+                }
+                setHours([...hoursArray])
+                setIsLoading(false)
+            })
+            .catch((error) => {
+                console.log('Error', error)
+            })
     }
 
     const deleteHour = async (hour_id) => {
