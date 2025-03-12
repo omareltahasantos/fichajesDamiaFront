@@ -7,39 +7,52 @@ import axios from 'axios'
 import { DisplayHoursStartDay } from '../../../../home_tecnicos/DisplayHoursStartDay'
 import { DisplayHoursEndDay } from '../../../../home_tecnicos/DisplayHoursEndDay'
 import endpoint from '../../../services/endpoint'
+import { CircularLoading } from '../../../componentsApp/CircularLoading'
 
 export function HorasTecnico() {
     const { campaign_id } = useParams()
+    const user = JSON.parse(sessionStorage.getItem('user'))
     const navigate = useNavigate()
     const [hours, setHours] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         hoursByCampaign()
     }, [])
 
     const hoursByCampaign = async () => {
-        let { data } = await axios.get(`${endpoint}hoursByCampaign`, {
-            params: {
-                campaign_id: campaign_id,
-                user_id: JSON.parse(sessionStorage.getItem('user')).id,
-            },
-        })
+        try {
+            setIsLoading(true)
+            await axios
+                .get(`${endpoint}hoursByCampaign`, {
+                    params: {
+                        campaign_id: campaign_id,
+                        user_id: user.id,
+                    },
+                })
+                .then((response) => {
+                    if (response.data.length === 0) {
+                        setHours([])
+                        setIsLoading(false)
+                        return
+                    }
 
-        if (data.length === 0) {
-            setHours([])
-            return
+                    let hoursArray = response.data
+
+                    let lastHour = response.data.find((hour) => hour.register_end === null)
+
+                    if (lastHour) {
+                        hoursArray = response.data.filter((hour) => hour.register_end !== null)
+                        hoursArray.unshift(lastHour)
+                    }
+                    setHours([...hoursArray])
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        } catch (error) {
+            console.log(error)
         }
-
-        let lastHour = data.find((hour) => hour.register_end === null)
-
-        if (lastHour) {
-            data = data.filter((hour) => hour.register_end !== null)
-            data.unshift(lastHour)
-        }
-
-        console.log(hours)
-
-        setHours(data)
     }
 
     const deleteHour = async (hour_id) => {
@@ -97,21 +110,25 @@ export function HorasTecnico() {
                     </Grid>
                 </Grid>
                 <Grid container spacing={0}>
-                    <Grid item md={12} xs={12}>
-                        {hours.length !== 0
-                            ? hours.map((item) =>
-                                  item.register_end === null ? (
-                                      <DisplayHoursStartDay
-                                          registerFinalHours={registerFinalHours}
-                                          deleteHour={deleteHour}
-                                          {...item}
-                                      />
-                                  ) : (
-                                      <DisplayHoursEndDay deleteHour={deleteHour} {...item} />
+                    {isLoading ? (
+                        <CircularLoading />
+                    ) : (
+                        <Grid item md={12} xs={12}>
+                            {hours.length !== 0
+                                ? hours.map((item) =>
+                                      item.register_end === null ? (
+                                          <DisplayHoursStartDay
+                                              registerFinalHours={registerFinalHours}
+                                              deleteHour={deleteHour}
+                                              {...item}
+                                          />
+                                      ) : (
+                                          <DisplayHoursEndDay deleteHour={deleteHour} {...item} />
+                                      )
                                   )
-                              )
-                            : ''}
-                    </Grid>
+                                : ''}
+                        </Grid>
+                    )}
                 </Grid>
             </Container>
         </>
