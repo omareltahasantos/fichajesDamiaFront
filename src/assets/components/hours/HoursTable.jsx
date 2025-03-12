@@ -107,7 +107,8 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
 
             hours.push({
                 ...hour,
-                worked_hours: worked_hours % 1 !== 0 ? worked_hours.toFixed(2) : worked_hours,
+                worked_hours:
+                    worked_hours % 1 !== 0 ? Number(worked_hours).toFixed(2) : Number(worked_hours),
             })
         })
 
