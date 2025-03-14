@@ -1,9 +1,7 @@
 import React from 'react'
 import { Box, Divider, Typography, Grid, IconButton } from '@mui/material'
-import EventNoteIcon from '@mui/icons-material/EventNote'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import EditIcon from '@mui/icons-material/Edit'
 import { ButtonApp } from '../components/componentsApp/ButtonApp'
 import { parseDate } from '../components/services/methods'
 

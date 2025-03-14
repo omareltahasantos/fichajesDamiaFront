@@ -62,6 +62,10 @@ export function HorasTecnico() {
         navigate(`/horas/edit/imputar/${campaign_id}`, { state: { hour_id: hour_id } })
     }
 
+    const updateHourView = (hour) => {
+        navigate(`/horas/edit/technician/${campaign_id}`, { state: { hour: hour } })
+    }
+
     return (
         <>
             <Container
@@ -121,7 +125,11 @@ export function HorasTecnico() {
                                               {...item}
                                           />
                                       ) : (
-                                          <DisplayHoursEndDay deleteHour={deleteHour} {...item} />
+                                          <DisplayHoursEndDay
+                                              deleteHour={deleteHour}
+                                              updateHourView={updateHourView}
+                                              {...item}
+                                          />
                                       )
                                   )
                                 : ''}
