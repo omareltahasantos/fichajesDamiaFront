@@ -17,7 +17,9 @@ export function HorasTecnico() {
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        hoursByCampaign()
+        setTimeout(() => {
+            hoursByCampaign()
+        }, 1000)
     }, [])
 
     const hoursByCampaign = async () => {
@@ -30,7 +32,6 @@ export function HorasTecnico() {
                 },
             })
             .then((response) => {
-                console.log('Respuesta de la API', response.data)
                 if (response.data.length === 0) {
                     setHours([])
                     setIsLoading(false)
@@ -94,22 +95,26 @@ export function HorasTecnico() {
                             Organiza las horas trabajadas
                         </Typography>
                     </Grid>
-                    <Grid item md={3} xs={12}>
-                        <Button
-                            variant="contained"
-                            style={{
-                                textTransform: 'none',
-                                fontSize: '16px',
-                                backgroundColor: '#8BB925',
-                            }}
-                            onClick={() => {
-                                navigate(`/horas/imputar/${campaign_id}`)
-                            }}
-                            disabled={hours.some((hour) => hour.register_end === null)}
-                        >
-                            <AddIcon /> Iniciar jornada
-                        </Button>
-                    </Grid>
+                    {hours.some((hour) => hour.register_end === null) ? (
+                        ''
+                    ) : (
+                        <Grid item md={3} xs={12}>
+                            <Button
+                                variant="contained"
+                                style={{
+                                    textTransform: 'none',
+                                    fontSize: '16px',
+                                    backgroundColor: '#8BB925',
+                                }}
+                                onClick={() => {
+                                    navigate(`/horas/imputar/${campaign_id}`)
+                                }}
+                                disabled={hours.some((hour) => hour.register_end === null)}
+                            >
+                                <AddIcon /> Iniciar jornada
+                            </Button>
+                        </Grid>
+                    )}
                 </Grid>
                 <Grid container spacing={0}>
                     {isLoading ? (
