@@ -119,7 +119,6 @@ export function LoginForm({ paramsToLog }) {
                             setPassword(e.target.value)
                         }}
                         InputProps={{
-                            readOnly: paramsToLog.password ? true : false,
                             endAdornment: (
                                 <InputAdornment position="start">
                                     <IconButton onClick={handleShowPassword}>
