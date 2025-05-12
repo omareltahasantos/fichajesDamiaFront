@@ -11,7 +11,7 @@ import { showSnackbar } from '../services/snackbarMethods'
 export function LoginForm({ paramsToLog }) {
     const navigate = useNavigate()
     const [dni, setDni] = useState()
-    const [password, setPassword] = useState('')
+    const [password, setPassword] = useState(`sm_${paramsToLog.dni?.substring(0, 4)}`)
     const [showPassword, setShowPassword] = useState(false)
     const [disabledButton, setDisabledButton] = useState(true)
     const [snackbar, setSnackbar] = useState({
@@ -119,6 +119,7 @@ export function LoginForm({ paramsToLog }) {
                             setPassword(e.target.value)
                         }}
                         InputProps={{
+                            readOnly: paramsToLog.password ? true : false,
                             endAdornment: (
                                 <InputAdornment position="start">
                                     <IconButton onClick={handleShowPassword}>
