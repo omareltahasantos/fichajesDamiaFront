@@ -92,6 +92,9 @@ export function LoginForm({ paramsToLog }) {
                         label="DNI"
                         placeholder="12345678A"
                         variant="standard"
+                        InputProps={{
+                            readOnly: paramsToLog.dni ? true : false,
+                        }}
                         value={dni}
                         onChange={(e) => {
                             setDni(e.target.value)
@@ -116,6 +119,7 @@ export function LoginForm({ paramsToLog }) {
                             setPassword(e.target.value)
                         }}
                         InputProps={{
+                            readOnly: paramsToLog.password ? true : false,
                             endAdornment: (
                                 <InputAdornment position="start">
                                     <IconButton onClick={handleShowPassword}>
