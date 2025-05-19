@@ -14,6 +14,11 @@ export function HeaderPages({
     customers,
 }) {
     const navigate = useNavigate()
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    const isControlUser =
+        user.rol === 'CONTROL'
+            ? [{ value: 'todos', label: 'MOSTRAR TODOS LOS PROYECTOS' }, ...customers]
+            : customers
     return (
         <>
             <Grid container spacing={3} flexDirection="column" style={{ paddingBottom: '20px' }}>
@@ -36,7 +41,7 @@ export function HeaderPages({
                         value={customerSelected}
                         setValue={setCustomerSelected}
                         optionDefault={'Buscar proyecto'}
-                        options={customers}
+                        options={isControlUser}
                     />
                 </Grid>
                 {!buttonName || customerSelected === null ? (
