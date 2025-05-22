@@ -9,16 +9,16 @@ import {
     InputAdornment,
     IconButton,
     Alert,
-    FormControlLabel,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import axios from 'axios'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
-import { AddCheckbox } from '../../../componentsApp/AddCheckbox'
-import getCustomers, { orderCustomers } from '../../../services/methods'
-import { AlertApp } from '../../../componentsApp/AlertApp'
+import { TableLinkedProjects } from '../TableLinkedProjects'
+import getCustomers from '../../../services/methods'
+import { TextFieldSearchApp } from '../../../componentsApp/TextFieldSearchApp'
+import { ButtonApp } from '../../../componentsApp/ButtonApp'
 
 export function AddUserForm({ customerId }) {
     const navigate = useNavigate()
@@ -32,35 +32,20 @@ export function AddUserForm({ customerId }) {
     const [roles, setRoles] = useState(null)
     const [showPassword, setShowPassword] = useState(false)
     const [customers, setCustomers] = useState([])
-    const [checkCustomers, setCheckCustomers] = useState([])
+    const [selectedCustomers, setSelectedCustomers] = useState([])
+    const [selectedCustomer, setSelectedCustomer] = useState(null)
 
     useEffect(() => {
         parsingDate(setDateStart)
         getRoles()
-        getCustomers().then((customers) => {
-            setCustomers(orderCustomers(customers))
-        })
-    }, [])
-
-    useEffect(() => {
-        const SM_CUSTOMER_ID = 2
-
-        let isIncluded = checkCustomers.some((item) => item.customerId === SM_CUSTOMER_ID)
-
-        console.log('isIncluded', isIncluded)
-
-        if (isIncluded) {
-            checkCustomers.forEach((item) => {
-                if (item.customerId === SM_CUSTOMER_ID) {
-                    return
-                }
-                deleteCheckCustomer(item.userId, item.customerId)
+        getCustomers()
+            .then((data) => {
+                setCustomers(data)
             })
-            setCheckCustomers(checkCustomers.filter((item) => item.customerId === SM_CUSTOMER_ID))
-
-            return
-        }
-    }, [checkCustomers])
+            .catch((error) => {
+                console.error('Error fetching customers:', error)
+            })
+    }, [])
 
     useEffect(() => {
         setPassword(dni.length > 0 ? `sm_${dni.substring(0, 4)}` : '')
@@ -110,23 +95,6 @@ export function AddUserForm({ customerId }) {
         setShowPassword(!showPassword)
     }
 
-    const addCheckCustomers = (customerId, label) => {
-        let object = {
-            customerId: customerId,
-            name: label,
-        }
-
-        setCheckCustomers((prevArray) => [...prevArray, object])
-    }
-
-    const deleteCheckCustomer = (customerId, label) => {
-        let element = checkCustomers.filter((item) => {
-            return item.value !== customerId
-        })
-
-        setCheckCustomers(element)
-    }
-
     const addUser = async (e) => {
         e.preventDefault()
 
@@ -148,21 +116,20 @@ export function AddUserForm({ customerId }) {
             Alert('Los datos introducidos no són correctos')
             return
         }
-
-        let userId = data
-
-        checkCustomers.forEach(async (customer) => {
-            let json = {
-                userId: userId,
-                customerId: customer.customerId,
-            }
-
-            await axios.get(`${endpoint}linkUserCustomer`, {
-                params: json,
-            })
-        })
+        let userId = data //userId
 
         navigate('/usuarios', { state: { customerId: customerId } })
+    }
+
+    const handleCustomersChange = () => {
+        setSelectedCustomers((prev) => {
+            if (prev.some((customer) => customer.value === selectedCustomer.value)) {
+                return [...prev]
+            } else {
+                return [...prev, selectedCustomer]
+            }
+        })
+        setSelectedCustomer(null)
     }
 
     return (
@@ -334,44 +301,37 @@ export function AddUserForm({ customerId }) {
                 <Typography paddingTop="10px" paddingBottom="10px" fontWeight={'bold'}>
                     PROYECTOS
                 </Typography>
-                <Grid container spacing={0}>
-                    <Grid item md={12} xs={12} paddingBottom={2} paddingTop={1}>
-                        <Alert severity="info">
-                            <Typography variant="body1">
-                                El proyecto SM no es acumulativo con otros proyectos
-                            </Typography>
-                        </Alert>
+                {/**
+                 * ADD FORM
+                 * Desplegable para añadir proyectos al array
+                 * Una vez se añadan deben mostrarse en modo tabla  y al lado de cada uno un botón para eliminarlo
+                 * Dándole a guardar el formulario deberá crear el usuario y añadirle los proyectos
+                 *
+                 * Edit form
+                 * Desplegable para añadir proyectos al array
+                 * Cargar los proyectos del usuario en la tabla y posibilidad de añadir nuevos con el desplegable
+                 * Al lado de cada uno un botón para eliminarlo
+                 * Dándole a guardar el formulario deberá actualizar el usuario y añadirle los proyectos
+                 *
+                 */}
+
+                <Grid container spacing={2} paddingBottom={'15px'}>
+                    <Grid item md={10} xs={9}>
+                        <TextFieldSearchApp
+                            state={selectedCustomer}
+                            method={(value) => setSelectedCustomer(value)}
+                            placeholder={'Buscar proyecto'}
+                            array={customers}
+                            required={false}
+                            readOnly={false}
+                        />
                     </Grid>
-                    {customers.length === 0 ? (
-                        <Grid item md={12} xs={12}>
-                            <AlertApp
-                                severity={'warning'}
-                                title={'Atención:'}
-                                message={
-                                    'No hay proyectos creados, debes contactar con informática para añadir proyectos.'
-                                }
-                            />
-                        </Grid>
-                    ) : (
-                        customers.map((customer) => (
-                            <Grid item md={3} xs={6}>
-                                <FormControlLabel
-                                    control={
-                                        <AddCheckbox
-                                            addMethod={() =>
-                                                addCheckCustomers(customer.value, customer.label)
-                                            }
-                                            deleteMethod={() =>
-                                                deleteCheckCustomer(customer.value, customer.label)
-                                            }
-                                        />
-                                    }
-                                    label={customer.label}
-                                />
-                            </Grid>
-                        ))
-                    )}
+                    <Grid item md={2} xs={3}>
+                        <ButtonApp text={'Añadir proyecto'} method={handleCustomersChange} />
+                    </Grid>
                 </Grid>
+
+                <TableLinkedProjects customers={customers} />
 
                 <Grid container spacing={0}>
                     <Grid item md={12} xs={12}>
