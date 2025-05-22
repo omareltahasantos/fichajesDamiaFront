@@ -1,6 +1,6 @@
 import React from 'react'
 import { Grid, Typography, Breadcrumbs, Button } from '@mui/material'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import AddIcon from '@mui/icons-material/Add'
 import { DropdownApp } from './componentsApp/DropdownApp'
 
@@ -14,9 +14,10 @@ export function HeaderPages({
     customers,
 }) {
     const navigate = useNavigate()
+    const location = useLocation()
     const user = JSON.parse(sessionStorage.getItem('user'))
     const isControlUser =
-        user.rol === 'CONTROL'
+        user.rol === 'CONTROL' && location.pathname === '/horas'
             ? [{ value: 'todos', label: 'MOSTRAR TODOS LOS PROYECTOS' }, ...customers]
             : customers
     return (
@@ -42,6 +43,7 @@ export function HeaderPages({
                         setValue={setCustomerSelected}
                         optionDefault={'Buscar proyecto'}
                         options={isControlUser}
+                        placeholder={'Buscar proyecto'}
                     />
                 </Grid>
                 {!buttonName || customerSelected === null ? (

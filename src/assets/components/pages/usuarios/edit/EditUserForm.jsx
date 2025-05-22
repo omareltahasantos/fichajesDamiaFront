@@ -9,8 +9,6 @@ import {
     InputAdornment,
     IconButton,
     Alert,
-    Input,
-    FormControlLabel,
 } from '@mui/material'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
@@ -18,9 +16,10 @@ import axios from 'axios'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
 import getCustomers, { orderCustomers } from '../../../services/methods'
-import { uniqueId } from 'lodash'
-import { EditCheckbox } from '../../../componentsApp/EditCheckbox'
-import { AlertApp } from '../../../componentsApp/AlertApp'
+import { TableLinkedProjects } from '../TableLinkedProjects'
+import { TextFieldSearchApp } from '../../../componentsApp/TextFieldSearchApp'
+import { showCustomers } from '../../../../Api/customers'
+import { SnackbarApp } from '../../../componentsApp/SnackbarApp'
 
 export function EditUserForm({ userId, customerId }) {
     const navigate = useNavigate()
@@ -34,7 +33,13 @@ export function EditUserForm({ userId, customerId }) {
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const [customers, setCustomers] = useState([])
-    const [checkCustomers, setCheckCustomers] = useState([])
+    const [selectedCustomers, setSelectedCustomers] = useState([])
+    const [selectedCustomer, setSelectedCustomer] = useState(null)
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        text: '',
+        color: '',
+    })
 
     useEffect(() => {
         parsingDate(setDateStart)
@@ -102,40 +107,77 @@ export function EditUserForm({ userId, customerId }) {
     }
 
     const userLinkedToCustomer = async () => {
-        let { data } = await axios.get(`${endpoint}linkedUserCustomer`, {
-            params: {
-                userId: userId,
-            },
+        const customers = await showCustomers(userId)
+
+        const mappedCustomers = customers?.map((item) => {
+            return {
+                value: item.customerId,
+                label: item.name,
+                code: item.code,
+                rulesId: item.id,
+            }
         })
 
-        if (data.length === 0) {
-            return
-        }
-
-        setCheckCustomers(data)
-    }
-
-    const addCheckCustomer = (userId, customerId) => {
-        let object = {
-            id: uniqueId('id_'),
-            userId: userId,
-            customerId: Number(customerId),
-        }
-
-        setCheckCustomers((prevArray) => [...prevArray, object])
+        setSelectedCustomers(customers.length > 0 ? mappedCustomers : [])
     }
 
     const deleteCheckCustomer = async (userId, customerId) => {
-        let element = checkCustomers.filter((item) => {
-            return item.customerId !== customerId
+        console.log(selectedCustomers)
+        let customers = selectedCustomers.filter((item) => {
+            return item.value !== customerId
         })
-        setCheckCustomers(element)
+        setSelectedCustomers(customers)
 
-        let itemDeleted = checkCustomers.find((item) => {
-            return item.customerId === customerId
+        let itemDeleted = selectedCustomers.find((item) => {
+            return item.value === customerId
         })
 
-        deleteCustomerToUser(itemDeleted.id)
+        deleteCustomerToUser(itemDeleted.rulesId)
+    }
+
+    const deleteCustomerToUser = async (rulesId) => {
+        if (typeof rulesId === 'string') return
+        let { data } = await axios.delete(`${endpoint}destroyLinkUserCustomer/${rulesId}`)
+
+        if (!data) {
+            setSnackbar({
+                open: true,
+                text: 'Error al desvincular el proyecto',
+                color: 'error',
+            })
+            return
+        }
+
+        setSnackbar({
+            open: true,
+            text: 'Proyecto desvinculado correctamente',
+            color: 'success',
+        })
+    }
+
+    const editUser = async (e) => {
+        e.preventDefault()
+
+        let { data } = await axios.put(`${endpoint}user/${userId}`, {
+            id: parseInt(userId),
+            name: name,
+            email: email,
+            dni: dni,
+            password: password,
+            hours_contract: contractHours,
+            rol: rol,
+            date_start: dateStart,
+        })
+
+        if (data.length === 0) {
+            Alert('Los datos introducidos no són correctos')
+            return
+        }
+
+        selectedCustomers.forEach(async (customer) => {
+            await checkIfExistsLinkUserToCustomer(userId, customer.value)
+        })
+        navigate('/usuarios', { state: { customerId: customerId } })
     }
 
     const checkIfExistsLinkUserToCustomer = async (userId, customerId) => {
@@ -165,43 +207,28 @@ export function EditUserForm({ userId, customerId }) {
         }
     }
 
-    const deleteCustomerToUser = async (rulesId) => {
-        if (typeof rulesId === 'string') return
-        let { data } = await axios.delete(`${endpoint}destroyLinkUserCustomer/${rulesId}`)
-
-        if (!data) {
-            return
-        }
+    const handleCustomersChange = () => {
+        setSelectedCustomers((prev) => {
+            if (prev.some((customer) => customer.value === selectedCustomer.value)) {
+                return [...prev]
+            } else {
+                return [...prev, selectedCustomer]
+            }
+        })
+        setSelectedCustomer(null)
     }
 
-    const editUser = async (e) => {
-        e.preventDefault()
-
-        let { data } = await axios.put(`${endpoint}user/${userId}`, {
-            id: parseInt(userId),
-            name: name,
-            email: email,
-            dni: dni,
-            password: password,
-            hours_contract: contractHours,
-            rol: rol,
-            date_start: dateStart,
-        })
-
-        if (data.length === 0) {
-            Alert('Los datos introducidos no són correctos')
-            return
-        }
-
-        checkCustomers.map(async (item) => {
-            await checkIfExistsLinkUserToCustomer(item.userId, item.customerId)
-        })
-        navigate('/usuarios', { state: { customerId: customerId } })
+    const handleCustomersSelected = (customer) => {
+        deleteCheckCustomer(userId, customer.value)
     }
 
     return (
         <>
             <Box component="form" autoComplete="off" onSubmit={editUser}>
+                <SnackbarApp
+                    properties={snackbar}
+                    handleClose={() => setSnackbar({ ...snackbar, open: false })}
+                />
                 <Grid container spacing={4} flexDirection="row">
                     <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
@@ -332,7 +359,9 @@ export function EditUserForm({ userId, customerId }) {
                         >
                             <option>Selecciona un rol</option>
                             {roles.map((item) => (
-                                <option value={item.value}>{item.label}</option>
+                                <option key={item.value} value={item.value}>
+                                    {item.label}
+                                </option>
                             ))}
                         </NativeSelect>
                     </Grid>
@@ -365,42 +394,56 @@ export function EditUserForm({ userId, customerId }) {
                 <Typography paddingTop="10px" paddingBottom="10px" fontWeight={'bold'}>
                     PROYECTOS
                 </Typography>
-                <Grid container spacing={0}>
-                    {customers.length === 0 ? (
-                        <Grid item md={12} xs={12}>
-                            <AlertApp
-                                severity={'warning'}
-                                title={'Atención:'}
-                                message={
-                                    'No hay proyectos creados, debes contactar con informática para añadir proyectos.'
-                                }
-                            />
-                        </Grid>
-                    ) : (
-                        customers.map((customer) => (
-                            <Grid item md={3} xs={6}>
-                                <FormControlLabel
-                                    control={
-                                        <EditCheckbox
-                                            paramsToHandlerMethod={{
-                                                first: userId,
-                                                second: customer.value,
-                                            }}
-                                            important={true}
-                                            deleteMethod={deleteCheckCustomer}
-                                            addMethod={addCheckCustomer}
-                                            check={checkCustomers.some(
-                                                (element) => element.customerId === customer.value
-                                            )}
-                                        />
-                                    }
-                                    label={customer.label}
-                                />
-                            </Grid>
-                        ))
-                    )}
+                {/**
+                 * ADD FORM
+                 * Desplegable para añadir proyectos al array √
+                 * Una vez se añadan deben mostrarse en modo tabla  y al lado de cada uno un botón para eliminarlo √
+                 * Dándole a guardar el formulario deberá crear el usuario y añadirle los proyectos √
+                 *
+                 * Edit form
+                 * Desplegable para añadir proyectos al array
+                 * Cargar los proyectos del usuario en la tabla y posibilidad de añadir nuevos con el desplegable
+                 * Al lado de cada uno un botón para eliminarlo
+                 * Dándole a guardar el formulario deberá actualizar el usuario y añadirle los proyectos
+                 *
+                 */}
+
+                <Grid container spacing={2} paddingBottom={'15px'}>
+                    <Grid item md={10} xs={9}>
+                        <TextFieldSearchApp
+                            state={selectedCustomer}
+                            method={(value) => setSelectedCustomer(value)}
+                            placeholder={'Buscar proyecto'}
+                            array={customers}
+                            required={false}
+                            readOnly={false}
+                        />
+                    </Grid>
+                    <Grid item md={2} xs={3}>
+                        <Button
+                            type="button"
+                            variant="contained"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                margin: 'auto',
+                                borderRadius: '10px',
+                                backgroundColor: '#8bb925',
+                            }}
+                            fullWidth
+                            disabled={selectedCustomer === null ? true : false}
+                            onClick={handleCustomersChange}
+                        >
+                            Añadir
+                        </Button>
+                    </Grid>
                 </Grid>
 
+                <TableLinkedProjects
+                    customers={selectedCustomers}
+                    handleCustomers={handleCustomersSelected}
+                />
                 <Grid container spacing={0}>
                     <Grid item md={12} xs={12}>
                         <Button
@@ -411,17 +454,20 @@ export function EditUserForm({ userId, customerId }) {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 margin: 'auto',
-                                marginTop: '20px',
+                                marginTop: '50px',
                                 borderRadius: '10px',
                                 backgroundColor: '#8bb925',
                             }}
                             fullWidth
                             disabled={
-                                rol === '' ||
-                                rol === 'Selecciona un rol' ||
-                                checkCustomers.length === 0
-                                    ? true
-                                    : false
+                                name.length === 0 ||
+                                dni.length === 0 ||
+                                email.length === 0 ||
+                                contractHours < 0 ||
+                                rol.length === 0 ||
+                                password.length === 0 ||
+                                dateStart.length === 0 ||
+                                selectedCustomers.length === 0
                             }
                         >
                             Guardar

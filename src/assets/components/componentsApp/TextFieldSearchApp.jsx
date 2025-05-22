@@ -14,6 +14,7 @@ export function TextFieldSearchApp({
     const customStyles = {
         control: (provided, state) => ({
             ...provided,
+            fontFamily: 'sans-serif',
             fontSize: isMobile ? '11.5px' : '14px',
             borderColor: state.isFocused ? '#bad80a' : '#ccc', // Color de borde en focus
             boxShadow: state.isFocused ? '0 0 0 2px rgba(186, 216, 10, 0.5)' : 'none', // Brillo en focus
@@ -25,18 +26,22 @@ export function TextFieldSearchApp({
         }),
         menu: (provided) => ({
             ...provided,
+            fontFamily: 'sans-serif',
             zIndex: 9999, // Asegura que el menú no se solape con otros elementos
         }),
         singleValue: (provided) => ({
             ...provided,
+            fontFamily: 'sans-serif',
             fontSize: isMobile ? '11.5px' : '14px',
         }),
         placeholder: (provided) => ({
             ...provided,
+            fontFamily: 'sans-serif',
             fontSize: isMobile ? '11.5px' : '14px',
         }),
         option: (provided, state) => ({
             ...provided,
+            fontFamily: 'sans-serif',
             backgroundColor: state.isSelected
                 ? '#bad80a' // Color cuando la opción está seleccionada
                 : state.isFocused

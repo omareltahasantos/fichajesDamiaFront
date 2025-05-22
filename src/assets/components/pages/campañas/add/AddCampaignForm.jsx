@@ -6,7 +6,6 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
 import { AlertApp } from '../../../componentsApp/AlertApp'
-import { DropdownApp } from '../../../componentsApp/DropdownApp'
 import { TextFieldSearch } from '../../../componentsApp/TextFieldSearch'
 
 export function AddCampaignForm({ customerId }) {

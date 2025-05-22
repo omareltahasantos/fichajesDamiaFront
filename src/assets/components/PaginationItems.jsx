@@ -35,7 +35,6 @@ export function PaginationItems({ count, setMethod, endpoint, customerId = null,
                     rol: user.rol,
                 },
             })
-            console.log(data)
 
             setMethod(data)
             setLoading(false)

@@ -16,9 +16,9 @@ import axios from 'axios'
 import { useNavigate } from 'react-router'
 import endpoint from '../../../services/endpoint'
 import { TableLinkedProjects } from '../TableLinkedProjects'
-import getCustomers from '../../../services/methods'
+import getCustomers, { orderCustomers } from '../../../services/methods'
 import { TextFieldSearchApp } from '../../../componentsApp/TextFieldSearchApp'
-import { ButtonApp } from '../../../componentsApp/ButtonApp'
+import { SnackbarApp } from '../../../componentsApp/SnackbarApp'
 
 export function AddUserForm({ customerId }) {
     const navigate = useNavigate()
@@ -34,13 +34,18 @@ export function AddUserForm({ customerId }) {
     const [customers, setCustomers] = useState([])
     const [selectedCustomers, setSelectedCustomers] = useState([])
     const [selectedCustomer, setSelectedCustomer] = useState(null)
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        text: '',
+        color: '',
+    })
 
     useEffect(() => {
         parsingDate(setDateStart)
         getRoles()
         getCustomers()
             .then((data) => {
-                setCustomers(data)
+                setCustomers(orderCustomers(data))
             })
             .catch((error) => {
                 console.error('Error fetching customers:', error)
@@ -118,6 +123,17 @@ export function AddUserForm({ customerId }) {
         }
         let userId = data //userId
 
+        selectedCustomers.forEach(async (customer) => {
+            let json = {
+                userId: userId,
+                customerId: customer.value,
+            }
+
+            await axios.get(`${endpoint}linkUserCustomer`, {
+                params: json,
+            })
+        })
+
         navigate('/usuarios', { state: { customerId: customerId } })
     }
 
@@ -134,12 +150,21 @@ export function AddUserForm({ customerId }) {
 
     const handleCustomersSelected = (customer) => {
         const customers = selectedCustomers.filter((item) => item.value !== customer.value)
+        setSnackbar({
+            open: true,
+            text: 'Proyecto desvinculado correctamente',
+            color: 'success',
+        })
         setSelectedCustomers(customers)
     }
 
     return (
         <>
             <Box component="form" autoComplete="off" onSubmit={addUser}>
+                <SnackbarApp
+                    properties={snackbar}
+                    handleClose={() => setSnackbar({ ...snackbar, open: false })}
+                />
                 <Grid container spacing={4} flexDirection="row">
                     <Grid item md={4} xs={12} paddingBottom="15px">
                         <Typography paddingBottom="15px">NOMBRE</Typography>
@@ -306,19 +331,6 @@ export function AddUserForm({ customerId }) {
                 <Typography paddingTop="10px" paddingBottom="10px" fontWeight={'bold'}>
                     PROYECTOS
                 </Typography>
-                {/**
-                 * ADD FORM
-                 * Desplegable para añadir proyectos al array √
-                 * Una vez se añadan deben mostrarse en modo tabla  y al lado de cada uno un botón para eliminarlo √
-                 * Dándole a guardar el formulario deberá crear el usuario y añadirle los proyectos
-                 *
-                 * Edit form
-                 * Desplegable para añadir proyectos al array
-                 * Cargar los proyectos del usuario en la tabla y posibilidad de añadir nuevos con el desplegable
-                 * Al lado de cada uno un botón para eliminarlo
-                 * Dándole a guardar el formulario deberá actualizar el usuario y añadirle los proyectos
-                 *
-                 */}
 
                 <Grid container spacing={2} paddingBottom={'15px'}>
                     <Grid item md={10} xs={9}>
@@ -372,7 +384,16 @@ export function AddUserForm({ customerId }) {
                                 backgroundColor: '#8bb925',
                             }}
                             fullWidth
-                            disabled={rol === '' || rol === 'Selecciona un rol' ? true : false}
+                            disabled={
+                                name.length === 0 ||
+                                dni.length === 0 ||
+                                email.length === 0 ||
+                                contractHours < 0 ||
+                                rol.length === 0 ||
+                                password.length === 0 ||
+                                dateStart.length === 0 ||
+                                selectedCustomers.length === 0
+                            }
                         >
                             Guardar
                         </Button>
