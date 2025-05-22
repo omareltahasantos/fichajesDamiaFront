@@ -36,6 +36,7 @@ export function Campaigns() {
 
     useEffect(() => {
         getCustomers().then((customers) => {
+            console.log(customers)
             setCustomers(customers)
         })
     }, [])

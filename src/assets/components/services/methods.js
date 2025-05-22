@@ -37,7 +37,7 @@ export default function getCustomers() {
 
                     let customers = data.map((customer) => ({
                         label: customer.name,
-                        value: Number(customer.id),
+                        value: Number(customer.customerId),
                     }))
 
                     resolve(customers)
