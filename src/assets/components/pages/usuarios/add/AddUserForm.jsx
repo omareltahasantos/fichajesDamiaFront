@@ -132,6 +132,11 @@ export function AddUserForm({ customerId }) {
         setSelectedCustomer(null)
     }
 
+    const handleCustomersSelected = (customer) => {
+        const customers = selectedCustomers.filter((item) => item.value !== customer.value)
+        setSelectedCustomers(customers)
+    }
+
     return (
         <>
             <Box component="form" autoComplete="off" onSubmit={addUser}>
@@ -303,8 +308,8 @@ export function AddUserForm({ customerId }) {
                 </Typography>
                 {/**
                  * ADD FORM
-                 * Desplegable para añadir proyectos al array
-                 * Una vez se añadan deben mostrarse en modo tabla  y al lado de cada uno un botón para eliminarlo
+                 * Desplegable para añadir proyectos al array √
+                 * Una vez se añadan deben mostrarse en modo tabla  y al lado de cada uno un botón para eliminarlo √
                  * Dándole a guardar el formulario deberá crear el usuario y añadirle los proyectos
                  *
                  * Edit form
@@ -327,11 +332,30 @@ export function AddUserForm({ customerId }) {
                         />
                     </Grid>
                     <Grid item md={2} xs={3}>
-                        <ButtonApp text={'Añadir proyecto'} method={handleCustomersChange} />
+                        <Button
+                            type="button"
+                            variant="contained"
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                margin: 'auto',
+                                borderRadius: '10px',
+                                backgroundColor: '#8bb925',
+                            }}
+                            fullWidth
+                            disabled={selectedCustomer === null ? true : false}
+                            onClick={handleCustomersChange}
+                        >
+                            Añadir
+                        </Button>
                     </Grid>
                 </Grid>
 
-                <TableLinkedProjects customers={customers} />
+                <TableLinkedProjects
+                    customers={selectedCustomers}
+                    handleCustomers={handleCustomersSelected}
+                />
 
                 <Grid container spacing={0}>
                     <Grid item md={12} xs={12}>
