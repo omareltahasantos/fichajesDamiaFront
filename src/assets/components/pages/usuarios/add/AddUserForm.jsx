@@ -19,6 +19,7 @@ import { TableLinkedProjects } from '../TableLinkedProjects'
 import getCustomers, { orderCustomers } from '../../../services/methods'
 import { TextFieldSearchApp } from '../../../componentsApp/TextFieldSearchApp'
 import { SnackbarApp } from '../../../componentsApp/SnackbarApp'
+import { showUserByDni } from '../../../../Api/users'
 
 export function AddUserForm({ customerId }) {
     const navigate = useNavigate()
@@ -111,6 +112,17 @@ export function AddUserForm({ customerId }) {
             hours_contract: contractHours,
             rol: rol,
             date_start: dateStart,
+        }
+
+        let isUserExists = await showUserByDni(dni)
+
+        if (isUserExists) {
+            setSnackbar({
+                open: true,
+                text: 'El usuario ya existe',
+                color: 'error',
+            })
+            return
         }
 
         let { data, status } = await axios.get(`${endpoint}user`, {
