@@ -124,20 +124,34 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
 
         setExportHours(
             hours.map((hour) => {
-                let startDate = hour.register_start
-                    ? hour?.register_start?.split(' ')
-                    : ['Sin iniciar', '']
-                let endDate = hour.register_end
-                    ? hour?.register_end?.split(' ')
-                    : ['Sin finalizar', '']
+                let startDate = new Date(hour.register_start)
+                startDate = startDate.toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                })
+                startDate = startDate.replace(',', '')
+
+                let endDate = new Date(hour.register_end)
+                endDate = endDate.toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                })
+                endDate = endDate.replace(',', '')
+
                 return {
                     Técnico: hour.user,
                     Campaña: hour.campaign,
-                    'Fichaje inicio': `${startDate[0].split('-').reverse().join('-')} ${
-                        startDate[1]
-                    }`,
+                    'Fichaje inicio': startDate,
                     'Ubicación inicio': hour.ubication_start,
-                    'Fichaje final': `${endDate[0].split('-').reverse().join('-')} ${endDate[1]}`,
+                    'Fichaje final': endDate,
                     'Ubicación final': hour.ubication_end,
                     'Horas imputadas': hour.hours,
                     'Horas trabajadas': hour.worked_hours,
