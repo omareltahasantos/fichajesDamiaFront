@@ -2,6 +2,7 @@ import React from 'react'
 import CheckIcon from '@mui/icons-material/Check'
 import CloseIcon from '@mui/icons-material/Close'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined'
 import EditIcon from '@mui/icons-material/Edit'
 import { Tooltip, IconButton, TableCell } from '@mui/material'
 import { useNavigate } from 'react-router'
@@ -61,6 +62,22 @@ export function HoursActions({ deleteHour, updateValidate, customerId, ...hour }
                 </TableCell>
             ) : (
                 <TableCell>
+                    <Tooltip title="Cambiar decisión de fichaje" arrow placement="top">
+                        <IconButton>
+                            <ModeEditOutlineOutlinedIcon
+                                fontSize="small"
+                                onClick={() => {
+                                    updateValidate(hour.id, hour.validate === 'Si' ? 'No' : 'Si')
+                                }}
+                                style={{
+                                    backgroundColor: 'orangered',
+                                    borderRadius: 5,
+                                    color: 'white',
+                                    padding: 3,
+                                }}
+                            />
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title="Editar registro" arrow placement="top">
                         <IconButton>
                             <EditIcon
