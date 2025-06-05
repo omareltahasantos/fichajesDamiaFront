@@ -3,9 +3,7 @@ import axios from 'axios'
 import { useLocation, useNavigate } from 'react-router'
 import { Grid, Typography, Container, Link, Divider } from '@mui/material'
 import { CardCampaign } from '../../campaign/CardCampaign'
-import { AppBarComponent } from '../../appbar/AppBarComponent'
 import { CampaignsTable } from '../../campaign/CampaignsTable'
-import { Footer } from '../../Footer'
 import { HeaderPages } from '../../HeaderPages'
 import endpoint from '../../services/endpoint'
 import getCustomers from '../../services/methods'
@@ -36,7 +34,6 @@ export function Campaigns() {
 
     useEffect(() => {
         getCustomers().then((customers) => {
-            console.log(customers)
             setCustomers(customers)
         })
     }, [])
@@ -49,8 +46,8 @@ export function Campaigns() {
 
     useEffect(() => {
         if (customerSelected === null) return
-        getCountCampaign(customerSelected)
-        getActiveCampaigns(customerSelected)
+        getCountCampaign(customerSelected.value)
+        getActiveCampaigns(customerSelected.value)
     }, [customerSelected])
 
     const getCountCampaign = async (customerId) => {
@@ -100,10 +97,10 @@ export function Campaigns() {
                         />
 
                         <CampaignsTable
-                            getCountCampaign={() => getCountCampaign(customerSelected)}
-                            getActiveCampaigns={() => getActiveCampaigns(customerSelected)}
+                            getCountCampaign={() => getCountCampaign(customerSelected.value)}
+                            getActiveCampaigns={() => getActiveCampaigns(customerSelected.value)}
                             countCampaigns={countCampaigns}
-                            customerId={customerSelected}
+                            customerId={customerSelected.value}
                         />
                     </>
                 )}

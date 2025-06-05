@@ -54,8 +54,8 @@ export function Users() {
 
     useEffect(() => {
         if (customerSelected === null) return
-        getCountUsers(customerSelected)
-        getCountContractedHours(customerSelected)
+        getCountUsers(customerSelected.value)
+        getCountContractedHours(customerSelected.value)
     }, [customerSelected])
 
     const getCountUsers = async (customerId) => {
@@ -107,7 +107,7 @@ export function Users() {
                             }}
                             onClick={() => {
                                 navigate('/usuarios/add', {
-                                    state: { customerId: customerSelected },
+                                    state: { customerId: customerSelected.value },
                                 })
                             }}
                         >
@@ -121,6 +121,7 @@ export function Users() {
                             setValue={setCustomerSelected}
                             optionDefault={'Buscar proyecto'}
                             options={customers}
+                            placeholder={'Buscar proyecto'}
                         />
                     </Grid>
                 </Grid>
@@ -142,12 +143,12 @@ export function Users() {
                         />
 
                         <UserTable
-                            getCountUsers={() => getCountUsers(customerSelected)}
+                            getCountUsers={() => getCountUsers(customerSelected.value)}
                             countUsers={countUsers}
                             getCountContractedHours={() =>
-                                getCountContractedHours(customerSelected)
+                                getCountContractedHours(customerSelected.value)
                             }
-                            customerId={customerSelected}
+                            customerId={customerSelected.value}
                         />
                     </>
                 )}

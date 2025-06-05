@@ -47,7 +47,7 @@ export function Hours() {
 
     useEffect(() => {
         if (customerSelected === null) return
-        startEndDate(new Date(), customerSelected)
+        startEndDate(new Date(), customerSelected.value)
     }, [customerSelected])
 
     const startEndDate = (currentDate, customerId) => {
@@ -127,14 +127,14 @@ export function Hours() {
                         />
                         <HoursTable
                             totalHoursValidate={() =>
-                                totalHoursValidate(fromDate, toDate, customerSelected)
+                                totalHoursValidate(fromDate, toDate, customerSelected.value)
                             }
                             hoursInsertedCurrentMonth={() =>
-                                hoursInsertedCurrentMonth(fromDate, toDate, customerSelected)
+                                hoursInsertedCurrentMonth(fromDate, toDate, customerSelected.value)
                             }
                             toDate={toDate}
                             fromDate={fromDate}
-                            customerId={customerSelected}
+                            customerId={customerSelected.value}
                         />
                     </>
                 )}
