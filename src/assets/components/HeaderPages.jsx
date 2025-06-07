@@ -58,7 +58,7 @@ export function HeaderPages({
                                 backgroundColor: '#8BB925',
                             }}
                             onClick={() => {
-                                navigate(route, { state: { customerId: customerSelected } })
+                                navigate(route, { state: { customerId: customerSelected.value } })
                             }}
                         >
                             <AddIcon /> {buttonName}
