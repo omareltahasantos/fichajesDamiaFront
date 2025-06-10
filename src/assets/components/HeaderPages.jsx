@@ -23,7 +23,7 @@ export function HeaderPages({
     return (
         <>
             <Grid container spacing={3} flexDirection="column" style={{ paddingBottom: '20px' }}>
-                <Grid item md={3}>
+                <Grid item md={4}>
                     <Typography
                         variant="h4"
                         style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}

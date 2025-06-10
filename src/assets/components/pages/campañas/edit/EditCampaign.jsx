@@ -35,7 +35,7 @@ export function EditCampaign() {
                 cursor: 'pointer',
             }}
         >
-            Campañas
+            Proyectos - Campañas
         </Link>,
         <Typography style={{ fontWeight: 'bold' }}>Actualizar</Typography>,
     ]

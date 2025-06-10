@@ -18,21 +18,11 @@ export function DashbordTitlAndSubtitl() {
         >
             Home
         </Link>,
-        <Typography style={{ fontWeight: 'bold' }}>Campañas</Typography>,
+        <Typography style={{ fontWeight: 'bold' }}>Proyectos - Campañas</Typography>,
     ]
     return (
         <>
             <Grid container spacing={2} flexDirection="column" style={{ paddingBottom: '10px' }}>
-                {/**
-                 *     <Grid item md={3}>
-                    <Typography
-                        variant="h4"
-                        style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
-                    >
-                        Campañas
-                    </Typography>
-                </Grid>
-                 */}
                 {user.rol !== 'TECNICO' && (
                     <Grid item md={9}>
                         <Breadcrumbs separator="›" aria-label="breadcrumb">
@@ -41,7 +31,9 @@ export function DashbordTitlAndSubtitl() {
                     </Grid>
                 )}
                 <Grid item md={5}>
-                    <Typography>Selecciona la campaña a la que quieras imputar horas.</Typography>
+                    <Typography>
+                        Selecciona el proyecto - campaña a la que quieras imputar horas.
+                    </Typography>
                 </Grid>
             </Grid>
         </>

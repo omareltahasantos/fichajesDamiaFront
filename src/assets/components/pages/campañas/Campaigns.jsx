@@ -24,7 +24,7 @@ export function Campaigns() {
         >
             Home
         </Link>,
-        <Typography style={{ fontWeight: 'bold' }}>Campañas</Typography>,
+        <Typography style={{ fontWeight: 'bold' }}>Proyectos - Campañas</Typography>,
     ]
 
     const [countCampaigns, setCountCampaigns] = useState(null)
@@ -73,9 +73,9 @@ export function Campaigns() {
         <>
             <Container maxWidth="xl" style={{ paddingTop: '40px' }}>
                 <HeaderPages
-                    title="Campañas"
+                    title="Proyectos - Campañas"
                     breadcrumb={breadcrumb}
-                    buttonName="Añadir campañas"
+                    buttonName="Añadir proyectos/campañas"
                     route="/campaigns/add"
                     customerSelected={customerSelected}
                     setCustomerSelected={setCustomerSelected}
@@ -86,7 +86,10 @@ export function Campaigns() {
                     <>
                         <Grid container spacing={2}>
                             <Grid item md={6} xs={6}>
-                                <CardCampaign title="Total campañas" description={countCampaigns} />
+                                <CardCampaign
+                                    title="Total proyectos - campañas"
+                                    description={countCampaigns}
+                                />
                             </Grid>
                             <Grid item md={6} xs={6}>
                                 <CardCampaign title="En activo" description={campaignsActive} />

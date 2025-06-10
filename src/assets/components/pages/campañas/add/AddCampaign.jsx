@@ -32,7 +32,7 @@ export function AddCampaign() {
                 cursor: 'pointer',
             }}
         >
-            Campañas
+            Proyectos - Campañas
         </Link>,
         <Typography style={{ fontWeight: 'bold' }}>Añadir</Typography>,
     ]
