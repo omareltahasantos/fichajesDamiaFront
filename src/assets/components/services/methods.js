@@ -16,7 +16,7 @@ export default function getCustomers() {
                     }
 
                     const customers = data.map((customer) => ({
-                        label: customer.name,
+                        label: `(${customer.code}) ${customer.name}`,
                         value: Number(customer.id),
                     }))
 
@@ -36,7 +36,7 @@ export default function getCustomers() {
                     }
 
                     let customers = data.map((customer) => ({
-                        label: customer.name,
+                        label: `(${customer.code}) ${customer.name}`,
                         value: Number(customer.customerId),
                     }))
 
