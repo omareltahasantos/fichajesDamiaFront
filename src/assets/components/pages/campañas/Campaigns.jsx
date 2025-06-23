@@ -40,7 +40,12 @@ export function Campaigns() {
 
     useEffect(() => {
         if (location.state) {
-            setCustomerSelected(location.state.customerId)
+            getCustomers().then((customers) => {
+                const customer = customers.find((c) => c.value === location.state.customerId)
+                if (customer) {
+                    setCustomerSelected(customer)
+                }
+            })
         }
     }, [location.state])
 
@@ -99,12 +104,16 @@ export function Campaigns() {
                             style={{ marginTop: 20, marginBottom: 20, border: '2px solid #b9d47b' }}
                         />
 
-                        <CampaignsTable
-                            getCountCampaign={() => getCountCampaign(customerSelected.value)}
-                            getActiveCampaigns={() => getActiveCampaigns(customerSelected.value)}
-                            countCampaigns={countCampaigns}
-                            customerId={customerSelected.value}
-                        />
+                        {customerSelected && (
+                            <CampaignsTable
+                                getCountCampaign={() => getCountCampaign(customerSelected.value)}
+                                getActiveCampaigns={() =>
+                                    getActiveCampaigns(customerSelected.value)
+                                }
+                                countCampaigns={countCampaigns}
+                                customerId={customerSelected.value}
+                            />
+                        )}
                     </>
                 )}
             </Container>
