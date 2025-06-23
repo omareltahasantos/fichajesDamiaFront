@@ -40,7 +40,7 @@ export function UpdateHourForm({ campaignId, ...hour }) {
             register_end: hour.hour.register_end,
             ubication_end: hour.hour.ubication_end,
             hours: Number(parseHours),
-            type_hours: type,
+            type_hours: type.value,
         }
 
         let { data } = axios.get(`${endpoint}updateWork`, {
