@@ -146,6 +146,15 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                 })
                 endDate = endDate.replace(',', '')
 
+                let validate_at = hour.date_validate
+                if (validate_at !== null) {
+                    validate_at = new Date(hour.date_validate).toLocaleString('es-ES', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                    })
+                }
+
                 return {
                     Técnico: hour.user,
                     Campaña: hour.campaign,
@@ -158,6 +167,7 @@ export function HoursTable({ totalHoursValidate, hoursInsertedCurrentMonth, cust
                     'Tipo de hora': hour.type,
                     Validado: parseValidate(hour.validate),
                     'Validado por': hour.validate_by,
+                    'Fecha validación': validate_at,
                 }
             })
         )
