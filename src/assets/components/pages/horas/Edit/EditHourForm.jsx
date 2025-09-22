@@ -6,7 +6,7 @@ import endpoint from '../../../services/endpoint'
 
 export function EditHourForm({ hourId, hourParams, customerId }) {
     const navigate = useNavigate()
-    const { user, campaign, register_start, register_end } = hourParams
+    const { user, campaign, register_start, register_end, type } = hourParams
     const [hours, setHours] = useState(0)
 
     useEffect(() => {
@@ -18,6 +18,7 @@ export function EditHourForm({ hourId, hourParams, customerId }) {
         let hours_obj = {
             hour_id: hourId,
             hours: hours,
+            type: type,
             register_end: hourParams.register_end,
             ubication_end: hourParams.ubication_end,
         }
