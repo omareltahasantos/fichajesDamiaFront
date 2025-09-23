@@ -75,7 +75,7 @@ export function EditWorkHourForm({ campaignId, latitude, longitude, hourId }) {
             register_end: date,
             ubication_end: `${latitude}, ${longitude}`,
             hours: Number(parseHours),
-            type_hours: type.value,
+            type: type.value,
         }
 
         let { data } = axios.get(`${endpoint}updateWork`, {
